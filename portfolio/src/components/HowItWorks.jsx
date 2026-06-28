@@ -1,0 +1,106 @@
+import React, { useEffect } from 'react';
+import { animate, createScope, onScroll, stagger } from 'animejs';
+
+export default function HowItWorks() {
+  useEffect(() => {
+    const scope = createScope({
+      mediaQueries: { noMotion: '(prefers-reduced-motion: reduce)' }
+    });
+
+    scope.add(({ matches }) => {
+      if (matches.noMotion) return;
+
+      animate('.hiw-header', {
+        opacity: [0, 1],
+        translateY: [40, 0],
+        duration: 600,
+        ease: 'outExpo',
+        autoplay: onScroll({ enter: 'bottom 100%' }),
+      });
+
+      animate('.step-card', {
+        opacity: [0, 1],
+        translateY: [40, 0],
+        delay: stagger(150),
+        duration: 800,
+        ease: 'outExpo',
+        autoplay: onScroll({ enter: 'bottom 100%' }),
+      });
+    });
+
+    return () => scope.revert();
+  }, []);
+
+  const steps = [
+    {
+      num: "01",
+      title: "Discuss & Plan",
+      desc: "Send your requirements via WhatsApp. We will finalize the scope, features, and pricing."
+    },
+    {
+      num: "02",
+      title: "Development",
+      desc: "Clean code and structured reports are built securely with regular progress updates."
+    },
+    {
+      num: "03",
+      title: "Delivery Sync",
+      desc: "You get the final source code, database, and a fully formatted project report on time."
+    }
+  ];
+
+  const handleMouseMove = (e) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    
+    const rotateX = ((y - centerY) / centerY) * -10;
+    const rotateY = ((x - centerX) / centerX) * 10;
+
+    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+    card.style.transition = 'none';
+  };
+
+  const handleMouseLeave = (e) => {
+    const card = e.currentTarget;
+    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+    card.style.transition = 'transform 0.5s ease-out';
+  };
+
+  return (
+    <section id="how-it-works" className="py-24 px-container-padding-mobile md:px-container-padding-desktop scroll-mt-24">
+      <div className="text-center mb-16">
+        <span className="hiw-header inline-block text-[11px] tracking-[0.18em] text-primary-fixed mb-4 font-medium uppercase opacity-0">
+          THE PROCESS
+        </span>
+        <h2 className="hiw-header text-[clamp(32px,5vw,52px)] font-bold text-white mb-4 tracking-tight opacity-0" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>How It Works</h2>
+        <p className="hiw-header text-base text-on-surface-variant max-w-[480px] mx-auto leading-relaxed opacity-0">
+          A seamless process designed for speed and clarity.
+        </p>
+      </div>
+
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 overflow-hidden px-4 sm:px-6 lg:px-8">
+        {steps.map((step, index) => (
+          <div 
+            key={index} 
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            className="step-card opacity-0 glass-panel rounded-3xl p-6 md:p-10 border border-white/5 relative overflow-hidden group"
+          >
+            <div className="text-primary-fixed/20 font-display-lg text-8xl absolute top-4 right-4 z-0 transition-transform duration-500 group-hover:scale-110">
+              {step.num}
+            </div>
+            <div className="relative z-10 mt-16">
+              <h4 className="font-headline-md text-headline-md text-white mb-4">{step.title}</h4>
+              <p className="text-on-surface-variant">{step.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
