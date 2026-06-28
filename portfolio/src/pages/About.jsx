@@ -188,44 +188,6 @@ export default function About() {
           </div>
         </section>
 
-        {/* --- 3. NUMBERS & STATS --- */}
-        <section className="glass-panel rounded-3xl border border-white/10 p-6 md:p-12 overflow-hidden relative mb-20">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary-fixed/5 to-transparent"></div>
-          <div className="relative z-10 grid grid-cols-2 md:grid-cols-4 gap-8 text-center items-start">
-            <div className="stagger-fade">
-              <div className="font-display-lg text-5xl md:text-7xl text-white font-bold mb-2">
-                <span className="counter-val" data-target="4">4</span>
-              </div>
-              <div className="text-primary-fixed font-label-caps uppercase tracking-widest text-xs">Flagship Products</div>
-            </div>
-            <div className="stagger-fade">
-              <div className="font-display-lg text-5xl md:text-7xl text-white font-bold mb-2">
-                <span className="counter-val" data-target="12" data-suffix="+">12+</span>
-              </div>
-              <div className="text-primary-fixed font-label-caps uppercase tracking-widest text-xs">Technologies Mastered</div>
-            </div>
-            <div className="stagger-fade">
-              <div className="font-display-lg text-5xl md:text-7xl text-white font-bold mb-2">
-                <span className="counter-val" data-target="1000" data-suffix="+">1,000+</span>
-              </div>
-              <div className="text-primary-fixed font-label-caps uppercase tracking-widest text-xs">Hours of Learning</div>
-            </div>
-            <div className="stagger-fade">
-              <div className="font-display-lg text-5xl md:text-7xl text-white font-bold mb-2">
-                <span className="counter-val" data-target="4">4</span>
-              </div>
-              <div className="text-primary-fixed font-label-caps uppercase tracking-widest text-xs mb-3">Core Domains</div>
-              <div className="text-on-surface-variant text-[11px] leading-relaxed font-medium">
-                AI & Machine Learning<br/>
-                Full Stack Development<br/>
-                Cybersecurity<br/>
-                Cloud Computing
-              </div>
-            </div>
-          </div>
-        </section>
-
-
 
         {/* --- METHODOLOGY --- */}
         <section className="max-w-4xl mx-auto mb-20 text-center">
