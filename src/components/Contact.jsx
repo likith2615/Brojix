@@ -159,8 +159,24 @@ export default function Contact() {
       Promise.all([dbPromise, emailPromise]),
       {
         loading: 'Processing request and sending email...',
-        success: () => 'Form submitted! Your entry is saved and you will receive an email confirmation.',
+        success: () => (
+          <div className="flex flex-col gap-2 py-2">
+            <p className="text-xl font-bold text-green-400">✓ Submission Successful!</p>
+            <p className="text-base text-white">Your entry has been saved successfully.</p>
+            <p className="text-base text-white">Confirmation email is on its way to you.</p>
+            <p className="text-sm text-gray-300 mt-2">We'll be in touch soon!</p>
+          </div>
+        ),
         error: (err) => err.message || 'Failed to process request.'
+      },
+      {
+        duration: 6000,
+        style: {
+          padding: '16px',
+          borderRadius: '12px',
+          border: '2px solid #10b981',
+          boxShadow: '0 10px 40px rgba(16, 185, 129, 0.3)'
+        }
       }
     );
   };

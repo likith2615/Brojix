@@ -105,6 +105,10 @@ export default function Services() {
     card.style.transition = 'transform 0.5s ease-out';
   };
 
+  const handleGetStarted = () => {
+    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <section id="services" className="py-32 px-container-padding-mobile md:px-container-padding-desktop relative scroll-mt-24">
       <div className="max-w-7xl mx-auto">
@@ -137,6 +141,7 @@ export default function Services() {
                   </div>
                   <div className="mb-10">
                     <span className="text-primary-fixed text-4xl font-bold tracking-tighter drop-shadow-[0_0_10px_rgba(210,240,0,0.5)]">₹{service.price}</span>
+                    <p className="text-on-surface-variant text-xs mt-2 italic">Starting from • Price is negotiable</p>
                   </div>
                   <ul className="space-y-4 mb-12 flex-grow">
                     {service.features.map((feature, i) => (
@@ -146,8 +151,8 @@ export default function Services() {
                       </li>
                     ))}
                   </ul>
-                  <button className="w-full py-4 bg-primary-fixed text-on-primary-fixed rounded-lg font-bold hover:shadow-[0_0_20px_#d2f000] transition-all duration-300">
-                    Access Diagnostic
+                  <button onClick={handleGetStarted} className="w-full py-4 bg-primary-fixed text-on-primary-fixed rounded-lg font-bold hover:shadow-[0_0_20px_#d2f000] transition-all duration-300">
+                    Get Started
                   </button>
                 </div>
               );
@@ -172,6 +177,7 @@ export default function Services() {
                   <span className={`text-4xl font-bold tracking-tighter ${index === 0 ? 'text-white' : 'text-secondary drop-shadow-[0_0_10px_rgba(220,184,255,0.5)]'}`}>
                     ₹{service.price}
                   </span>
+                  <p className="text-on-surface-variant text-xs mt-2 italic">Starting from • Price is negotiable</p>
                 </div>
                 <ul className="space-y-4 mb-12 flex-grow">
                   {service.features.map((feature, i) => (
@@ -181,7 +187,7 @@ export default function Services() {
                     </li>
                   ))}
                 </ul>
-                <button className={`w-full py-4 border border-outline-variant rounded-lg text-white font-bold transition-all duration-300 ${index === 0 ? 'hover:bg-white hover:text-black' : 'hover:border-secondary hover:text-secondary'}`}>
+                <button onClick={handleGetStarted} className={`w-full py-4 border border-outline-variant rounded-lg text-white font-bold transition-all duration-300 ${index === 0 ? 'hover:bg-white hover:text-black' : 'hover:border-secondary hover:text-secondary'}`}>
                   {index === 0 ? 'Start Your Project' : 'Secure Report'}
                 </button>
               </div>
