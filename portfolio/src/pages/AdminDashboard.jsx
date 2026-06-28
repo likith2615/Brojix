@@ -10,9 +10,9 @@ export default function AdminDashboard() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedSubmission, setSelectedSubmission] = useState(null);
 
-  // Admin credentials — move to env vars for extra security
-  const ADMIN_USERNAME = import.meta.env.VITE_ADMIN_USER || 'admin';
-  const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASS || 'Likithkumar@26';
+  // Admin credentials — set VITE_ADMIN_USER and VITE_ADMIN_PASS in Netlify environment variables
+  const ADMIN_USERNAME = import.meta.env.VITE_ADMIN_USER || '';
+  const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASS || '';
 
   useEffect(() => {
     // Check if already authenticated in this session

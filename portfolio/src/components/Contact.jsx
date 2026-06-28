@@ -123,8 +123,8 @@ export default function Contact() {
 
     // 2. Send email via Web3Forms
     const emailPromise = (async () => {
-    // Web3Forms public key — safe to use client-side (see web3forms.com/docs)
-      const web3formsKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || '784f287b-f35a-4968-8f63-30dda83cabbd';
+    // Web3Forms key — set VITE_WEB3FORMS_ACCESS_KEY in Netlify environment variables
+      const web3formsKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || '';
       if (!web3formsKey) {
         throw new Error('Email credentials missing: Please add VITE_WEB3FORMS_ACCESS_KEY to your .env file.');
       }
