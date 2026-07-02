@@ -94,7 +94,7 @@ export default function Services() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {services.map((service, index) => {
-            const delayStyle = { transitionDelay: `${200 + index * 100}ms` };
+            const delayStyle = { transitionDelay: `${40 + index * 40}ms` };
             if (service.isBundle) {
               // The Bundle / Popular Card
               return (

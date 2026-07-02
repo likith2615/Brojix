@@ -6,9 +6,7 @@ export default function Footer() {
       <div className="px-container-padding-mobile md:px-container-padding-desktop max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start gap-16 mb-24">
           <div className="flex flex-col items-start max-w-sm">
-            <div className="font-headline-lg text-4xl sm:text-6xl md:text-8xl font-black text-white tracking-tighter mb-6 flex items-center">
-              BRO<span className="text-primary-fixed drop-shadow-[0_0_10px_rgba(217,255,0,0.3)]">JIX</span>
-            </div>
+            <div className="font-headline-lg text-4xl sm:text-6xl md:text-8xl font-black text-white tracking-tighter mb-6 flex items-center">BRO<span className="text-primary-fixed drop-shadow-[0_0_10px_rgba(217,255,0,0.3)]">JIX</span></div>
             <p className="text-on-surface-variant text-lg leading-relaxed">
               Premium software solutions, dynamic web experiences, and industry-ready internship reports delivered with precision.
             </p>

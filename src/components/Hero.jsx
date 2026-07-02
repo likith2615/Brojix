@@ -24,9 +24,7 @@ export default function Hero() {
 
         <h1 className={`font-display-lg text-5xl sm:text-7xl md:text-[120px] text-white mb-8 tracking-tighter flex flex-wrap justify-center gap-x-2 md:gap-x-3 gap-y-2 leading-none transition-all duration-700 delay-200 ${
           isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-        }`}>
-          BRO<span className="text-primary-fixed">JIX</span>
-        </h1>
+        }`}>BRO<span className="text-primary-fixed">JIX</span></h1>
 
         <p className={`font-body-lg text-lg md:text-xl text-on-surface-variant max-w-2xl mx-auto mb-10 transition-all duration-700 delay-300 ${
           isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'

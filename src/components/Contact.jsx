@@ -182,7 +182,7 @@ export default function Contact() {
           ref={cardRef}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          className="liquid-glass p-6 md:p-12 rounded-xl border border-white/10 transition-transform duration-200 ease-out"
+          className="liquid-glass p-4 sm:p-6 md:p-12 rounded-xl border border-white/10 transition-transform duration-200 ease-out"
           style={{ transformStyle: 'preserve-3d' }}
         >
           <div className="flex justify-between items-start mb-8">
@@ -202,7 +202,7 @@ export default function Contact() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
             <div 
-              style={{ transitionDelay: '200ms' }}
+              style={{ transitionDelay: '40ms' }}
               className={`bg-surface-container-lowest/80 border border-white/10 rounded-2xl p-5 transition-all duration-700 transform ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
@@ -212,7 +212,7 @@ export default function Contact() {
               <p className="text-on-surface-variant text-sm">Mention your topic, deadline, and preferred tech stack or report style.</p>
             </div>
             <div 
-              style={{ transitionDelay: '300ms' }}
+              style={{ transitionDelay: '80ms' }}
               className={`bg-surface-container-lowest/80 border border-white/10 rounded-2xl p-5 transition-all duration-700 transform ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
@@ -222,7 +222,7 @@ export default function Contact() {
               <p className="text-on-surface-variant text-sm">Pick software, internship report, or both together for a complete solution.</p>
             </div>
             <div 
-              style={{ transitionDelay: '400ms' }}
+              style={{ transitionDelay: '120ms' }}
               className={`bg-surface-container-lowest/80 border border-white/10 rounded-2xl p-5 transition-all duration-700 transform ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
@@ -238,8 +238,8 @@ export default function Contact() {
             <div className="absolute inset-0 bg-primary-fixed/5 rounded-3xl blur-3xl -z-10 pointer-events-none"></div>
 
             <div 
-              style={{ transitionDelay: '450ms' }}
-              className={`bg-surface-container-lowest/40 p-6 md:p-8 rounded-3xl border border-white/5 shadow-lg backdrop-blur-md transition-all duration-700 transform ${
+              style={{ transitionDelay: '90ms' }}
+              className={`bg-surface-container-lowest/40 p-4 sm:p-6 md:p-8 rounded-2xl md:rounded-3xl border border-white/5 shadow-lg backdrop-blur-md transition-all duration-700 transform ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
               }`}
             >
@@ -251,7 +251,7 @@ export default function Contact() {
                 <div className="relative">
                   <input 
                     {...register('name')} 
-                    className="w-full bg-surface-container-lowest border border-white/10 rounded-xl px-5 py-4 text-white placeholder-on-surface-variant focus:outline-none focus:border-primary-fixed focus:ring-1 focus:ring-primary-fixed transition-all duration-300" 
+                    className="w-full bg-surface-container-lowest border border-white/10 rounded-xl px-4 py-3 text-sm md:px-5 md:py-4 md:text-base text-white placeholder-on-surface-variant focus:outline-none focus:border-primary-fixed focus:ring-1 focus:ring-primary-fixed transition-all duration-300" 
                     placeholder="Full Name" 
                     type="text"
                   />
@@ -261,7 +261,7 @@ export default function Contact() {
                 <div className="relative">
                   <input 
                     {...register('whatsapp')} 
-                    className="w-full bg-surface-container-lowest border border-white/10 rounded-xl px-5 py-4 text-white placeholder-on-surface-variant focus:outline-none focus:border-primary-fixed focus:ring-1 focus:ring-primary-fixed transition-all duration-300" 
+                    className="w-full bg-surface-container-lowest border border-white/10 rounded-xl px-4 py-3 text-sm md:px-5 md:py-4 md:text-base text-white placeholder-on-surface-variant focus:outline-none focus:border-primary-fixed focus:ring-1 focus:ring-primary-fixed transition-all duration-300" 
                     placeholder="WhatsApp No. (e.g. +91 9876543210)" 
                     type="text"
                   />
@@ -271,8 +271,8 @@ export default function Contact() {
             </div>
 
             <div 
-              style={{ transitionDelay: '550ms' }}
-              className={`bg-surface-container-lowest/40 p-6 md:p-8 rounded-3xl border border-white/5 shadow-lg backdrop-blur-md relative z-10 transition-all duration-700 transform ${
+              style={{ transitionDelay: '140ms' }}
+              className={`bg-surface-container-lowest/40 p-4 sm:p-6 md:p-8 rounded-2xl md:rounded-3xl border border-white/5 shadow-lg backdrop-blur-md relative z-10 transition-all duration-700 transform ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
               }`}
             >
@@ -284,7 +284,7 @@ export default function Contact() {
                 <div className="relative">
                   <input 
                     {...register('college')} 
-                    className="w-full bg-surface-container-lowest border border-white/10 rounded-xl px-5 py-4 text-white placeholder-on-surface-variant focus:outline-none focus:border-primary-fixed focus:ring-1 focus:ring-primary-fixed transition-all duration-300" 
+                    className="w-full bg-surface-container-lowest border border-white/10 rounded-xl px-4 py-3 text-sm md:px-5 md:py-4 md:text-base text-white placeholder-on-surface-variant focus:outline-none focus:border-primary-fixed focus:ring-1 focus:ring-primary-fixed transition-all duration-300" 
                     placeholder="University / College" 
                   />
                   {errors.college && <p className="text-error text-xs mt-2 ml-1">{errors.college.message}</p>}
@@ -294,7 +294,7 @@ export default function Contact() {
                   <input 
                     {...register('deadline')} 
                     type="date"
-                    className="w-full bg-surface-container-lowest border border-white/10 rounded-xl px-5 py-4 text-white placeholder-on-surface-variant focus:outline-none focus:border-primary-fixed focus:ring-1 focus:ring-primary-fixed transition-all duration-300" 
+                    className="w-full bg-surface-container-lowest border border-white/10 rounded-xl px-4 py-3 text-sm md:px-5 md:py-4 md:text-base text-white placeholder-on-surface-variant focus:outline-none focus:border-primary-fixed focus:ring-1 focus:ring-primary-fixed transition-all duration-300" 
                   />
                   {errors.deadline && <p className="text-error text-xs mt-2 ml-1">{errors.deadline.message}</p>}
                 </div>
@@ -306,7 +306,7 @@ export default function Contact() {
                     <button
                       type="button"
                       onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                      className="w-full bg-surface-container-lowest border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-primary-fixed focus:ring-1 focus:ring-primary-fixed transition-all duration-300 flex justify-between items-center"
+                      className="w-full bg-surface-container-lowest border border-white/10 rounded-xl px-4 py-3 text-sm md:px-5 md:py-4 md:text-base text-white focus:outline-none focus:border-primary-fixed focus:ring-1 focus:ring-primary-fixed transition-all duration-300 flex justify-between items-center"
                     >
                       <span className={selectedService ? "text-white" : "text-on-surface-variant"}>
                         {selectedService ? serviceOptions.find(o => o.value === selectedService)?.label : "Select a Service Tier..."}
@@ -322,7 +322,7 @@ export default function Contact() {
                         {serviceOptions.map((opt) => (
                           <div 
                             key={opt.value}
-                            className="px-5 py-4 cursor-pointer hover:bg-primary-fixed/20 hover:text-primary-fixed text-white transition-colors duration-200 border-b border-white/5 last:border-b-0"
+                            className="px-4 py-3 text-sm md:px-5 md:py-4 md:text-base cursor-pointer hover:bg-primary-fixed/20 hover:text-primary-fixed text-white transition-colors duration-200 border-b border-white/5 last:border-b-0"
                             onClick={() => {
                               setValue('service', opt.value, { shouldValidate: true });
                               setIsDropdownOpen(false);
@@ -340,8 +340,8 @@ export default function Contact() {
             </div>
 
             <div 
-              style={{ transitionDelay: '650ms' }}
-              className={`bg-surface-container-lowest/40 p-6 md:p-8 rounded-3xl border border-white/5 shadow-lg backdrop-blur-md transition-all duration-700 transform ${
+              style={{ transitionDelay: '190ms' }}
+              className={`bg-surface-container-lowest/40 p-4 sm:p-6 md:p-8 rounded-2xl md:rounded-3xl border border-white/5 shadow-lg backdrop-blur-md transition-all duration-700 transform ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
               }`}
             >
@@ -353,7 +353,7 @@ export default function Contact() {
                 <div className="relative">
                   <input 
                     {...register('topic')} 
-                    className="w-full bg-surface-container-lowest border border-white/10 rounded-xl px-5 py-4 text-white placeholder-on-surface-variant focus:outline-none focus:border-primary-fixed focus:ring-1 focus:ring-primary-fixed transition-all duration-300" 
+                    className="w-full bg-surface-container-lowest border border-white/10 rounded-xl px-4 py-3 text-sm md:px-5 md:py-4 md:text-base text-white placeholder-on-surface-variant focus:outline-none focus:border-primary-fixed focus:ring-1 focus:ring-primary-fixed transition-all duration-300" 
                     placeholder="Project Topic (e.g. Hospital Management System)" 
                   />
                   {errors.topic && <p className="text-error text-xs mt-2 ml-1">{errors.topic.message}</p>}
@@ -362,7 +362,7 @@ export default function Contact() {
                   <textarea 
                     {...register('requirements')} 
                     rows="4"
-                    className="w-full bg-surface-container-lowest border border-white/10 rounded-xl px-5 py-4 text-white placeholder-on-surface-variant focus:outline-none focus:border-primary-fixed focus:ring-1 focus:ring-primary-fixed transition-all duration-300 resize-none" 
+                    className="w-full bg-surface-container-lowest border border-white/10 rounded-xl px-4 py-3 text-sm md:px-5 md:py-4 md:text-base text-white placeholder-on-surface-variant focus:outline-none focus:border-primary-fixed focus:ring-1 focus:ring-primary-fixed transition-all duration-300 resize-none" 
                     placeholder="Any specific instructions, tech stack preferences, or core features..." 
                   ></textarea>
                 </div>
@@ -370,7 +370,7 @@ export default function Contact() {
             </div>
 
             <div 
-              style={{ transitionDelay: '750ms' }}
+              style={{ transitionDelay: '240ms' }}
               className={`pt-6 grid grid-cols-1 md:grid-cols-3 gap-4 transition-all duration-700 transform ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
               }`}
@@ -381,7 +381,7 @@ export default function Contact() {
                   handleSubmit((data) => onSubmit(data, 'linkedin'))();
                 }}
                 disabled={isSubmitting}
-                className="w-full bg-surface-container-lowest border border-white/10 hover:border-[#0A66C2]/30 text-white text-base px-6 py-4 rounded-xl font-bold transition-all duration-300 flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-50 group"
+                className="w-full bg-surface-container-lowest border border-white/10 hover:border-[#0A66C2]/30 text-white text-sm px-4 py-3 md:text-base md:px-6 md:py-4 rounded-xl font-bold transition-all duration-300 flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-50 group"
               >
                 <span>LINKEDIN CONNECT</span>
                 <span className="material-symbols-outlined transition-transform duration-300 group-hover:translate-y-[-2px]">share</span>
@@ -392,7 +392,7 @@ export default function Contact() {
                   handleSubmit((data) => onSubmit(data, 'whatsapp'))();
                 }}
                 disabled={isSubmitting}
-                className="w-full bg-surface-container-lowest border border-white/10 hover:border-primary-fixed/30 text-white text-base px-6 py-4 rounded-xl font-bold transition-all duration-300 flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-50 group"
+                className="w-full bg-surface-container-lowest border border-white/10 hover:border-primary-fixed/30 text-white text-sm px-4 py-3 md:text-base md:px-6 md:py-4 rounded-xl font-bold transition-all duration-300 flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-50 group"
               >
                 <span>WHATSAPP DIRECT</span>
                 <span className="material-symbols-outlined transition-transform duration-300 group-hover:translate-x-1">send</span>
@@ -403,7 +403,7 @@ export default function Contact() {
                   handleSubmit((data) => onSubmit(data, 'email'))();
                 }}
                 disabled={isSubmitting}
-                className="w-full bg-primary-fixed text-on-primary-fixed text-base px-6 py-4 rounded-xl font-bold hover:shadow-[0_0_20px_rgba(210,240,0,0.4)] transition-all duration-300 flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-50 group"
+                className="w-full bg-primary-fixed text-on-primary-fixed text-sm px-4 py-3 md:text-base md:px-6 md:py-4 rounded-xl font-bold hover:shadow-[0_0_20px_rgba(210,240,0,0.4)] transition-all duration-300 flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-50 group"
               >
                 <span>{isSubmitting ? 'SENDING EMAIL...' : 'SUBMIT via GMAIL'}</span>
                 <span className="material-symbols-outlined transition-transform duration-300 group-hover:translate-x-1">mail</span>

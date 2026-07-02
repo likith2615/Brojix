@@ -41,9 +41,7 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             <div className="flex-shrink-0">
-              <a href="/" className="font-display-md text-3xl md:text-4xl font-bold text-white tracking-tighter flex items-center">
-                BRO<span className="text-primary-fixed">JIX</span>
-              </a>
+              <a href="/" className="font-display-md text-3xl md:text-4xl font-bold text-white tracking-tighter flex items-center">BRO<span className="text-primary-fixed">JIX</span></a>
             </div>
             
             <div className="hidden md:flex items-center gap-8">

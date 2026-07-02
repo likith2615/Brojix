@@ -147,7 +147,7 @@ export default function AdminDashboard() {
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Username"
               autoComplete="username"
-              className="w-full bg-surface-container-lowest border border-white/10 rounded-xl px-5 py-4 text-white text-center placeholder-on-surface-variant focus:outline-none focus:border-primary-fixed focus:ring-1 focus:ring-primary-fixed transition-all duration-300"
+              className="w-full bg-surface-container-lowest border border-white/10 rounded-xl px-4 py-3 text-sm md:px-5 md:py-4 md:text-base text-white text-center placeholder-on-surface-variant focus:outline-none focus:border-primary-fixed focus:ring-1 focus:ring-primary-fixed transition-all duration-300"
             />
             <input 
               type="password"
@@ -155,11 +155,11 @@ export default function AdminDashboard() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
               autoComplete="current-password"
-              className="w-full bg-surface-container-lowest border border-white/10 rounded-xl px-5 py-4 text-white text-center placeholder-on-surface-variant focus:outline-none focus:border-primary-fixed focus:ring-1 focus:ring-primary-fixed transition-all duration-300"
+              className="w-full bg-surface-container-lowest border border-white/10 rounded-xl px-4 py-3 text-sm md:px-5 md:py-4 md:text-base text-white text-center placeholder-on-surface-variant focus:outline-none focus:border-primary-fixed focus:ring-1 focus:ring-primary-fixed transition-all duration-300"
             />
             <button 
               type="submit"
-              className="w-full bg-primary-fixed text-on-primary-fixed py-4 rounded-xl font-bold hover:shadow-[0_0_25px_#d2f000] transition-all duration-300"
+              className="w-full bg-primary-fixed text-on-primary-fixed py-3 md:py-4 rounded-xl font-bold hover:shadow-[0_0_25px_#d2f000] transition-all duration-300 text-sm md:text-base"
             >
               AUTHENTICATE
             </button>
@@ -230,7 +230,7 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Table Container */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="flex justify-between items-center gap-4">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
             <h2 className="text-xl font-bold" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>Submissions Database</h2>
             {/* Search Bar */}
             <div className="relative max-w-xs w-full">

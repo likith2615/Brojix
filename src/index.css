@@ -139,3 +139,40 @@ html {
   backdrop-filter: blur(32px) !important;
 }
 
+/* Snappy, fast transitions for better responsiveness */
+@media (prefers-reduced-motion: no-preference) {
+  .duration-700 {
+    transition-duration: 220ms !important;
+  }
+  .duration-500 {
+    transition-duration: 180ms !important;
+  }
+  .duration-750 {
+    transition-duration: 250ms !important;
+  }
+  .delay-100 {
+    transition-delay: 20ms !important;
+  }
+  .delay-200 {
+    transition-delay: 40ms !important;
+  }
+  .delay-300 {
+    transition-delay: 60ms !important;
+  }
+  .delay-400 {
+    transition-delay: 80ms !important;
+  }
+  .delay-500 {
+    transition-delay: 100ms !important;
+  }
+  .delay-600 {
+    transition-delay: 120ms !important;
+  }
+  .delay-700 {
+    transition-delay: 140ms !important;
+  }
+  .delay-750 {
+    transition-delay: 150ms !important;
+  }
+}
+

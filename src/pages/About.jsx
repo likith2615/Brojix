@@ -99,7 +99,7 @@ export default function About() {
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className={`glass-panel p-8 rounded-3xl border border-white/5 hover:border-primary-fixed/30 transition-all duration-500 transform ${
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-          }`} style={{ transitionDelay: '300ms' }}>
+          }`} style={{ transitionDelay: '50ms' }}>
             <GraduationCap className="w-8 h-8 text-primary-fixed mb-6" />
             <h3 className="font-headline-md text-xl text-white mb-2">Education</h3>
             <p className="text-on-surface-variant font-medium">B.Tech CSE</p>
@@ -109,7 +109,7 @@ export default function About() {
           
           <div className={`glass-panel p-8 rounded-3xl border border-white/5 hover:border-primary-fixed/30 transition-all duration-500 transform ${
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-          }`} style={{ transitionDelay: '400ms' }}>
+          }`} style={{ transitionDelay: '100ms' }}>
             <Target className="w-8 h-8 text-primary-fixed mb-6" />
             <h3 className="font-headline-md text-xl text-white mb-4">Primary Focus</h3>
             <ul className="space-y-2 text-sm text-on-surface-variant">
@@ -122,7 +122,7 @@ export default function About() {
 
           <div className={`glass-panel p-8 rounded-3xl border border-white/5 hover:border-primary-fixed/30 transition-all duration-500 transform ${
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-          }`} style={{ transitionDelay: '500ms' }}>
+          }`} style={{ transitionDelay: '150ms' }}>
             <Rocket className="w-8 h-8 text-primary-fixed mb-6" />
             <h3 className="font-headline-md text-xl text-white mb-4">Currently Building</h3>
             <ul className="space-y-2 text-sm text-on-surface-variant">
@@ -135,7 +135,7 @@ export default function About() {
 
           <div className={`glass-panel p-8 rounded-3xl border border-white/5 hover:border-primary-fixed/30 transition-all duration-500 transform bg-primary-fixed/5 ${
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-          }`} style={{ transitionDelay: '600ms' }}>
+          }`} style={{ transitionDelay: '200ms' }}>
             <Crosshair className="w-8 h-8 text-primary-fixed mb-6" />
             <h3 className="font-headline-md text-xl text-white mb-4">Mission</h3>
             <p className="text-sm text-on-surface-variant leading-relaxed">
@@ -205,7 +205,7 @@ export default function About() {
             {technologies.map((tech, i) => (
               <div 
                 key={i} 
-                style={{ transitionDelay: `${400 + i * 100}ms` }}
+                style={{ transitionDelay: `${40 + i * 40}ms` }}
                 className={`glass-panel p-8 rounded-3xl border border-white/5 hover:border-primary-fixed/20 transition-all duration-500 transform ${
                   arsenalVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                 }`}
@@ -241,7 +241,7 @@ export default function About() {
             {coreValues.map((value, i) => (
               <div 
                 key={i} 
-                style={{ transitionDelay: `${200 + i * 100}ms` }}
+                style={{ transitionDelay: `${40 + i * 40}ms` }}
                 className={`glass-panel p-8 rounded-3xl border border-white/5 text-center hover:border-primary-fixed/20 transition-all duration-500 transform ${
                   valuesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                 }`}

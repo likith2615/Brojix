@@ -90,7 +90,7 @@ export default function Portfolio() {
               <button
                 key={btn}
                 onClick={() => setFilter(btn)}
-                style={{ transitionDelay: `${350 + index * 50}ms` }}
+                style={{ transitionDelay: `${60 + index * 20}ms` }}
                 className={`px-6 py-2 rounded-full font-label-caps text-label-caps uppercase tracking-widest transition-all duration-300 transform ${
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
                 } ${

@@ -52,7 +52,7 @@ export default function Trust() {
             return (
               <div 
                 key={index} 
-                style={{ transitionDelay: `${200 + index * 100}ms` }}
+                style={{ transitionDelay: `${40 + index * 40}ms` }}
                 className={`glass-panel p-8 rounded-2xl text-center border-white/5 hover:border-secondary/30 transition-all duration-500 transform ${
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                 }`}
@@ -72,7 +72,7 @@ export default function Trust() {
           {testimonials.map((testimonial, index) => (
             <div 
               key={index} 
-              style={{ transitionDelay: `${400 + index * 150}ms` }}
+              style={{ transitionDelay: `${80 + index * 60}ms` }}
               className={`liquid-glass p-6 md:p-10 rounded-3xl border border-white/10 relative overflow-hidden transition-all duration-750 transform ${
                 isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
               }`}

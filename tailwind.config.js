@@ -67,7 +67,8 @@ export default {
         "headline-md": ["Outfit"],
         "display-lg": ["Outfit"],
         "label-caps": ["JetBrains Mono"],
-        "headline-lg": ["Outfit"]
+        "headline-lg": ["Outfit"],
+        "display-md": ["'Space Grotesk'", "sans-serif"]
       }
     },
   },

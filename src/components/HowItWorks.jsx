@@ -68,7 +68,7 @@ export default function HowItWorks() {
             key={index} 
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
-            style={{ transitionDelay: `${200 + index * 150}ms` }}
+            style={{ transitionDelay: `${40 + index * 50}ms` }}
             className={`glass-panel rounded-3xl p-6 md:p-10 border border-white/5 relative overflow-hidden group transition-all duration-700 transform ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
