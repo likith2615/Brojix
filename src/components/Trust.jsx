@@ -1,45 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Shield, Clock, CheckCircle2, MessageSquare } from 'lucide-react';
-import { animate, createScope, stagger, onScroll } from 'animejs';
+import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 
 export default function Trust() {
-  useEffect(() => {
-    const scope = createScope({
-      mediaQueries: { noMotion: '(prefers-reduced-motion: reduce)' }
-    });
-
-    scope.add(({ matches }) => {
-      if (matches.noMotion) return;
-
-      animate('.trust-header', {
-        opacity: [0, 1],
-        translateY: [40, 0],
-        duration: 600,
-        ease: 'outExpo',
-        autoplay: onScroll({ enter: 'bottom 100%' }),
-      });
-
-      animate('.trust-pillar', {
-        opacity: [0, 1],
-        scale: [0.9, 1],
-        delay: stagger(100, { grid: [1, 4], from: 'center' }),
-        duration: 600,
-        ease: 'outBack',
-        autoplay: onScroll({ enter: 'bottom 100%' }),
-      });
-
-      animate('.testimonial-card', {
-        opacity: [0, 1],
-        translateX: [-40, 0],
-        delay: stagger(150),
-        duration: 800,
-        ease: 'outExpo',
-        autoplay: onScroll({ enter: 'bottom 100%' }),
-      });
-    });
-
-    return () => scope.revert();
-  }, []);
+  const [sectionRef, isVisible] = useIntersectionObserver({ threshold: 0.05 });
 
   const pillars = [
     { icon: Shield, title: "100% Confidential", desc: "Your identity and college details are never shared." },
@@ -62,15 +26,21 @@ export default function Trust() {
   ];
 
   return (
-    <section id="trust" className="py-24 px-container-padding-mobile md:px-container-padding-desktop scroll-mt-24">
+    <section ref={sectionRef} id="trust" className="py-24 px-container-padding-mobile md:px-container-padding-desktop scroll-mt-24">
       <div className="max-w-7xl mx-auto">
         
         <div className="text-center mb-16">
-          <span className="trust-header inline-block text-[11px] tracking-[0.18em] text-primary-fixed mb-4 font-medium uppercase opacity-0">
+          <span className={`inline-block text-[11px] tracking-[0.18em] text-primary-fixed mb-4 font-medium uppercase transition-all duration-700 delay-100 transform ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          }`}>
             MY GUARANTEES
           </span>
-          <h2 className="trust-header text-[clamp(32px,5vw,52px)] font-bold text-white mb-4 tracking-tight opacity-0" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>Trust &amp; Reliability</h2>
-          <p className="trust-header text-base text-on-surface-variant max-w-[480px] mx-auto leading-relaxed opacity-0">
+          <h2 className={`text-[clamp(32px,5vw,52px)] font-bold text-white mb-4 tracking-tight transition-all duration-700 delay-200 transform ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          }`} style={{ fontFamily: "'Space Grotesk', sans-serif" }}>Trust &amp; Reliability</h2>
+          <p className={`text-base text-on-surface-variant max-w-[480px] mx-auto leading-relaxed transition-all duration-700 delay-300 transform ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          }`}>
             Clear promises. No excuses. I deliver exactly what I say.
           </p>
         </div>
@@ -80,7 +50,13 @@ export default function Trust() {
           {pillars.map((pillar, index) => {
             const Icon = pillar.icon;
             return (
-              <div key={index} className="trust-pillar opacity-0 glass-panel p-8 rounded-2xl text-center border-white/5 hover:border-secondary/30 transition-all duration-300">
+              <div 
+                key={index} 
+                style={{ transitionDelay: `${200 + index * 100}ms` }}
+                className={`glass-panel p-8 rounded-2xl text-center border-white/5 hover:border-secondary/30 transition-all duration-500 transform ${
+                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                }`}
+              >
                 <div className="bg-surface-container-highest w-16 h-16 mx-auto rounded-xl flex items-center justify-center mb-6">
                   <Icon className="w-8 h-8 text-secondary" />
                 </div>
@@ -94,7 +70,13 @@ export default function Trust() {
         {/* Testimonials */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {testimonials.map((testimonial, index) => (
-            <div key={index} className="testimonial-card opacity-0 liquid-glass p-6 md:p-10 rounded-3xl border border-white/10 relative overflow-hidden">
+            <div 
+              key={index} 
+              style={{ transitionDelay: `${400 + index * 150}ms` }}
+              className={`liquid-glass p-6 md:p-10 rounded-3xl border border-white/10 relative overflow-hidden transition-all duration-750 transform ${
+                isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
+              }`}
+            >
               <div className="absolute top-8 right-8 text-primary-fixed opacity-10">
                 <MessageSquare className="w-16 h-16" />
               </div>

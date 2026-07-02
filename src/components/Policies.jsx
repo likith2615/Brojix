@@ -1,4 +1,5 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { useIntersectionObserver } from "../hooks/useIntersectionObserver";
 
 const policies = [
   {
@@ -89,52 +90,61 @@ const policies = [
 
 export default function Policies() {
   const [open, setOpen] = useState(null);
+  const [sectionRef, isVisible] = useIntersectionObserver({ threshold: 0.05 });
 
   const toggle = (id) => setOpen(open === id ? null : id);
 
   return (
-    <section id="policies" style={styles.section} className="relative z-10 scroll-mt-24">
+    <section ref={sectionRef} id="policies" className="py-24 px-container-padding-mobile md:px-container-padding-desktop relative z-10 scroll-mt-24">
       {/* Header */}
-      <div style={styles.header}>
-        <span style={styles.eyebrow}>BEFORE WE START</span>
-        <h2 style={styles.title}>Policies &amp; Terms</h2>
-        <p style={styles.subtitle}>
+      <div className="text-center mb-16">
+        <span className={`inline-block text-[11px] tracking-[0.18em] text-primary-fixed mb-4 font-medium uppercase transition-all duration-700 delay-100 transform ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+        }`}>BEFORE WE START</span>
+        <h2 className={`text-[clamp(32px,5vw,52px)] font-bold text-white mb-4 tracking-tight transition-all duration-700 delay-200 transform ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+        }`} style={{ fontFamily: "'Space Grotesk', sans-serif" }}>Policies &amp; Terms</h2>
+        <p className={`text-base text-on-surface-variant max-w-[480px] mx-auto leading-relaxed transition-all duration-700 delay-300 transform ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+        }`}>
           Everything is transparent. Read this once — so there are no
           surprises on either side.
         </p>
       </div>
 
       {/* Policy list */}
-      <div style={styles.list}>
+      <div className={`max-w-[780px] mx-auto flex flex-col gap-3 transition-all duration-700 delay-400 transform ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+      }`}>
         {policies.map((p) => {
           const isOpen = open === p.id;
           return (
             <div
               key={p.id}
-              style={{
-                ...styles.card,
-                ...(isOpen ? styles.cardOpen : {}),
-              }}
+              className={`border rounded-2xl overflow-hidden transition-all duration-300 ${
+                isOpen 
+                  ? 'bg-primary-fixed/[0.04] border-primary-fixed/20' 
+                  : 'bg-white/[0.03] border-white/10 hover:border-white/20'
+              }`}
             >
               {/* Row header — always visible */}
               <button
                 onClick={() => toggle(p.id)}
-                style={styles.row}
+                className="w-full flex items-center justify-between p-5 md:p-6 bg-transparent cursor-pointer text-left gap-4"
                 aria-expanded={isOpen}
               >
-                <div style={styles.left}>
-                  <span style={styles.idTag}>{p.id}</span>
-                  <span style={styles.icon}>{p.icon}</span>
+                <div className="flex items-center gap-4 text-left">
+                  <span className="text-[11px] text-on-surface-variant/50 font-mono min-w-[24px] tracking-wide">{p.id}</span>
+                  <span className="text-lg w-9 h-9 bg-primary-fixed/10 border border-primary-fixed/20 rounded-lg flex items-center justify-center text-primary-fixed flex-shrink-0">{p.icon}</span>
                   <div>
-                    <div style={styles.policyTitle}>{p.title}</div>
-                    <div style={styles.short}>{p.short}</div>
+                    <div className="text-base font-bold text-white mb-0.5" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>{p.title}</div>
+                    <div className="text-xs text-on-surface-variant">{p.short}</div>
                   </div>
                 </div>
                 <span
-                  style={{
-                    ...styles.chevron,
-                    transform: isOpen ? "rotate(45deg)" : "rotate(0deg)",
-                  }}
+                  className={`text-xl text-primary-fixed font-light transition-transform duration-300 ${
+                    isOpen ? 'rotate-45' : 'rotate-0'
+                  }`}
                 >
                   +
                 </span>
@@ -142,18 +152,18 @@ export default function Policies() {
 
               {/* Expandable body */}
               {isOpen && (
-                <div style={styles.body}>
-                  <ul style={styles.ruleList}>
+                <div className="p-5 pt-0 pl-6 md:pl-20 pr-5 md:pr-6">
+                  <ul className="list-none m-0 mb-5 p-0 flex flex-col gap-3">
                     {p.rules.map((rule, i) => (
-                      <li key={i} style={styles.ruleItem}>
-                        <span style={styles.bullet}>—</span>
+                      <li key={i} className="flex gap-3 text-sm text-on-surface-variant leading-relaxed">
+                        <span className="text-primary-fixed flex-shrink-0 mt-0.5 text-xs font-bold">—</span>
                         <span>{rule}</span>
                       </li>
                     ))}
                   </ul>
-                  <div style={styles.noteBox}>
-                    <span style={styles.noteLabel}>NOTE</span>
-                    <span style={styles.noteText}>{p.note}</span>
+                  <div className="flex gap-3 items-start bg-primary-fixed/5 border border-primary-fixed/10 rounded-lg p-4">
+                    <span className="text-[10px] tracking-widest text-primary-fixed font-bold flex-shrink-0 mt-0.5">NOTE</span>
+                    <span className="text-xs text-on-surface-variant/80 italic leading-relaxed">{p.note}</span>
                   </div>
                 </div>
               )}
@@ -163,11 +173,13 @@ export default function Policies() {
       </div>
 
       {/* Bottom trust strip */}
-      <div style={styles.trustStrip}>
+      <div className={`max-w-[780px] mx-auto mt-14 flex flex-wrap justify-center gap-x-8 gap-y-3 border-t border-white/10 pt-10 transition-all duration-700 delay-500 transform ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+      }`}>
         {["Transparent pricing", "No hidden fees", "Direct WhatsApp support", "Confidential always"].map(
           (t, i) => (
-            <div key={i} style={styles.trustItem}>
-              <span style={styles.trustDot}>✦</span>
+            <div key={i} className="flex items-center gap-2 text-xs text-on-surface-variant">
+              <span className="text-primary-fixed text-[10px]">✦</span>
               {t}
             </div>
           )
@@ -176,188 +188,3 @@ export default function Policies() {
     </section>
   );
 }
-
-const NEON = "#d9ff00";
-const NEON_DIM = "rgba(217,255,0,0.08)";
-const NEON_BORDER = "rgba(217,255,0,0.18)";
-const CARD_BG = "rgba(255,255,255,0.03)";
-const CARD_BG_OPEN = "rgba(217,255,0,0.04)";
-const TEXT = "#e8e8e8";
-const MUTED = "#6b7060";
-const BORDER = "rgba(255,255,255,0.07)";
-
-const styles = {
-  section: {
-    padding: "100px 24px",
-    fontFamily: "'Inter', sans-serif",
-  },
-  header: {
-    textAlign: "center",
-    marginBottom: "64px",
-  },
-  eyebrow: {
-    display: "inline-block",
-    fontSize: "11px",
-    letterSpacing: "0.18em",
-    color: NEON,
-    marginBottom: "16px",
-    fontWeight: 500,
-  },
-  title: {
-    fontSize: "clamp(32px, 5vw, 52px)",
-    fontWeight: 700,
-    color: "#ffffff",
-    margin: "0 0 16px",
-    fontFamily: "'Space Grotesk', sans-serif",
-    letterSpacing: "-0.02em",
-  },
-  subtitle: {
-    fontSize: "16px",
-    color: MUTED,
-    maxWidth: "480px",
-    margin: "0 auto",
-    lineHeight: 1.6,
-  },
-  list: {
-    maxWidth: "780px",
-    margin: "0 auto",
-    display: "flex",
-    flexDirection: "column",
-    gap: "2px",
-  },
-  card: {
-    background: CARD_BG,
-    border: `1px solid ${BORDER}`,
-    borderRadius: "12px",
-    overflow: "hidden",
-    transition: "border-color 0.2s, background 0.2s",
-  },
-  cardOpen: {
-    background: CARD_BG_OPEN,
-    borderColor: NEON_BORDER,
-  },
-  row: {
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: "22px 24px",
-    background: "transparent",
-    border: "none",
-    cursor: "pointer",
-    gap: "16px",
-  },
-  left: {
-    display: "flex",
-    alignItems: "center",
-    gap: "16px",
-    textAlign: "left",
-  },
-  idTag: {
-    fontSize: "11px",
-    color: MUTED,
-    fontFamily: "monospace",
-    minWidth: "24px",
-    letterSpacing: "0.05em",
-  },
-  icon: {
-    fontSize: "18px",
-    width: "36px",
-    height: "36px",
-    background: NEON_DIM,
-    border: `1px solid ${NEON_BORDER}`,
-    borderRadius: "8px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    color: NEON,
-    flexShrink: 0,
-  },
-  policyTitle: {
-    fontSize: "15px",
-    fontWeight: 600,
-    color: "#ffffff",
-    fontFamily: "'Space Grotesk', sans-serif",
-    marginBottom: "2px",
-  },
-  short: {
-    fontSize: "13px",
-    color: MUTED,
-  },
-  chevron: {
-    fontSize: "22px",
-    color: NEON,
-    fontWeight: 300,
-    transition: "transform 0.25s ease",
-    lineHeight: 1,
-    flexShrink: 0,
-  },
-  body: {
-    padding: "0 24px 24px 80px",
-  },
-  ruleList: {
-    listStyle: "none",
-    margin: "0 0 20px",
-    padding: 0,
-    display: "flex",
-    flexDirection: "column",
-    gap: "12px",
-  },
-  ruleItem: {
-    display: "flex",
-    gap: "12px",
-    fontSize: "14px",
-    color: TEXT,
-    lineHeight: 1.6,
-  },
-  bullet: {
-    color: NEON,
-    flexShrink: 0,
-    marginTop: "1px",
-    fontSize: "12px",
-  },
-  noteBox: {
-    display: "flex",
-    gap: "12px",
-    alignItems: "flex-start",
-    background: NEON_DIM,
-    border: `1px solid ${NEON_BORDER}`,
-    borderRadius: "8px",
-    padding: "12px 16px",
-  },
-  noteLabel: {
-    fontSize: "10px",
-    letterSpacing: "0.12em",
-    color: NEON,
-    fontWeight: 700,
-    flexShrink: 0,
-    marginTop: "2px",
-  },
-  noteText: {
-    fontSize: "13px",
-    color: "#b8b8a0",
-    lineHeight: 1.5,
-    fontStyle: "italic",
-  },
-  trustStrip: {
-    maxWidth: "780px",
-    margin: "56px auto 0",
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    gap: "8px 32px",
-    borderTop: `1px solid ${BORDER}`,
-    paddingTop: "40px",
-  },
-  trustItem: {
-    display: "flex",
-    alignItems: "center",
-    gap: "8px",
-    fontSize: "13px",
-    color: MUTED,
-  },
-  trustDot: {
-    color: NEON,
-    fontSize: "10px",
-  },
-};

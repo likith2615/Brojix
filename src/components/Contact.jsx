@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { animate, createScope, stagger, onScroll } from 'animejs';
+import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 import { toast } from 'sonner';
 
 const formSchema = z.object({
@@ -25,6 +25,7 @@ const serviceOptions = [
 export default function Contact() {
   const cardRef = useRef(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [sectionRef, isVisible] = useIntersectionObserver({ threshold: 0.05 });
 
   const { register, handleSubmit, watch, setValue, formState: { errors, isSubmitting } } = useForm({
     resolver: zodResolver(formSchema),
@@ -32,44 +33,6 @@ export default function Contact() {
   });
 
   const selectedService = watch('service');
-
-  useEffect(() => {
-    const scope = createScope({
-      mediaQueries: { noMotion: '(prefers-reduced-motion: reduce)' }
-    });
-
-    scope.add(({ matches }) => {
-      if (matches.noMotion) return;
-
-      animate('.contact-header', {
-        opacity: [0, 1],
-        translateY: [40, 0],
-        duration: 600,
-        ease: 'outExpo',
-        autoplay: onScroll({ enter: 'bottom 100%' }),
-      });
-
-      animate('.contact-step', {
-        opacity: [0, 1],
-        translateY: [40, 0],
-        delay: stagger(120),
-        duration: 750,
-        ease: 'outExpo',
-        autoplay: onScroll({ enter: 'bottom 100%' }),
-      });
-
-      animate('.form-group', {
-        opacity: [0, 1],
-        translateY: [20, 0],
-        delay: stagger(100),
-        duration: 500,
-        ease: 'outQuad',
-        autoplay: onScroll({ enter: 'bottom 100%' }),
-      });
-    });
-
-    return () => scope.revert();
-  }, []);
 
   const onSubmit = async (data, type) => {
     const selected = serviceOptions.find(s => s.value === data.service);
@@ -96,8 +59,7 @@ export default function Contact() {
       return;
     }
 
-    // 2. Submit via Email (Gmail)
-    // 1. Insert into localStorage
+    // Submit via Email
     const dbPromise = (async () => {
       try {
         const existing = JSON.parse(localStorage.getItem('contact_submissions') || '[]');
@@ -121,9 +83,7 @@ export default function Contact() {
       }
     })();
 
-    // 2. Send email via Web3Forms
     const emailPromise = (async () => {
-    // Web3Forms key — set VITE_WEB3FORMS_ACCESS_KEY in Netlify environment variables
       const web3formsKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || '';
       if (!web3formsKey) {
         throw new Error('Email credentials missing: Please add VITE_WEB3FORMS_ACCESS_KEY to your .env file.');
@@ -154,7 +114,6 @@ export default function Contact() {
       }
     })();
 
-    // Toast loader
     toast.promise(
       Promise.all([dbPromise, emailPromise]),
       {
@@ -200,11 +159,13 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-32 px-container-padding-mobile md:px-container-padding-desktop relative z-10 scroll-mt-24">
+    <section ref={sectionRef} id="contact" className="py-24 px-container-padding-mobile md:px-container-padding-desktop relative z-10 scroll-mt-24">
       <div className="max-w-5xl mx-auto w-full">
         
         {/* Breadcrumb Navigation */}
-        <div className="flex items-center justify-center gap-4 mb-10 overflow-x-auto whitespace-nowrap">
+        <div className={`flex items-center justify-center gap-4 mb-10 overflow-x-auto whitespace-nowrap transition-all duration-700 transform ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+        }`}>
           <div className="flex items-center text-primary-fixed">
             <span className="material-symbols-outlined mr-2" style={{ fontVariationSettings: "'FILL' 1" }}>person</span>
             <span className="font-label-caps text-label-caps">01 DETAILS</span>
@@ -221,13 +182,17 @@ export default function Contact() {
           ref={cardRef}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          className="liquid-glass p-6 md:p-12 rounded-xl neon-border-shimmer transition-transform duration-200 ease-out"
+          className="liquid-glass p-6 md:p-12 rounded-xl border border-white/10 transition-transform duration-200 ease-out"
           style={{ transformStyle: 'preserve-3d' }}
         >
           <div className="flex justify-between items-start mb-8">
             <div>
-              <h1 className="contact-header font-headline-lg text-headline-lg mb-2 opacity-0">Secure Checkout</h1>
-              <p className="contact-header text-on-surface-variant font-body-md opacity-0">Finalize your project request requirements.</p>
+              <h1 className={`font-headline-lg text-headline-lg mb-2 transition-all duration-700 delay-100 transform ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+              }`}>Secure Checkout</h1>
+              <p className={`text-on-surface-variant font-body-md transition-all duration-700 delay-150 transform ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+              }`}>Finalize your project request requirements.</p>
             </div>
             <div className="hidden sm:flex flex-col items-end gap-1">
               <span className="bg-secondary-container/30 text-secondary px-3 py-1 rounded-full text-[10px] font-label-caps border border-secondary/20">TLS 1.3 ACTIVE</span>
@@ -236,19 +201,35 @@ export default function Contact() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
-              <div className="contact-step opacity-0 bg-surface-container-lowest/80 border border-white/10 rounded-3xl p-5" style={{ transform: 'translateY(40px)' }}>
-                <p className="text-xs font-label-caps text-secondary uppercase tracking-[0.35em] mb-3">Step 1</p>
-                <h2 className="text-lg font-semibold text-white mb-2">Share the brief</h2>
-                <p className="text-on-surface-variant">Mention your topic, deadline, and preferred tech stack or report style.</p>
-              </div>
-              <div className="contact-step opacity-0 bg-surface-container-lowest/80 border border-white/10 rounded-3xl p-5" style={{ transform: 'translateY(40px)' }}>
-                <p className="text-xs font-label-caps text-secondary uppercase tracking-[0.35em] mb-3">Step 2</p>
-                <h2 className="text-lg font-semibold text-white mb-2">Choose a package</h2>
-                <p className="text-on-surface-variant">Pick software, internship report, or both together for a complete solution.</p>
-              </div>
-              <div className="contact-step opacity-0 bg-surface-container-lowest/80 border border-white/10 rounded-3xl p-5" style={{ transform: 'translateY(40px)' }}>
+            <div 
+              style={{ transitionDelay: '200ms' }}
+              className={`bg-surface-container-lowest/80 border border-white/10 rounded-2xl p-5 transition-all duration-700 transform ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
+            >
+              <p className="text-xs font-label-caps text-secondary uppercase tracking-[0.35em] mb-3">Step 1</p>
+              <h2 className="text-lg font-semibold text-white mb-2">Share the brief</h2>
+              <p className="text-on-surface-variant text-sm">Mention your topic, deadline, and preferred tech stack or report style.</p>
+            </div>
+            <div 
+              style={{ transitionDelay: '300ms' }}
+              className={`bg-surface-container-lowest/80 border border-white/10 rounded-2xl p-5 transition-all duration-700 transform ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
+            >
+              <p className="text-xs font-label-caps text-secondary uppercase tracking-[0.35em] mb-3">Step 2</p>
+              <h2 className="text-lg font-semibold text-white mb-2">Choose a package</h2>
+              <p className="text-on-surface-variant text-sm">Pick software, internship report, or both together for a complete solution.</p>
+            </div>
+            <div 
+              style={{ transitionDelay: '400ms' }}
+              className={`bg-surface-container-lowest/80 border border-white/10 rounded-2xl p-5 transition-all duration-700 transform ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
+            >
+              <p className="text-xs font-label-caps text-secondary uppercase tracking-[0.35em] mb-3">Step 3</p>
               <h2 className="text-lg font-semibold text-white mb-2">Submit & connect</h2>
-              <p className="text-on-surface-variant">Send your form details over WhatsApp or Gmail for the next steps.</p>
+              <p className="text-on-surface-variant text-sm">Send your form details over WhatsApp or Gmail for the next steps.</p>
             </div>
           </div>
 
@@ -256,8 +237,13 @@ export default function Contact() {
             {/* Ambient subtle glow behind form */}
             <div className="absolute inset-0 bg-primary-fixed/5 rounded-3xl blur-3xl -z-10 pointer-events-none"></div>
 
-            <div className="form-group opacity-0 bg-surface-container-lowest/40 p-8 rounded-3xl border border-white/5 shadow-lg backdrop-blur-md">
-              <h3 className="font-display-sm text-2xl text-white mb-6 tracking-tight flex items-center gap-3">
+            <div 
+              style={{ transitionDelay: '450ms' }}
+              className={`bg-surface-container-lowest/40 p-6 md:p-8 rounded-3xl border border-white/5 shadow-lg backdrop-blur-md transition-all duration-700 transform ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+              }`}
+            >
+              <h3 className="font-display-sm text-xl md:text-2xl text-white mb-6 tracking-tight flex items-center gap-3">
                 <span className="w-8 h-px bg-primary-fixed block"></span>
                 01. Digital Identity
               </h3>
@@ -284,8 +270,13 @@ export default function Contact() {
               </div>
             </div>
 
-            <div className="form-group opacity-0 bg-surface-container-lowest/40 p-8 rounded-3xl border border-white/5 shadow-lg backdrop-blur-md relative z-10">
-              <h3 className="font-display-sm text-2xl text-white mb-6 tracking-tight flex items-center gap-3">
+            <div 
+              style={{ transitionDelay: '550ms' }}
+              className={`bg-surface-container-lowest/40 p-6 md:p-8 rounded-3xl border border-white/5 shadow-lg backdrop-blur-md relative z-10 transition-all duration-700 transform ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+              }`}
+            >
+              <h3 className="font-display-sm text-xl md:text-2xl text-white mb-6 tracking-tight flex items-center gap-3">
                 <span className="w-8 h-px bg-primary-fixed block"></span>
                 02. Project Scope
               </h3>
@@ -348,8 +339,13 @@ export default function Contact() {
               </div>
             </div>
 
-            <div className="form-group opacity-0 bg-surface-container-lowest/40 p-8 rounded-3xl border border-white/5 shadow-lg backdrop-blur-md">
-              <h3 className="font-display-sm text-2xl text-white mb-6 tracking-tight flex items-center gap-3">
+            <div 
+              style={{ transitionDelay: '650ms' }}
+              className={`bg-surface-container-lowest/40 p-6 md:p-8 rounded-3xl border border-white/5 shadow-lg backdrop-blur-md transition-all duration-700 transform ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+              }`}
+            >
+              <h3 className="font-display-sm text-xl md:text-2xl text-white mb-6 tracking-tight flex items-center gap-3">
                 <span className="w-8 h-px bg-primary-fixed block"></span>
                 03. Requirements Payload
               </h3>
@@ -373,7 +369,12 @@ export default function Contact() {
               </div>
             </div>
 
-            <div className="form-group opacity-0 pt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div 
+              style={{ transitionDelay: '750ms' }}
+              className={`pt-6 grid grid-cols-1 md:grid-cols-3 gap-4 transition-all duration-700 transform ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+              }`}
+            >
               <button 
                 type="button" 
                 onClick={() => {
@@ -402,7 +403,7 @@ export default function Contact() {
                   handleSubmit((data) => onSubmit(data, 'email'))();
                 }}
                 disabled={isSubmitting}
-                className="w-full bg-primary-fixed text-on-primary-fixed text-base px-6 py-4 rounded-xl font-bold hover:shadow-[0_0_30px_rgba(210,240,0,0.4)] transition-all duration-300 flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-50 group"
+                className="w-full bg-primary-fixed text-on-primary-fixed text-base px-6 py-4 rounded-xl font-bold hover:shadow-[0_0_20px_rgba(210,240,0,0.4)] transition-all duration-300 flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-50 group"
               >
                 <span>{isSubmitting ? 'SENDING EMAIL...' : 'SUBMIT via GMAIL'}</span>
                 <span className="material-symbols-outlined transition-transform duration-300 group-hover:translate-x-1">mail</span>

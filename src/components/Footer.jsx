@@ -6,8 +6,8 @@ export default function Footer() {
       <div className="px-container-padding-mobile md:px-container-padding-desktop max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start gap-16 mb-24">
           <div className="flex flex-col items-start max-w-sm">
-            <div className="font-headline-lg text-6xl md:text-8xl font-black text-white tracking-tighter mb-6 flex items-center">
-              BRO<span className="text-primary-fixed drop-shadow-[0_0_20px_rgba(217,255,0,0.5)]">JIX</span>
+            <div className="font-headline-lg text-4xl sm:text-6xl md:text-8xl font-black text-white tracking-tighter mb-6 flex items-center">
+              BRO<span className="text-primary-fixed drop-shadow-[0_0_10px_rgba(217,255,0,0.3)]">JIX</span>
             </div>
             <p className="text-on-surface-variant text-lg leading-relaxed">
               Premium software solutions, dynamic web experiences, and industry-ready internship reports delivered with precision.
@@ -38,7 +38,7 @@ export default function Footer() {
                 </div>
               </a>
 
-              <a href="https://www.linkedin.com/in/likith-kumar-chippe/" target="_blank" rel="noopener noreferrer" className="group flex items-center gap-3 hover:translate-x-2 transition-transform duration-300">
+              <a href="https://in.linkedin.com/in/likith-kumar-chippe" rel="me" target="_blank" className="group flex items-center gap-3 hover:translate-x-2 transition-transform duration-300">
                 <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 transition-colors">
                   <span className="material-symbols-outlined text-white group-hover:text-primary-fixed text-lg">public</span>
                 </div>

@@ -1,42 +1,8 @@
-import React, { useRef, useEffect } from 'react';
-import { useAnimeOnScroll } from '../hooks/useAnimeOnScroll';
-import { animate, createScope, stagger, onScroll } from 'animejs';
+import React, { useRef } from 'react';
+import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 
 export default function Services() {
-  const cardsRef = useRef([]);
-
-  useEffect(() => {
-    // Scroll Entrance Animations
-    const scope = createScope({
-      mediaQueries: { noMotion: '(prefers-reduced-motion: reduce)' }
-    });
-
-    scope.add(({ matches }) => {
-      if (matches.noMotion) return;
-
-      // Section title stagger
-      animate('.service-header', {
-        opacity: [0, 1],
-        translateY: [40, 0],
-        delay: stagger(100),
-        duration: 600,
-        ease: 'outExpo',
-        autoplay: onScroll({ enter: 'bottom 100%' }),
-      });
-
-      // Cards stagger
-      animate('.service-card', {
-        opacity: [0, 1],
-        translateY: [40, 0],
-        delay: stagger(100),
-        duration: 600,
-        ease: 'outExpo',
-        autoplay: onScroll({ enter: 'bottom 100%' }),
-      });
-    });
-
-    return () => scope.revert();
-  }, []);
+  const [sectionRef, isVisible] = useIntersectionObserver({ threshold: 0.05 });
 
   const services = [
     {
@@ -110,18 +76,25 @@ export default function Services() {
   };
 
   return (
-    <section id="services" className="py-32 px-container-padding-mobile md:px-container-padding-desktop relative scroll-mt-24">
+    <section ref={sectionRef} id="services" className="py-24 px-container-padding-mobile md:px-container-padding-desktop relative scroll-mt-24">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <span className="service-header inline-block text-[11px] tracking-[0.18em] text-primary-fixed mb-4 font-medium uppercase opacity-0">
+          <span className={`inline-block text-[11px] tracking-[0.18em] text-primary-fixed mb-4 font-medium uppercase transition-all duration-700 delay-100 transform ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          }`}>
             INVESTMENT
           </span>
-          <h2 className="service-header text-[clamp(32px,5vw,52px)] font-bold text-white mb-4 tracking-tight opacity-0" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>Pricing Options</h2>
-          <p className="service-header text-base text-on-surface-variant max-w-[480px] mx-auto leading-relaxed opacity-0">Select the package for your final year project. Straightforward pricing, no hidden fees.</p>
+          <h2 className={`text-[clamp(32px,5vw,52px)] font-bold text-white mb-4 tracking-tight transition-all duration-700 delay-200 transform ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          }`} style={{ fontFamily: "'Space Grotesk', sans-serif" }}>Pricing Options</h2>
+          <p className={`text-base text-on-surface-variant max-w-[480px] mx-auto leading-relaxed transition-all duration-700 delay-300 transform ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          }`}>Select the package for your final year project. Straightforward pricing, no hidden fees.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {services.map((service, index) => {
+            const delayStyle = { transitionDelay: `${200 + index * 100}ms` };
             if (service.isBundle) {
               // The Bundle / Popular Card
               return (
@@ -129,7 +102,10 @@ export default function Services() {
                   key={index} 
                   onMouseMove={handleMouseMove}
                   onMouseLeave={handleMouseLeave}
-                  className="service-card opacity-0 glass-panel p-6 md:p-10 rounded-2xl flex flex-col border-primary-fixed/50 md:scale-105 shadow-[0_0_40px_rgba(210,240,0,0.15)] z-20 relative overflow-hidden group"
+                  style={delayStyle}
+                  className={`glass-panel p-6 md:p-10 rounded-2xl flex flex-col border-primary-fixed/50 md:scale-105 shadow-[0_0_20px_rgba(210,240,0,0.1)] z-20 relative overflow-hidden group transition-all duration-700 transform ${
+                    isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                  }`}
                 >
                   <div className="absolute top-0 right-0 bg-primary-fixed text-on-primary-fixed text-[10px] font-bold px-4 py-1 rounded-bl-lg tracking-widest uppercase">Popular</div>
                   <div className="flex justify-between items-start mb-8">
@@ -140,7 +116,7 @@ export default function Services() {
                     <span className="material-symbols-outlined text-primary-fixed" style={{ fontVariationSettings: "'FILL' 1" }}>{service.icon}</span>
                   </div>
                   <div className="mb-10">
-                    <span className="text-primary-fixed text-4xl font-bold tracking-tighter drop-shadow-[0_0_10px_rgba(210,240,0,0.5)]">₹{service.price}</span>
+                    <span className="text-primary-fixed text-4xl font-bold tracking-tighter drop-shadow-[0_0_10px_rgba(210,240,0,0.2)]">₹{service.price}</span>
                     <p className="text-on-surface-variant text-xs mt-2 italic">Starting from • Price is negotiable</p>
                   </div>
                   <ul className="space-y-4 mb-12 flex-grow">
@@ -151,7 +127,7 @@ export default function Services() {
                       </li>
                     ))}
                   </ul>
-                  <button onClick={handleGetStarted} className="w-full py-4 bg-primary-fixed text-on-primary-fixed rounded-lg font-bold hover:shadow-[0_0_20px_#d2f000] transition-all duration-300">
+                  <button onClick={handleGetStarted} className="w-full py-4 bg-primary-fixed text-on-primary-fixed rounded-lg font-bold hover:shadow-[0_0_20px_rgba(210,240,0,0.4)] transition-all duration-300">
                     Get Started
                   </button>
                 </div>
@@ -164,7 +140,10 @@ export default function Services() {
                 key={index} 
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
-                className="service-card opacity-0 glass-panel p-6 md:p-10 rounded-2xl flex flex-col border-white/5 hover:border-primary-fixed/30 transition-all duration-500 group"
+                style={delayStyle}
+                className={`glass-panel p-6 md:p-10 rounded-2xl flex flex-col border-white/5 hover:border-primary-fixed/30 transition-all duration-700 transform ${
+                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                } group`}
               >
                 <div className="flex justify-between items-start mb-8">
                   <div>
@@ -174,7 +153,7 @@ export default function Services() {
                   <span className="material-symbols-outlined text-secondary">{service.icon}</span>
                 </div>
                 <div className="mb-10">
-                  <span className={`text-4xl font-bold tracking-tighter ${index === 0 ? 'text-white' : 'text-secondary drop-shadow-[0_0_10px_rgba(220,184,255,0.5)]'}`}>
+                  <span className={`text-4xl font-bold tracking-tighter ${index === 0 ? 'text-white' : 'text-secondary drop-shadow-[0_0_10px_rgba(220,184,255,0.3)]'}`}>
                     ₹{service.price}
                   </span>
                   <p className="text-on-surface-variant text-xs mt-2 italic">Starting from • Price is negotiable</p>

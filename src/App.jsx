@@ -13,6 +13,7 @@ import HeroBackground from './components/HeroBackground';
 import About from './pages/About';
 import AdminDashboard from './pages/AdminDashboard';
 import { Toaster } from 'sonner';
+import { useDocumentMetadata } from './hooks/useDocumentMetadata';
 
 function ScrollHandler() {
   const { pathname, hash } = useLocation();
@@ -35,9 +36,57 @@ function ScrollHandler() {
   return null;
 }
 
-function Home() {
+function Home({ defaultSection }) {
+  const metadata = {
+    portfolio: {
+      title: "Projects | BROJIX — AI Tools, Web Apps & Real-World Software",
+      description: "Explore projects by Chippe Likith Kumar — including AI-powered travel planners, web applications, and developer tools built with modern tech stacks.",
+      canonicalUrl: "https://brojix.netlify.app/projects",
+    },
+    contact: {
+      title: "Contact | BROJIX — Collaborate with Chippe Likith Kumar",
+      description: "Get in touch with Chippe Likith Kumar for collaborations, freelance projects, or just to talk tech. Developer based in Andhra Pradesh, India.",
+      canonicalUrl: "https://brojix.netlify.app/contact",
+    },
+    default: {
+      title: "BROJIX | Chippe Likith Kumar — Developer & Product Builder",
+      description: "BROJIX is the portfolio of Chippe Likith Kumar — a developer building AI-powered products and real-world software. Explore projects, skills, and contact.",
+      canonicalUrl: "https://brojix.netlify.app/",
+    }
+  };
+
+  const currentMeta = metadata[defaultSection] || metadata.default;
+
+  useDocumentMetadata({
+    title: currentMeta.title,
+    description: currentMeta.description,
+    canonicalUrl: currentMeta.canonicalUrl,
+    ogTitle: currentMeta.title,
+    ogDescription: currentMeta.description,
+    ogUrl: currentMeta.canonicalUrl,
+  });
+
+  useEffect(() => {
+    if (defaultSection) {
+      setTimeout(() => {
+        const element = document.getElementById(defaultSection);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    }
+  }, [defaultSection]);
+
   return (
     <main>
+      {/* Exactly ONE h1 per page, keyword-rich */}
+      <h1 className="sr-only">
+        {defaultSection === 'portfolio' 
+          ? "Projects — AI Tools & Real-World Software" 
+          : defaultSection === 'contact' 
+          ? "Let's Collaborate" 
+          : "Chippe Likith Kumar — Developer & Product Builder"}
+      </h1>
       <Hero />
       <Services />
       <HowItWorks />
@@ -59,7 +108,9 @@ function AppContent() {
       <HeroBackground />
       {!isAdminPath && <Navbar />}
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home defaultSection={null} />} />
+        <Route path="/projects" element={<Home defaultSection="portfolio" />} />
+        <Route path="/contact" element={<Home defaultSection="contact" />} />
         <Route path="/about" element={<About />} />
         <Route path="/admin" element={<AdminDashboard />} />
       </Routes>

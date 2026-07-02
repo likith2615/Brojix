@@ -1,46 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { ExternalLink, Code } from 'lucide-react';
-import { animate, createScope, stagger, onScroll } from 'animejs';
+import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
+import { animate, stagger } from 'animejs';
 
 export default function Portfolio() {
   const [filter, setFilter] = useState('all');
-
-  useEffect(() => {
-    const scope = createScope({
-      mediaQueries: { noMotion: '(prefers-reduced-motion: reduce)' }
-    });
-
-    scope.add(({ matches }) => {
-      if (matches.noMotion) return;
-
-      animate('.portfolio-header', {
-        opacity: [0, 1],
-        translateY: [40, 0],
-        duration: 600,
-        ease: 'outExpo',
-        autoplay: onScroll({ enter: 'bottom 100%' }),
-      });
-
-      animate('.portfolio-filter', {
-        opacity: [0, 1],
-        translateY: [20, 0],
-        delay: stagger(100),
-        duration: 500,
-        ease: 'outExpo',
-        autoplay: onScroll({ enter: 'bottom 100%' }),
-      });
-    });
-
-    return () => scope.revert();
-  }, []);
+  const [sectionRef, isVisible] = useIntersectionObserver({ threshold: 0.05 });
 
   // When filter changes, animate the items
   useEffect(() => {
     animate('.portfolio-item', {
       opacity: [0, 1],
-      scale: [0.9, 1],
-      delay: stagger(100, { grid: [1, 10], from: 'center' }),
-      duration: 500,
+      scale: [0.95, 1],
+      delay: stagger(60, { grid: [1, 10], from: 'center' }),
+      duration: 400,
       ease: 'outBack'
     });
   }, [filter]);
@@ -95,25 +68,34 @@ export default function Portfolio() {
   const filteredProjects = filter === 'all' ? projects : projects.filter(p => p.category === filter);
 
   return (
-    <section id="portfolio" className="py-24 px-container-padding-mobile md:px-container-padding-desktop scroll-mt-24">
+    <section ref={sectionRef} id="portfolio" className="py-24 px-container-padding-mobile md:px-container-padding-desktop scroll-mt-24">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <span className="portfolio-header inline-block text-[11px] tracking-[0.18em] text-primary-fixed mb-4 font-medium uppercase opacity-0">
+          <span className={`inline-block text-[11px] tracking-[0.18em] text-primary-fixed mb-4 font-medium uppercase transition-all duration-700 delay-100 transform ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          }`}>
             PRODUCTS
           </span>
-          <h2 className="portfolio-header text-[clamp(32px,5vw,52px)] font-bold text-white mb-4 tracking-tight opacity-0" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>Flagship Products</h2>
-          <p className="portfolio-header text-base text-on-surface-variant max-w-[540px] mx-auto leading-relaxed opacity-0 mb-8">
+          <h2 className={`text-[clamp(32px,5vw,52px)] font-bold text-white mb-4 tracking-tight transition-all duration-700 delay-200 transform ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          }`} style={{ fontFamily: "'Space Grotesk', sans-serif" }}>Flagship Products</h2>
+          <p className={`text-base text-on-surface-variant max-w-[540px] mx-auto leading-relaxed transition-all duration-700 delay-300 transform ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          }`}>
             A curated selection of AI-powered solutions, SaaS applications, and interactive platforms.
           </p>
 
-          <div className="flex justify-center gap-4 flex-wrap">
-            {['all', 'ai', 'saas', 'web'].map((btn) => (
+          <div className="flex justify-center gap-4 flex-wrap mt-8">
+            {['all', 'ai', 'saas', 'web'].map((btn, index) => (
               <button
                 key={btn}
                 onClick={() => setFilter(btn)}
-                className={`portfolio-filter opacity-0 px-6 py-2 rounded-full font-label-caps text-label-caps uppercase tracking-widest transition-all duration-300 ${
+                style={{ transitionDelay: `${350 + index * 50}ms` }}
+                className={`px-6 py-2 rounded-full font-label-caps text-label-caps uppercase tracking-widest transition-all duration-300 transform ${
+                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                } ${
                   filter === btn
-                    ? 'bg-primary-fixed text-on-primary-fixed shadow-[0_0_15px_rgba(210,240,0,0.4)]'
+                    ? 'bg-primary-fixed text-on-primary-fixed shadow-[0_0_15px_rgba(210,240,0,0.25)]'
                     : 'bg-surface-container-high text-on-surface-variant hover:text-white border border-white/10'
                 }`}
               >
@@ -127,15 +109,16 @@ export default function Portfolio() {
           {filteredProjects.map((project, index) => (
             <div
               key={index}
-              className="portfolio-item glass-panel rounded-2xl overflow-hidden group border-white/5 hover:border-primary-fixed/30 transition-all duration-500 flex flex-col justify-between"
+              className="portfolio-item glass-panel rounded-2xl overflow-hidden group border-white/5 hover:border-primary-fixed/30 transition-all duration-300 flex flex-col justify-between"
             >
               <div>
                 <div className="relative h-56 overflow-hidden bg-[#0f172a] flex items-center justify-center">
-                  <div className="absolute inset-0 bg-primary-fixed/20 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 mix-blend-overlay"></div>
+                  <div className="absolute inset-0 bg-primary-fixed/20 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 mix-blend-overlay"></div>
                   <img 
                     src={project.image} 
-                    alt={project.title} 
-                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-outExpo"
+                    alt={`Screenshot or diagram of ${project.title} - ${project.description}`} 
+                    loading="lazy"
+                    className="w-full h-full object-cover transform group-hover:scale-102 transition-transform duration-500 ease-out"
                   />
                   {/* Status Badge */}
                   <div className={`absolute top-4 left-4 z-20 px-3 py-1 rounded-full text-[10px] font-label-caps uppercase font-bold tracking-wider ${
@@ -176,7 +159,7 @@ export default function Portfolio() {
 
               {/* Action Buttons */}
               <div className="p-6 pt-0 border-t border-white/5 flex gap-3 mt-auto">
-                <a href={project.demoLink} target="_blank" rel="noopener noreferrer" className="flex-1 text-center py-2.5 px-3 bg-primary-fixed text-on-primary-fixed rounded-lg text-xs font-bold hover:shadow-[0_0_15px_#d2f000] transition-all duration-300 active:scale-95">
+                <a href={project.demoLink} target="_blank" rel="noopener noreferrer" className="flex-1 text-center py-2.5 px-3 bg-primary-fixed text-on-primary-fixed rounded-lg text-xs font-bold hover:shadow-[0_0_15px_rgba(210,240,0,0.3)] transition-all duration-300 active:scale-95">
                   Live Demo
                 </a>
                 {project.githubLink && (

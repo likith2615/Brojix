@@ -121,3 +121,21 @@ html {
   0% { transform: translateY(0) scale(1); }
   100% { transform: translateY(-30px) scale(1.05); }
 }
+
+/* Z-Index & Mobile Drawer Stacking Fixes */
+.nav-fixed-main {
+  z-index: 9999 !important;
+}
+
+.backdrop-fixed-overlay {
+  z-index: 9998 !important;
+  background-color: rgba(0, 0, 0, 0.8) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+.drawer-fixed-menu {
+  z-index: 9999 !important;
+  background-color: #131313 !important;
+  backdrop-filter: blur(32px) !important;
+}
+
