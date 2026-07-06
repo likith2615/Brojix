@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 import { toast } from 'sonner';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
 const formSchema = z.object({
   name: z.string().min(2, 'Name is required'),
@@ -59,12 +60,15 @@ export default function Contact() {
       return;
     }
 
-    // Submit via Email
+    // Submit to Database
     const dbPromise = (async () => {
       try {
-        const existing = JSON.parse(localStorage.getItem('contact_submissions') || '[]');
+        // Generate a clean alphanumeric project ID (e.g. PRJ-7AF329)
+        const randomId = Math.random().toString(36).substring(2, 8).toUpperCase();
+        const projectId = `PRJ-${randomId}`;
+
         const newSubmission = {
-          id: Date.now().toString(),
+          id: projectId,
           created_at: new Date().toISOString(),
           name: data.name,
           whatsapp: data.whatsapp,
@@ -73,15 +77,32 @@ export default function Contact() {
           topic: data.topic,
           deadline: data.deadline,
           requirements: data.requirements || '',
-          status: 'Pending'
+          status: 'Pending',
+          progress: 15,
+          prdText: data.requirements || '',
+          prdLink: '',
+          totalPrice: 0,
+          advancePaid: 0,
+          paymentStatus: 'Pending',
+          customTerms: '',
+          timeline: []
         };
-        existing.unshift(newSubmission);
-        localStorage.setItem('contact_submissions', JSON.stringify(existing));
+
+        // Write to Supabase if configured, otherwise fallback to LocalStorage
+        if (isSupabaseConfigured) {
+          const { error } = await supabase.from('projects').insert([newSubmission]);
+          if (error) throw error;
+        } else {
+          const existing = JSON.parse(localStorage.getItem('contact_submissions') || '[]');
+          existing.unshift(newSubmission);
+          localStorage.setItem('contact_submissions', JSON.stringify(existing));
+        }
       } catch (err) {
-        console.error('LocalStorage Write Error:', err);
-        throw new Error('Failed to save to local dashboard.');
+        console.error('Database Write Error:', err);
+        throw new Error('Failed to save request payload: ' + err.message);
       }
     })();
+
 
     const emailPromise = (async () => {
       const web3formsKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || '';

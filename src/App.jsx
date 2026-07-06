@@ -12,6 +12,7 @@ import Footer from './components/Footer';
 import HeroBackground from './components/HeroBackground';
 import About from './pages/About';
 import AdminDashboard from './pages/AdminDashboard';
+import ClientDashboard from './pages/ClientDashboard';
 import { Toaster } from 'sonner';
 import { useDocumentMetadata } from './hooks/useDocumentMetadata';
 
@@ -113,6 +114,7 @@ function AppContent() {
         <Route path="/contact" element={<Home defaultSection="contact" />} />
         <Route path="/about" element={<About />} />
         <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/dashboard" element={<ClientDashboard />} />
       </Routes>
       {!isAdminPath && <Footer />}
     </div>
