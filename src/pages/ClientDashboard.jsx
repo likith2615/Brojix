@@ -56,9 +56,9 @@ export default function ClientDashboard() {
         const queryDigits = normalizePhone(query);
         let dbQuery = supabase.from('projects').select('*');
         if (queryDigits) {
-          dbQuery = dbQuery.or(`id.ilike.${query},whatsapp.ilike.%${queryDigits}%`);
+          dbQuery = dbQuery.or(`id.ilike."${query}",whatsapp.ilike."%${queryDigits}%"`);
         } else {
-          dbQuery = dbQuery.eq('id', query);
+          dbQuery = dbQuery.ilike('id', query);
         }
 
         const { data, error } = await dbQuery;
