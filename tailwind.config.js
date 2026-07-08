@@ -8,33 +8,34 @@ export default {
   theme: {
     extend: {
       colors: {
-        /* Core surfaces — OKLCH-mapped to hex approx for Tailwind */
-        "surface-base":    "#0e1018",   /* oklch(13% 0.012 240) */
-        "surface-raised":  "#141820",   /* oklch(17% 0.012 240) */
-        "surface-overlay": "#1a2028",   /* oklch(20% 0.013 240) */
-        "surface-border":  "#252d38",   /* oklch(26% 0.014 240) */
+        /* Core surfaces */
+        "surface-base":    "#0d0f14",
+        "surface-raised":  "#131720",
+        "surface-overlay": "#181d28",
+        "surface-border":  "#222a36",
+        "surface-high":    "#2a3444",
 
         /* Text */
-        "text-primary":   "#f2efeb",    /* oklch(95% 0.006 80) — warm off-white */
-        "text-secondary": "#8ba3bf",    /* oklch(70% 0.012 230) */
-        "text-muted":     "#566677",    /* oklch(52% 0.010 230) */
+        "text-primary":    "#f0ede8",
+        "text-secondary":  "#8a9ab0",
+        "text-muted":      "#4f5f72",
 
-        /* Accent — amber gold */
-        "accent":         "#dba83a",    /* oklch(78% 0.155 72) */
-        "accent-dim":     "#c09030",    /* oklch(68% 0.135 72) */
-        "accent-text":    "#1e1408",    /* oklch(18% 0.04 72) */
+        /* Accent — lemon yellow brand */
+        "accent":          "#d2f000",
+        "accent-dim":      "#b8d300",
+        "accent-text":     "#1e2200",
 
         /* Legacy aliases — keep AdminDashboard + ClientDashboard from breaking */
-        "background":               "#0e1018",
-        "surface":                  "#141820",
-        "on-surface":               "#f2efeb",
-        "on-surface-variant":       "#8ba3bf",
-        "primary-fixed":            "#dba83a",
-        "on-primary-fixed":         "#1e1408",
-        "primary-fixed-dim":        "#c09030",
-        "primary":                  "#f2efeb",
-        "secondary":                "#8ba3bf",
-        "on-primary":               "#1e1408",
+        "background":               "#0d0f14",
+        "surface":                  "#131720",
+        "on-surface":               "#f0ede8",
+        "on-surface-variant":       "#8a9ab0",
+        "primary-fixed":            "#d2f000",
+        "on-primary-fixed":         "#1e2200",
+        "primary-fixed-dim":        "#b8d300",
+        "primary":                  "#f0ede8",
+        "secondary":                "#d2f000",
+        "on-primary":               "#1e2200",
         "surface-container":        "#1a2028",
         "surface-container-high":   "#1e2630",
         "surface-container-highest":"#252d38",

@@ -2,10 +2,10 @@ import React from 'react';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 
 const guarantees = [
-  { stat: '100%', label: 'Confidential', detail: 'Your college and identity are never shared with anyone.' },
-  { stat: '0%',   label: 'Plagiarism',   detail: 'Every report and codebase is original, verified before delivery.' },
-  { stat: '24h',  label: 'Response',     detail: 'Direct WhatsApp line — no tickets, no delays.' },
-  { stat: 'On',   label: 'Time, always', detail: 'We\'ve never missed a deadline since day one.' },
+  { stat: '100%', label: 'Confidential',  detail: 'Your college and identity are never shared with anyone.' },
+  { stat: '0%',   label: 'Plagiarism',    detail: 'Every report and codebase is original, verified before delivery.' },
+  { stat: '24/7', label: 'Response time', detail: 'Direct WhatsApp line — no tickets, no delays.' },
+  { stat: '100%', label: 'On-time',       detail: 'We have never missed a deadline since day one.' },
 ];
 
 const testimonials = [
@@ -30,16 +30,16 @@ export default function Trust() {
     <section
       ref={sectionRef}
       id="trust"
-      className="py-28 px-container-padding-mobile md:px-container-padding-desktop scroll-mt-24"
+      style={{ padding: 'clamp(4rem, 8vw, 7rem) clamp(1.25rem, 5vw, 4rem)', scrollMarginTop: '5rem' }}
       aria-labelledby="trust-heading"
     >
       <div className="max-w-7xl mx-auto">
 
         {/* Header */}
-        <div className="mb-16">
+        <div style={{ marginBottom: 'clamp(2.5rem, 5vw, 4rem)' }}>
           <div
-            className="mb-4"
             style={{
+              marginBottom: '1rem',
               opacity: isVisible ? 1 : 0,
               transform: isVisible ? 'translateY(0)' : 'translateY(10px)',
               transition: 'opacity 500ms ease, transform 500ms ease',
@@ -52,12 +52,12 @@ export default function Trust() {
             id="trust-heading"
             style={{
               fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(2.25rem, 5vw, 3.5rem)',
+              fontSize: 'clamp(2rem, 5vw, 3.5rem)',
               lineHeight: 1.05,
               letterSpacing: '-0.025em',
               color: 'var(--text-primary)',
               opacity: isVisible ? 1 : 0,
-              transform: isVisible ? 'translateY(0)' : 'translateY(12px)',
+              transform: isVisible ? 'translateY(0)' : 'translateY(14px)',
               transition: 'opacity 600ms ease, transform 600ms ease',
               transitionDelay: '120ms',
             }}
@@ -67,10 +67,17 @@ export default function Trust() {
           </h2>
         </div>
 
-        {/* Stat strip — horizontal, data-dense */}
+        {/* Stat strip — 2x2 on mobile, 4-col on lg */}
         <div
-          className="grid grid-cols-2 md:grid-cols-4 gap-0 mb-20 rounded-2xl overflow-hidden"
-          style={{ border: '1px solid var(--surface-border)' }}
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: 0,
+            marginBottom: 'clamp(3rem, 6vw, 5rem)',
+            borderRadius: 'var(--radius-lg)',
+            overflow: 'hidden',
+            border: '1px solid var(--surface-border)',
+          }}
           role="list"
           aria-label="Guarantee statistics"
         >
@@ -78,41 +85,43 @@ export default function Trust() {
             <div
               key={i}
               role="listitem"
-              className="p-6 md:p-8 flex flex-col gap-1"
               style={{
-                borderRight: i < guarantees.length - 1 ? '1px solid var(--surface-border)' : 'none',
-                borderBottom: i < 2 ? '1px solid var(--surface-border)' : 'none',
+                padding: 'clamp(1.25rem, 3vw, 2rem)',
+                borderRight: (i % 2 === 0) ? '1px solid var(--surface-border)' : 'none',
+                borderBottom: (i < 2) ? '1px solid var(--surface-border)' : 'none',
                 opacity: isVisible ? 1 : 0,
                 transform: isVisible ? 'translateY(0)' : 'translateY(12px)',
                 transition: 'opacity 500ms ease, transform 500ms ease',
                 transitionDelay: `${200 + i * 60}ms`,
               }}
             >
-              <span
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: '2.25rem',
-                  lineHeight: 1,
-                  letterSpacing: '-0.02em',
-                  color: 'var(--accent)',
-                }}
-              >
+              <span style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'clamp(1.75rem, 5vw, 2.75rem)',
+                lineHeight: 1,
+                letterSpacing: '-0.02em',
+                color: 'var(--accent)',
+                display: 'block',
+                marginBottom: '0.25rem',
+              }}>
                 {g.stat}
               </span>
-              <span
-                style={{
-                  fontFamily: 'var(--font-body)',
-                  fontSize: '0.9375rem',
-                  fontWeight: 600,
-                  color: 'var(--text-primary)',
-                }}
-              >
+              <span style={{
+                fontFamily: 'var(--font-body)',
+                fontSize: 'clamp(0.875rem, 1.5vw, 1rem)',
+                fontWeight: 600,
+                color: 'var(--text-primary)',
+                display: 'block',
+                marginBottom: '0.375rem',
+              }}>
                 {g.label}
               </span>
-              <span
-                className="text-xs leading-relaxed mt-1"
-                style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-body)' }}
-              >
+              <span style={{
+                fontFamily: 'var(--font-body)',
+                fontSize: 'clamp(0.75rem, 1.2vw, 0.875rem)',
+                color: 'var(--text-muted)',
+                lineHeight: 1.5,
+              }}>
                 {g.detail}
               </span>
             </div>
@@ -121,8 +130,8 @@ export default function Trust() {
 
         {/* Testimonials */}
         <div
-          className="mb-4"
           style={{
+            marginBottom: 'clamp(1rem, 2vw, 1.5rem)',
             opacity: isVisible ? 1 : 0,
             transition: 'opacity 500ms ease',
             transitionDelay: '460ms',
@@ -131,70 +140,77 @@ export default function Trust() {
           <span className="eyebrow">What they said</span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
+          gap: 'clamp(1rem, 2.5vw, 1.5rem)',
+        }}>
           {testimonials.map((t, i) => (
             <blockquote
               key={i}
-              className="studio-card p-7 flex flex-col gap-5"
+              className="studio-card"
               style={{
+                padding: 'clamp(1.5rem, 3vw, 2rem)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 'clamp(1rem, 2vw, 1.5rem)',
                 opacity: isVisible ? 1 : 0,
                 transform: isVisible ? 'translateY(0)' : 'translateY(16px)',
                 transition: 'opacity 600ms ease, transform 600ms ease',
                 transitionDelay: `${520 + i * 80}ms`,
+                margin: 0,
               }}
             >
               {/* Stars */}
               <div className="flex gap-0.5" aria-label={`${t.rating} out of 5 stars`}>
                 {Array.from({ length: t.rating }).map((_, si) => (
-                  <span
-                    key={si}
-                    style={{ color: 'var(--accent)', fontSize: '0.9rem' }}
-                    aria-hidden="true"
-                  >
-                    ★
-                  </span>
+                  <span key={si} style={{ color: 'var(--accent)', fontSize: '0.9rem' }} aria-hidden="true">★</span>
                 ))}
               </div>
 
               {/* Quote */}
-              <p
-                className="text-base leading-relaxed flex-1"
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontStyle: 'italic',
-                  color: 'var(--text-primary)',
-                  fontSize: '1.125rem',
-                  lineHeight: 1.55,
-                }}
-              >
+              <p style={{
+                fontFamily: 'var(--font-display)',
+                fontStyle: 'italic',
+                fontSize: 'clamp(1rem, 2vw, 1.1875rem)',
+                lineHeight: 1.6,
+                color: 'var(--text-primary)',
+                flex: 1,
+                margin: 0,
+              }}>
                 "{t.quote}"
               </p>
 
               {/* Attribution */}
-              <footer className="flex items-center gap-3 pt-4" style={{ borderTop: '1px solid var(--surface-border)' }}>
-                <div
-                  className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0"
-                  style={{
-                    background: 'var(--accent-surface)',
-                    border: '1px solid var(--accent-border)',
-                    color: 'var(--accent)',
-                    fontFamily: 'var(--font-body)',
-                  }}
-                  aria-hidden="true"
-                >
+              <footer style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.75rem',
+                paddingTop: 'clamp(0.875rem, 2vw, 1.25rem)',
+                borderTop: '1px solid var(--surface-border)',
+              }}>
+                <div style={{
+                  width: '2.25rem',
+                  height: '2.25rem',
+                  borderRadius: '50%',
+                  flexShrink: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: 'var(--accent-surface)',
+                  border: '1px solid var(--accent-border)',
+                  color: 'var(--accent)',
+                  fontFamily: 'var(--font-body)',
+                  fontWeight: 700,
+                  fontSize: '0.875rem',
+                }} aria-hidden="true">
                   {t.name[0]}
                 </div>
                 <div>
-                  <p
-                    className="text-sm font-semibold"
-                    style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-body)' }}
-                  >
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
                     {t.name}
                   </p>
-                  <p
-                    className="text-xs"
-                    style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', letterSpacing: '0.06em' }}
-                  >
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.625rem', letterSpacing: '0.06em', color: 'var(--text-muted)', margin: 0 }}>
                     {t.detail}
                   </p>
                 </div>
