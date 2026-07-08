@@ -13,11 +13,20 @@ import {
   CreditCard, 
   ShieldCheck, 
   Check, 
-  Copy
+  Copy,
+  Download,
+  Award,
+  Layers,
+  ArrowRight,
+  TrendingUp,
+  Percent,
+  Sliders,
+  Play
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useDocumentMetadata } from '../hooks/useDocumentMetadata';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import { printInvoice, printCertificate } from '../lib/InvoiceCertificateGenerator';
 
 export default function ClientDashboard() {
   const location = useLocation();
@@ -26,11 +35,12 @@ export default function ClientDashboard() {
   const [project, setProject] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [copiedId, setCopiedId] = useState(false);
+  const [feedbackToken, setFeedbackToken] = useState(null);
 
   // Set page metadata for SEO
   useDocumentMetadata({
-    title: "Client Portal | BROJIX — Track Your Project Status",
-    description: "Access your personalized project tracking dashboard. Review project requirement documents, monitor real-time development timeline, and view billing details.",
+    title: "Client Workspace | BROJIX — Deliverables & Progress",
+    description: "Track your active sprint deliverables, timeline milestones, and billing details in your secure Brojix development workspace.",
     canonicalUrl: "https://brojix.netlify.app/dashboard",
   });
 
@@ -104,14 +114,11 @@ export default function ClientDashboard() {
 
       if (matched) {
         setProject(matched);
-        // Save to recent search history
         localStorage.setItem('recent_project_lookup', query);
-        
-        // Update URL hash/param for shareable tracking
         navigate(`/dashboard?id=${matched.id}`, { replace: true });
         
         if (!isAutoLoad) {
-          toast.success(`Project loaded: ${matched.topic}`);
+          toast.success(`Workspace loaded: ${matched.topic}`);
         }
       } else {
         if (!isAutoLoad) {
@@ -139,12 +146,10 @@ export default function ClientDashboard() {
     const dataParam = params.get('data');
 
     if (dataParam) {
-      // Handle base64 shared link
       try {
         const decodedJSON = atob(decodeURIComponent(dataParam));
         const sharedProject = JSON.parse(decodedJSON);
         if (sharedProject && sharedProject.id) {
-          // Import to local storage contact_submissions
           const localProjects = JSON.parse(localStorage.getItem('contact_submissions') || '[]');
           const existsIdx = localProjects.findIndex(p => p.id === sharedProject.id);
           if (existsIdx >= 0) {
@@ -156,7 +161,6 @@ export default function ClientDashboard() {
           
           setProject(sharedProject);
           toast.success(`Imported shared project: ${sharedProject.topic}`);
-          // Redirect to clean ID url
           navigate(`/dashboard?id=${sharedProject.id}`, { replace: true });
           return;
         }
@@ -169,7 +173,6 @@ export default function ClientDashboard() {
     if (idParam) {
       handleLookup(idParam, true);
     } else {
-      // Check last lookup in local storage
       const lastLookup = localStorage.getItem('recent_project_lookup');
       if (lastLookup) {
         setSearchQuery(lastLookup);
@@ -177,6 +180,38 @@ export default function ClientDashboard() {
       }
     }
   }, [location.search]);
+
+  // Load linked feedback token
+  useEffect(() => {
+    if (project) {
+      loadFeedbackToken();
+    }
+  }, [project]);
+
+  const loadFeedbackToken = async () => {
+    try {
+      let activeToken = null;
+      if (isSupabaseConfigured) {
+        const { data, error } = await supabase
+          .from('feedback_links')
+          .select('token')
+          .eq('project_id', project.id)
+          .eq('is_disabled', false)
+          .limit(1);
+        if (!error && data && data.length > 0) {
+          activeToken = data[0].token;
+        }
+      }
+      if (!activeToken) {
+        const storedLinks = JSON.parse(localStorage.getItem('feedback_links') || '[]');
+        const link = storedLinks.find(l => l.project_id === project.id && !l.is_disabled);
+        if (link) activeToken = link.token;
+      }
+      setFeedbackToken(activeToken);
+    } catch (err) {
+      console.warn("Failed to load feedback token:", err);
+    }
+  };
 
   // Copy Project ID
   const copyProjectId = () => {
@@ -193,14 +228,13 @@ export default function ClientDashboard() {
       return project.timeline;
     }
 
-    // Default timeline milestones
     const defaultMilestones = [
       {
         id: 'def-1',
         date: project?.created_at ? new Date(project.created_at).toLocaleDateString() : new Date().toLocaleDateString(),
-        title: "Project Proposal Submitted",
+        label: "Project Proposal Submitted",
         description: "Requirements received and parsed. Initial consultation review initialized.",
-        status: "Completed"
+        done: true
       }
     ];
 
@@ -208,9 +242,9 @@ export default function ClientDashboard() {
       defaultMilestones.push({
         id: 'def-2',
         date: project?.created_at ? new Date(new Date(project.created_at).getTime() + 86400000).toLocaleDateString() : new Date().toLocaleDateString(),
-        title: "Architecture & Scope Aligned",
+        label: "Architecture & Scope Aligned",
         description: "PRD requirements draft created. Code architecture, technologies, and pricing locked.",
-        status: "Completed"
+        done: true
       });
     }
 
@@ -218,24 +252,23 @@ export default function ClientDashboard() {
       defaultMilestones.push({
         id: 'def-3',
         date: project?.deadline ? new Date(project.deadline).toLocaleDateString() : new Date().toLocaleDateString(),
-        title: "Final Build & Handover",
+        label: "Final Build & Handover",
         description: "Source code compile validated, reports generated, and credentials safely transferred to client.",
-        status: "Completed"
+        done: true
       });
     } else if (project?.status === "In Progress") {
       defaultMilestones.push({
         id: 'def-3',
         date: "In Progress",
-        title: "System Implementation",
+        label: "System Implementation",
         description: "Developing primary functions, front-end integrations, and documentation report generation.",
-        status: "Current"
+        done: false
       });
     }
 
     return defaultMilestones;
   };
 
-  // Status mapping
   const getProgressPercentage = () => {
     if (project?.progress !== undefined && project?.progress !== null) {
       return Number(project.progress);
@@ -247,350 +280,272 @@ export default function ClientDashboard() {
     }
   };
 
-  const getStatusStep = () => {
-    const pct = getProgressPercentage();
-    if (pct >= 100) return 4; // Delivered
-    if (pct >= 75) return 3;  // Testing
-    if (pct >= 40) return 2;  // Development
-    if (pct >= 15) return 1;  // Planning
-    return 0;                 // Review
-  };
-
-  const currentStep = getStatusStep();
   const progressPct = getProgressPercentage();
   const timelineMilestones = getTimeline();
 
   // Pricing calculations
-  const totalVal = project?.totalPrice ? Number(project.totalPrice) : 0;
-  const advPaid = project?.advancePaid ? Number(project.advancePaid) : 0;
-  const balance = Math.max(0, totalVal - advPaid);
-  const paymentStatus = project?.paymentStatus || (totalVal > 0 ? (advPaid >= totalVal ? "Fully Paid" : advPaid > 0 ? "Partially Paid" : "Pending") : "Estimate Pending");
+  const totalVal = project?.totalPrice || project?.budget || 0;
+  const advPaid = project?.advancePaid || 0;
+  const discountVal = project?.discount || 0;
+  const gstVal = project?.gst || 0;
 
-  // Default terms
+  const baseVal = totalVal - discountVal;
+  const finalVal = project?.final_amount || Math.round(baseVal + (baseVal * (gstVal / 100)));
+  const balance = Math.max(0, finalVal - advPaid);
+  const paymentStatus = project?.paymentStatus || (finalVal > 0 ? (advPaid >= finalVal ? "Fully Paid" : advPaid > 0 ? "Partially Paid" : "Pending") : "Estimate Pending");
+
   const termsText = project?.customTerms || `1. Scope Constraints: Any additions to original requirements will be estimated as a separate sprint.
 2. Review Window: The client has 7 days from project completion to request revisions.
 3. Hosting & Deployment: Primary deployment package includes Netlify/Vercel setup. Domain purchasing is client-funded.`;
 
   return (
-    <div className="min-h-screen bg-background text-white pt-28 pb-20 px-4 md:px-8 relative overflow-hidden">
-      {/* Background Lights */}
-      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary-fixed/5 rounded-full blur-[140px] pointer-events-none"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-secondary/5 rounded-full blur-[140px] pointer-events-none"></div>
+    <div className="min-h-screen bg-background text-white pt-28 pb-20 px-4 md:px-8 relative overflow-hidden font-sans">
+      
+      {/* Drifting Ambient Glowing Vectors */}
+      <div className="ambient-bg" />
+      <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-[#d2f000]/[0.02] rounded-full blur-[100px] pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto relative z-10">
         
-        {/* Lookup / Search Bar */}
         {!project ? (
-          <div className="max-w-xl mx-auto text-center py-20">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary-fixed/20 bg-primary-fixed/5 text-primary-fixed text-xs font-semibold uppercase tracking-widest mb-6">
+          /* 1. LOOKUP SCREEN */
+          <div className="max-w-xl mx-auto text-center py-24">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#d2f000]/20 bg-[#d2f000]/5 text-[#d2f000] text-[10px] font-bold uppercase tracking-widest mb-6">
               <Sparkles className="w-3.5 h-3.5" /> SECURE CLIENT ACCESS
             </div>
             
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-4" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-              Track Your Project
+              Delivery Workspace
             </h1>
-            <p className="text-on-surface-variant text-sm md:text-base leading-relaxed mb-8 max-w-md mx-auto">
-              Enter the WhatsApp number or Project ID associated with your order to view live updates, requirements, and payments.
+            <p className="text-on-surface-variant text-xs md:text-sm leading-relaxed mb-8 max-w-sm mx-auto">
+              Enter your secure Project Reference Key or associated contact WhatsApp to initialize your sprint portal.
             </p>
 
-            <form onSubmit={handleSubmit} className="relative mb-4">
+            <form onSubmit={handleSubmit} className="relative mb-6">
               <input 
                 type="text"
+                placeholder="e.g. PRJ-X7G92 or WhatsApp number"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Enter WhatsApp or Project ID (e.g. 918179072511)"
-                className="w-full bg-surface-container/60 border border-white/10 rounded-2xl pl-5 pr-14 py-4 text-white text-base placeholder-on-surface-variant focus:outline-none focus:border-primary-fixed focus:ring-1 focus:ring-primary-fixed transition-all duration-300 shadow-xl"
+                className="w-full bg-[#1c1b1b] border border-white/10 rounded-2xl pl-12 pr-28 py-4 text-sm text-white focus:outline-none focus:border-[#d2f000] focus:ring-1 focus:ring-[#d2f000] transition-all"
               />
+              <Search className="absolute left-4.5 top-4.5 w-5 h-5 text-on-surface-variant" />
+              
               <button 
-                type="submit" 
+                type="submit"
                 disabled={isLoading}
-                className="absolute right-2 top-2 p-3 bg-primary-fixed hover:bg-primary-fixed-dim text-on-primary-fixed rounded-xl hover:shadow-[0_0_15px_#d2f000] active:scale-95 transition-all duration-300 flex items-center justify-center"
+                className="absolute right-2 top-2 bg-[#d2f000] hover:bg-[#d2f000]/95 text-black font-bold px-5 py-2.5 rounded-xl text-xs transition-all uppercase tracking-wider"
               >
-                {isLoading ? (
-                  <div className="w-5 h-5 border-2 border-on-primary-fixed border-t-transparent rounded-full animate-spin"></div>
-                ) : (
-                  <Search className="w-5 h-5" />
-                )}
+                {isLoading ? "Syncing..." : "Connect"}
               </button>
             </form>
-            <p className="text-xs text-on-surface-variant">
-              Format tip: Try entering digits only (e.g. 9876543210).
+
+            <p className="text-[10px] text-on-surface-variant">
+              Protected by SSL and Brojix cryptographic access links.
             </p>
           </div>
         ) : (
-          /* Active Dashboard View */
+          /* 2. DYNAMIC PREMIUM CLIENT DASHBOARD WORKSPACE */
           <div className="space-y-8">
             
-            {/* Top Toolbar */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-white/5">
-              <div>
-                <button 
-                  onClick={() => {
-                    setProject(null);
-                    setSearchQuery('');
-                    navigate('/dashboard', { replace: true });
-                  }}
-                  className="text-xs font-semibold tracking-widest text-primary-fixed hover:text-white uppercase flex items-center gap-1.5 transition-colors mb-2"
-                >
-                  ← ACCESS PORTAL
-                </button>
-                <div className="flex flex-wrap items-center gap-3">
-                  <h1 className="text-2xl md:text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                    Project tracking log
-                  </h1>
-                  <span className="text-xs text-on-surface-variant font-mono bg-white/5 px-2.5 py-1 rounded border border-white/5 flex items-center gap-1">
-                    ID: {project.id}
-                    <button onClick={copyProjectId} className="hover:text-primary-fixed transition-colors">
-                      {copiedId ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
-                    </button>
-                  </span>
-                </div>
-              </div>
-              <div className="flex gap-3">
-                <a 
-                  href={`https://wa.me/918179072511?text=Hi%20Likith,%20I'm%20checking%20on%20my%20project:%20${encodeURIComponent(project.topic)}%20(ID:%20${project.id})`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20 px-5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 transition-all active:scale-95 shadow-md"
-                >
-                  <MessageSquare className="w-4 h-4" /> Live Chat Support
-                </a>
-              </div>
-            </div>
-
-            {/* Project Summary Hero Card */}
-            <div className="glass-panel p-6 md:p-8 rounded-3xl border border-white/10 relative overflow-hidden shadow-2xl">
-              <div className="absolute top-0 right-0 bg-primary-fixed/5 w-60 h-60 rounded-full blur-[100px] pointer-events-none"></div>
+            {/* Header Panel */}
+            <div className="backdrop-blur-xl bg-white/[0.015] border border-white/[0.06] rounded-3xl p-6 md:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 shadow-2xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 bg-[#d2f000]/5 w-48 h-48 rounded-full blur-3xl pointer-events-none"></div>
               
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-[10px] uppercase font-bold tracking-widest text-[#d2f000]">
+                  <Layers className="w-3.5 h-3.5" /> Project Workspace
+                </div>
                 
-                {/* Info Text */}
-                <div className="lg:col-span-7 space-y-4">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-secondary-container/20 border border-secondary/20 text-secondary">
-                      {project.service}
-                    </span>
-                    <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full flex items-center gap-1 ${
-                      project.status === 'Completed' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' :
-                      project.status === 'In Progress' ? 'bg-secondary/10 border-secondary/20 text-secondary' :
-                      'bg-yellow-500/10 border-yellow-500/20 text-yellow-400'
-                    }`}>
-                      {project.status === 'Completed' ? <CheckCircle2 className="w-3 h-3" /> : <Clock className="w-3 h-3 animate-pulse" />}
-                      {project.status}
-                    </span>
-                  </div>
+                <h1 className="text-3xl font-extrabold text-white tracking-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                  {project.topic}
+                </h1>
+                
+                <div className="flex flex-wrap items-center gap-3 pt-1">
+                  <button 
+                    onClick={copyProjectId}
+                    className="bg-white/5 hover:bg-white/10 border border-white/5 rounded-lg px-2.5 py-1 text-[10px] font-mono flex items-center gap-1.5 transition-colors"
+                  >
+                    ID: {project.id} {copiedId ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                  </button>
                   
-                  <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                    {project.topic}
-                  </h2>
-                  <p className="text-sm text-on-surface-variant max-w-2xl leading-relaxed">
-                    Registered to <strong className="text-white">{project.name}</strong> • {project.college}
-                  </p>
-
-                  <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-on-surface-variant mt-2 border-t border-white/5 pt-4">
-                    <span className="flex items-center gap-1">
-                      <Calendar className="w-4 h-4 text-primary-fixed" />
-                      Inquiry Date: {project.created_at ? new Date(project.created_at).toLocaleDateString() : 'N/A'}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Calendar className="w-4 h-4 text-error" />
-                      Handover Target: {project.deadline}
-                    </span>
-                  </div>
+                  <span className="text-on-surface-variant text-[10px]">•</span>
+                  <span className="text-xs text-on-surface-variant font-medium">Lead: <strong className="text-white">{project.assigned_team_member || "Brojix Lead"}</strong></span>
                 </div>
+              </div>
 
-                {/* Progress Visualizer */}
-                <div className="lg:col-span-5 w-full flex flex-col items-center lg:items-end justify-center">
-                  <div className="w-full max-w-sm bg-surface-container-lowest/80 border border-white/5 rounded-2xl p-5 space-y-4 shadow-inner">
-                    <div className="flex justify-between items-center text-sm font-semibold">
-                      <span className="text-on-surface-variant">Development Sprint</span>
-                      <span className="text-primary-fixed text-base font-mono">{progressPct}%</span>
-                    </div>
-
-                    {/* Progress Bar */}
-                    <div className="w-full h-3 bg-surface-container rounded-full overflow-hidden relative">
-                      <div 
-                        className="h-full rounded-full transition-all duration-1000 ease-out relative"
-                        style={{ 
-                          width: `${progressPct}%`,
-                          background: 'linear-gradient(90deg, #b8d300 0%, #d2f000 100%)',
-                          boxShadow: '0 0 10px rgba(210, 240, 0, 0.4)'
-                        }}
-                      >
-                        <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
-                      </div>
-                    </div>
-
-                    {/* Milestone Steps */}
-                    <div className="flex justify-between text-[10px] text-on-surface-variant font-mono">
-                      <span className={currentStep >= 1 ? "text-primary-fixed" : ""}>Plan</span>
-                      <span className={currentStep >= 2 ? "text-primary-fixed" : ""}>Develop</span>
-                      <span className={currentStep >= 3 ? "text-primary-fixed" : ""}>Test</span>
-                      <span className={currentStep >= 4 ? "text-primary-fixed" : ""}>Deliver</span>
-                    </div>
-                  </div>
-                </div>
-
+              {/* Quick Actions */}
+              <div className="flex gap-2">
+                <button 
+                  onClick={() => setProject(null)}
+                  className="bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-2.5 rounded-xl text-xs font-bold transition-all uppercase tracking-wider"
+                >
+                  Switch Workspace
+                </button>
               </div>
             </div>
 
-            {/* Split layout: Timeline and Details */}
+            {/* Dashboard Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
               
-              {/* Left Column: Timeline updates (7 Columns) */}
+              {/* LEFT SPRINT TRACK (7 Columns) */}
               <div className="lg:col-span-7 space-y-6">
-                <h3 className="text-xl font-bold tracking-tight flex items-center gap-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                  <span className="w-1.5 h-6 bg-primary-fixed rounded-full inline-block"></span>
-                  Chronological Updates
-                </h3>
+                
+                {/* Build Progress Tracker */}
+                <div className="backdrop-blur-xl bg-white/[0.015] border border-white/[0.06] rounded-3xl p-6 space-y-5 shadow-xl">
+                  <div className="flex justify-between items-center">
+                    <h3 className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5"><Clock className="w-4 h-4 text-[#d2f000]" /> active sprint timeline</h3>
+                    <span className="text-xs font-mono font-bold text-[#d2f000]">{progressPct}% Complete</span>
+                  </div>
 
-                <div className="glass-panel p-6 md:p-8 rounded-3xl border border-white/5 relative shadow-xl">
-                  {/* Vertical line through timeline */}
-                  <div className="absolute left-[29px] top-8 bottom-8 w-0.5 bg-white/10"></div>
+                  <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-[#d2f000] rounded-full transition-all duration-500 shadow-[0_0_10px_#d2f000]" 
+                      style={{ width: `${progressPct}%` }}
+                    />
+                  </div>
 
-                  <div className="space-y-8">
-                    {timelineMilestones.map((m, idx) => {
-                      const isCurrent = m.status === 'Current';
-                      const isCompleted = m.status === 'Completed';
-                      
-                      return (
-                        <div key={m.id || idx} className="relative pl-10 group transition-all duration-300">
-                          {/* Timeline node marker */}
-                          <div className={`absolute left-0 top-0 w-[20px] h-[20px] rounded-full border-4 flex items-center justify-center transition-all duration-300 ${
-                            isCompleted ? 'bg-primary-fixed border-primary-fixed-dim shadow-[0_0_10px_#d2f000]' :
-                            isCurrent ? 'bg-surface border-secondary shadow-[0_0_10px_rgba(220,184,255,0.6)] animate-pulse' :
-                            'bg-surface border-white/20'
-                          }`} style={{ transform: 'translate(4.5px, 2px)' }}>
-                            {isCompleted && <Check className="w-2.5 h-2.5 text-on-primary-fixed stroke-[4px]" />}
-                            {isCurrent && <div className="w-1.5 h-1.5 bg-secondary rounded-full"></div>}
-                          </div>
-
-                          <div className="space-y-1.5">
-                            <span className="text-[10px] font-mono text-on-surface-variant tracking-wider bg-white/5 px-2 py-0.5 rounded border border-white/5">
-                              {m.date}
-                            </span>
-                            <h4 className={`text-base font-bold transition-colors ${
-                              isCompleted ? 'text-white' :
-                              isCurrent ? 'text-secondary' :
-                              'text-on-surface-variant'
-                            }`}>
-                              {m.title}
-                            </h4>
-                            <p className="text-sm text-on-surface-variant leading-relaxed">
-                              {m.description}
-                            </p>
-                          </div>
+                  {/* Milestones Flow */}
+                  <div className="space-y-4 pt-2">
+                    {timelineMilestones.map((m, idx) => (
+                      <div key={idx} className="flex gap-4 relative">
+                        {idx !== timelineMilestones.length - 1 && (
+                          <div className={`absolute left-3 top-6 bottom-0 w-0.5 ${m.done ? 'bg-[#d2f000]' : 'bg-white/5'}`} />
+                        )}
+                        <div className={`w-6.5 h-6.5 rounded-full border-2 flex items-center justify-center shrink-0 z-10 transition-colors ${
+                          m.done 
+                            ? 'bg-[#d2f000]/10 border-[#d2f000] text-[#d2f000]' 
+                            : 'bg-[#1c1b1b] border-white/10 text-on-surface-variant'
+                        }`}>
+                          {m.done ? <Check className="w-3.5 h-3.5" /> : <Clock className="w-3.5 h-3.5" />}
                         </div>
-                      );
-                    })}
+
+                        <div className="space-y-1 pb-2">
+                          <div className="flex items-center gap-2">
+                            <h4 className="text-xs font-bold text-white">{m.label || m.title}</h4>
+                            <span className="text-[9px] text-on-surface-variant font-mono">{m.date}</span>
+                          </div>
+                          <p className="text-[10px] text-on-surface-variant leading-relaxed">{m.description}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
+
+                {/* Scope & PRD specs */}
+                <div className="backdrop-blur-xl bg-white/[0.015] border border-white/[0.06] rounded-3xl p-6 space-y-4 shadow-xl">
+                  <h3 className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5"><FileText className="w-4 h-4 text-secondary" /> Scope of Work Specifications</h3>
+                  <div className="bg-black/20 border border-white/5 p-4 rounded-2xl text-xs font-mono text-on-surface-variant leading-relaxed max-h-48 overflow-y-auto whitespace-pre-line">
+                    {project.requirements || project.prdText || "No project specs defined yet."}
+                  </div>
+                  {project.prdLink && (
+                    <a 
+                      href={project.prdLink} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="inline-flex items-center gap-1.5 text-xs text-[#d2f000] hover:underline"
+                    >
+                      View Shared Workspace Assets <ExternalLink className="w-3.5 h-3.5" />
+                    </a>
+                  )}
+                </div>
+
               </div>
 
-              {/* Right Column: PRD Document and Financial Tracker (5 Columns) */}
+              {/* RIGHT LEDGER TRACK (5 Columns) */}
               <div className="lg:col-span-5 space-y-6">
                 
-                {/* PRD Panel */}
-                <div className="space-y-3">
-                  <h3 className="text-xl font-bold tracking-tight flex items-center gap-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                    <span className="w-1.5 h-6 bg-secondary rounded-full inline-block"></span>
-                    Requirements & Brief (PRD)
-                  </h3>
+                {/* Billing panel */}
+                <div className="backdrop-blur-xl bg-white/[0.015] border border-white/[0.06] rounded-3xl p-6 space-y-5 shadow-xl">
+                  <div className="flex justify-between items-center text-xs font-bold uppercase tracking-wider">
+                    <span className="flex items-center gap-1.5"><CreditCard className="w-4 h-4 text-[#d2f000]" /> billing status</span>
+                    <span className={`text-[9px] font-bold px-2.5 py-0.5 rounded-full ${
+                      paymentStatus === 'Fully Paid' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
+                      paymentStatus === 'Partially Paid' ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20' :
+                      'bg-red-500/10 text-red-400 border border-red-500/20'
+                    }`}>
+                      {paymentStatus}
+                    </span>
+                  </div>
 
-                  <div className="glass-panel p-6 rounded-3xl border border-white/5 relative overflow-hidden shadow-xl space-y-4">
-                    <div className="flex justify-between items-center text-xs text-on-surface-variant uppercase tracking-wider font-semibold">
-                      <span className="flex items-center gap-1"><FileText className="w-3.5 h-3.5" /> Scope Specification</span>
-                      <span>v1.0</span>
+                  <div className="grid grid-cols-3 gap-2 border-y border-white/5 py-4 text-center font-mono">
+                    <div>
+                      <span className="text-[8px] text-on-surface-variant block uppercase">Estimate</span>
+                      <span className="text-xs font-bold text-white">₹{totalVal.toLocaleString()}</span>
                     </div>
-
-                    <div className="bg-surface-container-lowest/80 border border-white/5 p-4 rounded-xl text-xs md:text-sm font-mono text-on-surface-variant leading-relaxed max-h-48 overflow-y-auto shadow-inner whitespace-pre-line">
-                      {project.prdText || project.requirements || "No details specified yet."}
+                    <div>
+                      <span className="text-[8px] text-on-surface-variant block uppercase">Paid</span>
+                      <span className="text-xs font-bold text-emerald-400">₹{advPaid.toLocaleString()}</span>
                     </div>
+                    <div>
+                      <span className="text-[8px] text-on-surface-variant block uppercase">Balance</span>
+                      <span className="text-xs font-bold text-red-400">₹{balance.toLocaleString()}</span>
+                    </div>
+                  </div>
 
-                    {project.prdLink && (
-                      <a 
-                        href={project.prdLink} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="w-full bg-white/5 border border-white/10 hover:border-primary-fixed/20 text-white font-bold py-3 px-4 rounded-xl text-xs flex items-center justify-center gap-2 hover:bg-white/10 transition-all duration-300"
+                  {/* Documents & Receipts print */}
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      onClick={() => printInvoice(project)}
+                      className="bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold py-2.5 rounded-xl text-[10px] flex items-center justify-center gap-1.5 transition-colors uppercase tracking-wider"
+                    >
+                      <Download className="w-3.5 h-3.5 text-[#d2f000]" /> Print Invoice
+                    </button>
+                    <button
+                      onClick={() => printCertificate(project)}
+                      disabled={project.status !== 'Completed'}
+                      className="bg-white/5 hover:bg-white/10 disabled:opacity-40 disabled:hover:bg-white/5 border border-white/10 text-white font-bold py-2.5 rounded-xl text-[10px] flex items-center justify-center gap-1.5 transition-colors uppercase tracking-wider"
+                    >
+                      <Download className="w-3.5 h-3.5 text-secondary" /> Certificate
+                    </button>
+                  </div>
+                </div>
+
+                {/* Handover release gate / Feedback trigger */}
+                <div className="backdrop-blur-xl bg-white/[0.015] border border-white/[0.06] rounded-3xl p-6 space-y-4 shadow-xl relative overflow-hidden">
+                  
+                  {project.status === 'Completed' ? (
+                    /* Completed: Feedback Release Gate */
+                    <div className="space-y-4">
+                      <div className="flex gap-2 items-center">
+                        <Award className="w-5 h-5 text-[#d2f000] animate-pulse" />
+                        <h4 className="text-xs font-bold uppercase tracking-wider text-white">Project Handover Gate</h4>
+                      </div>
+                      
+                      <p className="text-[10px] text-on-surface-variant leading-relaxed">
+                        Your project has been successfully deployed and verified. Complete the secure feedback evaluation ledger to release final assets and download your handover certificate.
+                      </p>
+
+                      <button
+                        onClick={() => {
+                          if (feedbackToken) {
+                            navigate(`/feedback/${feedbackToken}`);
+                          } else {
+                            toast.warning("The handover access token is being generated. Please contact the Brojix coordinator.");
+                          }
+                        }}
+                        className="w-full bg-[#d2f000] text-black font-bold py-3 rounded-xl text-xs hover:shadow-[0_0_15px_#d2f000] transition-all uppercase tracking-wider flex items-center justify-center gap-1.5"
                       >
-                        <ExternalLink className="w-3.5 h-3.5 text-primary-fixed" /> View External Resources
-                      </a>
-                    )}
-                  </div>
+                        Enter Feedback Portal <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  ) : (
+                    /* In Progress: Waiting Gate */
+                    <div className="space-y-2.5 opacity-70">
+                      <h4 className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 text-on-surface-variant"><Clock className="w-4 h-4" /> handovers pending</h4>
+                      <p className="text-[10px] text-on-surface-variant leading-relaxed">
+                        Handover and evaluation locks will release automatically once the engineering team completes active target sprints and marks the system as completed.
+                      </p>
+                    </div>
+                  )}
+
                 </div>
 
-                {/* Billing Summary Panel */}
-                <div className="space-y-3">
-                  <h3 className="text-xl font-bold tracking-tight flex items-center gap-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                    <span className="w-1.5 h-6 bg-emerald-500 rounded-full inline-block"></span>
-                    Billing & Finance
-                  </h3>
-
-                  <div className="glass-panel p-6 rounded-3xl border border-white/5 shadow-xl space-y-5">
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs text-on-surface-variant font-semibold flex items-center gap-1"><CreditCard className="w-3.5 h-3.5" /> PAYMENT METRICS</span>
-                      <span className={`text-[10px] font-semibold px-2.5 py-0.5 rounded-full ${
-                        paymentStatus === 'Fully Paid' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
-                        paymentStatus === 'Partially Paid' ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20' :
-                        'bg-error/10 text-error border border-error/20'
-                      }`}>
-                        {paymentStatus}
-                      </span>
-                    </div>
-
-                    <div className="grid grid-cols-3 gap-3 border-y border-white/5 py-4 text-center">
-                      <div>
-                        <div className="text-[10px] text-on-surface-variant mb-1 font-semibold">ESTIMATE</div>
-                        <div className="text-base font-bold text-white">
-                          ₹{totalVal ? totalVal.toLocaleString() : '—'}
-                        </div>
-                      </div>
-                      <div>
-                        <div className="text-[10px] text-on-surface-variant mb-1 font-semibold">ADVANCE PAID</div>
-                        <div className="text-base font-bold text-emerald-400">
-                          ₹{advPaid ? advPaid.toLocaleString() : '0'}
-                        </div>
-                      </div>
-                      <div>
-                        <div className="text-[10px] text-on-surface-variant mb-1 font-semibold">BALANCE</div>
-                        <div className="text-base font-bold text-error">
-                          ₹{balance ? balance.toLocaleString() : '—'}
-                        </div>
-                      </div>
-                    </div>
-
-                    {totalVal > 0 && (
-                      <div className="space-y-1.5">
-                        <div className="flex justify-between text-[10px] text-on-surface-variant">
-                          <span>Financial Milestone Progress</span>
-                          <span>{Math.round((advPaid / totalVal) * 100)}%</span>
-                        </div>
-                        <div className="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
-                          <div 
-                            className="h-full bg-emerald-400 rounded-full" 
-                            style={{ width: `${Math.min(100, (advPaid / totalVal) * 100)}%` }}
-                          />
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Terms and Conditions Panel */}
-                <div className="space-y-3">
-                  <h3 className="text-xl font-bold tracking-tight flex items-center gap-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                    <span className="w-1.5 h-6 bg-outline rounded-full inline-block"></span>
-                    Guidelines & Terms
-                  </h3>
-
-                  <div className="glass-panel p-6 rounded-3xl border border-white/5 shadow-xl">
-                    <div className="flex items-center gap-1.5 text-xs text-on-surface-variant font-semibold mb-3">
-                      <ShieldCheck className="w-3.5 h-3.5" /> SECURITY CONTRACT RULES
-                    </div>
-                    <div className="text-xs text-on-surface-variant font-mono space-y-2 whitespace-pre-line leading-relaxed">
-                      {termsText}
-                    </div>
+                {/* Guidelines */}
+                <div className="backdrop-blur-xl bg-white/[0.015] border border-white/[0.06] rounded-3xl p-6 shadow-xl">
+                  <span className="text-[9px] text-on-surface-variant font-bold uppercase block mb-2 tracking-widest"><ShieldCheck className="w-3.5 h-3.5 inline mr-1 text-[#d2f000]" /> Contract Rules</span>
+                  <div className="text-[10px] text-on-surface-variant font-mono space-y-2 whitespace-pre-line leading-relaxed">
+                    {termsText}
                   </div>
                 </div>
 

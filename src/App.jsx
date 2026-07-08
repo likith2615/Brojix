@@ -13,6 +13,7 @@ import HeroBackground from './components/HeroBackground';
 import About from './pages/About';
 import AdminDashboard from './pages/AdminDashboard';
 import ClientDashboard from './pages/ClientDashboard';
+import FeedbackPage from './pages/FeedbackPage';
 import { Toaster } from 'sonner';
 import { useDocumentMetadata } from './hooks/useDocumentMetadata';
 
@@ -102,12 +103,14 @@ function Home({ defaultSection }) {
 function AppContent() {
   const location = useLocation();
   const isAdminPath = location.pathname === '/admin';
+  const isFeedbackPath = location.pathname.startsWith('/feedback');
+  const hideNavFooter = isAdminPath || isFeedbackPath;
 
   return (
     <div className="relative overflow-x-hidden min-h-screen text-white">
       <div className="ambient-bg"></div>
       <HeroBackground />
-      {!isAdminPath && <Navbar />}
+      {!hideNavFooter && <Navbar />}
       <Routes>
         <Route path="/" element={<Home defaultSection={null} />} />
         <Route path="/projects" element={<Home defaultSection="portfolio" />} />
@@ -115,8 +118,10 @@ function AppContent() {
         <Route path="/about" element={<About />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/dashboard" element={<ClientDashboard />} />
+        <Route path="/feedback/:token" element={<FeedbackPage />} />
+        <Route path="/feedback" element={<FeedbackPage />} />
       </Routes>
-      {!isAdminPath && <Footer />}
+      {!hideNavFooter && <Footer />}
     </div>
   );
 }
