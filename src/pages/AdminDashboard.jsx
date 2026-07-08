@@ -227,7 +227,7 @@ export default function AdminDashboard() {
       id: newProjectId,
       created_at: new Date().toISOString(),
       name: newProjectName,
-      whatsapp: newProjectWhatsapp.trim(),
+      whatsapp: (newProjectWhatsapp && newProjectWhatsapp.trim()) ? newProjectWhatsapp.trim() : '0000000000',
       service: newProjectService,
       topic: newProjectTopic,
       deadline: newProjectDeadline || new Date().toISOString().split('T')[0],

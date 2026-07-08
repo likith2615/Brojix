@@ -71,7 +71,7 @@ export default function Contact() {
           id: projectId,
           created_at: new Date().toISOString(),
           name: data.name,
-          whatsapp: data.whatsapp,
+          whatsapp: (data.whatsapp && data.whatsapp.trim()) ? data.whatsapp.trim() : '0000000000',
           college: data.college,
           service: serviceName,
           topic: data.topic,
