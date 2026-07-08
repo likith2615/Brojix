@@ -43,8 +43,7 @@ import {
 import { toast } from 'sonner';
 import { 
   BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, 
-  XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
-  RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar
+  XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
@@ -489,46 +488,47 @@ export default function AdminDashboard() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-background text-white flex flex-col justify-center items-center p-6 relative overflow-hidden font-sans">
+      <div className="min-h-screen bg-surface-base text-text-primary flex flex-col justify-center items-center p-6 relative overflow-hidden font-body">
         <div className="ambient-bg" />
-        <div className="absolute top-1/4 left-1/4 w-[350px] h-[350px] bg-[#d2f000]/[0.02] rounded-full blur-[100px] pointer-events-none"></div>
 
-        <div className="backdrop-blur-xl bg-white/[0.015] border border-white/[0.06] w-full max-w-md p-8 rounded-3xl shadow-2xl space-y-6 text-center relative overflow-hidden">
-          <div className="absolute top-0 right-0 bg-[#d2f000]/5 w-32 h-32 rounded-full blur-2xl pointer-events-none"></div>
-          
-          <div className="w-12 h-12 bg-[#d2f000]/10 border border-[#d2f000]/20 rounded-full flex items-center justify-center mx-auto mb-2">
-            <Shield className="w-5 h-5 text-[#d2f000]" />
+        <div className="w-full max-w-md p-8 studio-card space-y-6 text-center relative overflow-hidden bg-surface-raised border-surface-border">
+          <div className="w-12 h-12 bg-accent/10 border border-accent/25 rounded-full flex items-center justify-center mx-auto mb-2">
+            <Shield className="w-5 h-5 text-accent" />
           </div>
 
-          <h1 className="text-xl font-bold tracking-tight text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>Admin Command Center</h1>
-          <p className="text-on-surface-variant text-xs leading-relaxed max-w-xs mx-auto">
-            Authorize administrative sessions to manage project ledger.
-          </p>
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight text-text-primary mb-1.5" style={{ fontFamily: "var(--font-display)" }}>Command Center</h1>
+            <p className="text-text-secondary text-xs leading-relaxed max-w-xs mx-auto">
+              Authorize administrative credentials to manage project ledgers.
+            </p>
+          </div>
 
           <form onSubmit={handleLogin} className="space-y-4 pt-2 text-left">
             <div className="space-y-1">
-              <label className="text-[9px] font-bold text-on-surface-variant uppercase">Username</label>
+              <label className="text-[10px] font-bold text-text-secondary uppercase tracking-wider">Username</label>
               <input 
                 type="text"
+                required
                 value={loginUser}
                 onChange={(e) => setLoginUser(e.target.value)}
-                placeholder="Enter username"
-                className="w-full bg-[#1c1b1b] border border-white/5 rounded-xl px-4 py-3 text-white text-xs focus:outline-none focus:border-[#d2f000]"
+                placeholder="Enter admin username"
+                className="w-full bg-surface-overlay border border-surface-border rounded-xl px-4 py-3 text-text-primary text-xs focus:outline-none focus:border-accent transition-colors"
               />
             </div>
             <div className="space-y-1">
-              <label className="text-[9px] font-bold text-on-surface-variant uppercase">Password</label>
+              <label className="text-[10px] font-bold text-text-secondary uppercase tracking-wider">Password</label>
               <input 
                 type="password"
+                required
                 value={loginPass}
                 onChange={(e) => setLoginPass(e.target.value)}
-                placeholder="Enter password"
-                className="w-full bg-[#1c1b1b] border border-white/5 rounded-xl px-4 py-3 text-white text-xs focus:outline-none focus:border-[#d2f000] font-mono"
+                placeholder="Enter security passcode"
+                className="w-full bg-surface-overlay border border-surface-border rounded-xl px-4 py-3 text-text-primary text-xs focus:outline-none focus:border-accent transition-colors font-mono"
               />
             </div>
             <button 
               type="submit"
-              className="w-full bg-[#d2f000] text-black font-bold py-3.5 rounded-xl hover:shadow-[0_0_20px_#d2f000] active:scale-98 transition-all duration-300 text-xs uppercase tracking-wider mt-4"
+              className="w-full bg-accent text-accent-text font-bold py-3.5 rounded-xl hover:bg-accent-dim active:scale-95 transition-all text-xs uppercase tracking-wider mt-4"
             >
               Sign In
             </button>
@@ -539,19 +539,19 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-white flex font-sans overflow-hidden">
+    <div className="min-h-screen bg-surface-base text-text-primary flex flex-col md:flex-row font-body overflow-hidden">
       <div className="ambient-bg" />
       
       {/* 1. LEFT Command Sidebar */}
-      <div className="w-64 border-r border-white/5 bg-surface-container-low shrink-0 p-6 flex flex-col justify-between select-none">
+      <div className="w-full md:w-64 border-r border-surface-border bg-surface-raised shrink-0 p-6 flex flex-col justify-between select-none relative z-20">
         <div className="space-y-8">
           
           {/* Logo Branding */}
           <div>
-            <div className="text-xl font-bold tracking-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-              BRO<span className="text-[#d2f000]">JIX</span>
+            <div className="text-2xl font-bold tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
+              BRO<span className="text-accent">JIX</span>
             </div>
-            <span className="text-[9px] uppercase tracking-widest text-on-surface-variant font-bold">Admin command deck</span>
+            <span className="text-[10px] uppercase tracking-widest text-text-secondary font-bold block mt-1">Admin command deck</span>
           </div>
 
           {/* Navigation Links */}
@@ -560,24 +560,24 @@ export default function AdminDashboard() {
               { id: 'projects', label: 'Projects Registry', icon: Layers },
               { id: 'links', label: 'Secure Access Keys', icon: LinkIcon },
               { id: 'crm', label: 'Feedback CRM', icon: MessageSquare },
-              { id: 'analytics', label: 'Satisfaction Analytics', icon: TrendingUp },
-              { id: 'notifications', label: 'System Logs', icon: Bell, count: notifications.length }
+              { id: 'analytics', label: 'Satisfaction Stats', icon: TrendingUp },
+              { id: 'notifications', label: 'System Alert Logs', icon: Bell, count: notifications.length }
             ].map(tab => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`w-full px-4 py-3 rounded-xl text-xs font-bold transition-all flex items-center justify-between group ${
+                className={`w-full px-4 py-3.5 rounded-xl text-xs font-bold transition-all flex items-center justify-between group ${
                   activeTab === tab.id
-                    ? 'bg-[#d2f000]/10 border-l-2 border-[#d2f000] text-[#d2f000]'
-                    : 'text-on-surface-variant hover:bg-white/[0.02] hover:text-white'
+                    ? 'bg-accent/10 border border-accent/20 text-accent'
+                    : 'text-text-secondary hover:bg-surface-overlay hover:text-text-primary'
                 }`}
               >
                 <div className="flex items-center gap-2.5">
-                  <tab.icon className={`w-4 h-4 transition-colors ${activeTab === tab.id ? 'text-[#d2f000]' : 'text-on-surface-variant group-hover:text-white'}`} />
+                  <tab.icon className={`w-4 h-4 transition-colors ${activeTab === tab.id ? 'text-accent' : 'text-text-secondary group-hover:text-text-primary'}`} />
                   <span>{tab.label}</span>
                 </div>
                 {tab.count > 0 && (
-                  <span className="bg-[#d2f000] text-black text-[9px] px-2 py-0.5 rounded-full font-bold">
+                  <span className="bg-accent text-accent-text text-[9px] px-2 py-0.5 rounded-full font-bold">
                     {tab.count}
                   </span>
                 )}
@@ -587,19 +587,19 @@ export default function AdminDashboard() {
         </div>
 
         {/* User profile footer */}
-        <div className="border-t border-white/5 pt-4 flex items-center justify-between">
+        <div className="border-t border-surface-border pt-4 mt-6 md:mt-0 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-full bg-[#d2f000]/10 border border-[#d2f000]/20 flex items-center justify-center text-xs font-bold text-[#d2f000]">
+            <div className="w-9 h-9 rounded-full bg-accent-surface border border-accent-border flex items-center justify-center text-xs font-bold text-accent">
               LK
             </div>
             <div>
-              <div className="text-xs font-semibold">Likith Kumar</div>
-              <div className="text-[9px] text-on-surface-variant uppercase tracking-wider font-bold">Director</div>
+              <div className="text-xs font-semibold text-text-primary">Likith Kumar</div>
+              <div className="text-[9px] text-text-secondary uppercase tracking-wider font-bold">Director</div>
             </div>
           </div>
           <button 
             onClick={handleLogout}
-            className="p-2 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 text-on-surface-variant hover:text-red-400 rounded-xl transition-all"
+            className="p-2 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 text-text-secondary hover:text-red-400 rounded-xl transition-all"
             title="Log Out of Command Center"
           >
             <LogOut className="w-4 h-4" />
@@ -609,34 +609,32 @@ export default function AdminDashboard() {
       </div>
 
       {/* 2. MAIN Canvas Display */}
-      <div className="flex-grow overflow-y-auto px-8 py-10 relative">
-        <div className="absolute top-1/4 right-1/4 w-[400px] h-[400px] bg-[#d2f000]/[0.015] rounded-full blur-[100px] pointer-events-none"></div>
-
+      <div className="flex-grow overflow-y-auto px-6 md:px-10 py-8 relative">
         <div className="max-w-6xl mx-auto space-y-8 relative z-10">
           
           {/* Header Stats */}
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-              <h1 className="text-2xl font-bold tracking-tight capitalize" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                {activeTab} Workspace
+              <h1 className="text-3xl tracking-tight capitalize text-text-primary" style={{ fontFamily: "var(--font-display)" }}>
+                {activeTab === 'crm' ? 'Feedback CRM' : activeTab === 'links' ? 'Secure Access' : activeTab === 'analytics' ? 'Satisfaction Stats' : `${activeTab} Registry`}
               </h1>
-              <p className="text-[10px] text-on-surface-variant uppercase tracking-widest font-bold">Manage channels and deliverables</p>
+              <p className="text-[10px] text-text-secondary uppercase tracking-widest font-bold mt-1">Manage channels and deliverables</p>
             </div>
             
-            <div className="flex gap-2">
+            <div className="flex gap-2 w-full sm:w-auto">
               <button 
                 onClick={loadDatabase}
-                className="p-2.5 bg-white/5 border border-white/10 hover:border-[#d2f000]/20 rounded-xl text-on-surface-variant hover:text-white transition-colors"
+                className="p-2.5 bg-surface-raised border border-surface-border hover:border-accent/40 rounded-xl text-text-secondary hover:text-text-primary transition-all flex items-center justify-center"
                 title="Force DB sync"
               >
-                <Check className="w-4 h-4" />
+                <RefreshCw className="w-4 h-4" />
               </button>
               {activeTab === 'crm' && (
                 <button 
                   onClick={handleExportData}
-                  className="bg-white/5 border border-white/10 hover:border-[#d2f000]/20 px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 hover:bg-white/10 transition-colors"
+                  className="bg-surface-raised border border-surface-border hover:border-accent/40 px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 hover:bg-surface-overlay transition-all"
                 >
-                  <Download className="w-4 h-4 text-[#d2f000]" /> Export CSV
+                  <Download className="w-4 h-4 text-accent" /> Export CSV
                 </button>
               )}
             </div>
@@ -647,23 +645,23 @@ export default function AdminDashboard() {
             <div className="space-y-6">
               
               {/* Filter bar */}
-              <div className="flex flex-col sm:flex-row gap-3 justify-between items-center bg-white/[0.01] border border-white/5 p-4 rounded-2xl">
+              <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-surface-raised border border-surface-border p-4 rounded-2xl">
                 <div className="relative w-full sm:max-w-xs">
-                  <Search className="absolute left-3.5 top-3 w-4 h-4 text-on-surface-variant" />
+                  <Search className="absolute left-3.5 top-3 w-4 h-4 text-text-secondary" />
                   <input 
                     type="text"
                     placeholder="Search projects..."
                     value={projectSearch}
                     onChange={(e) => setProjectSearch(e.target.value)}
-                    className="w-full bg-background border border-white/5 rounded-xl pl-10 pr-4 py-2 text-xs focus:outline-none focus:border-[#d2f000] transition-colors"
+                    className="w-full bg-surface-base border border-surface-border rounded-xl pl-10 pr-4 py-2.5 text-xs text-text-primary focus:outline-none focus:border-accent transition-colors"
                   />
                 </div>
 
-                <div className="flex gap-2 w-full sm:w-auto">
+                <div className="flex flex-wrap sm:flex-nowrap gap-2 w-full sm:w-auto">
                   <select
                     value={projectStatusFilter}
                     onChange={(e) => setProjectStatusFilter(e.target.value)}
-                    className="bg-background border border-white/5 rounded-xl px-4 py-2.5 text-xs text-on-surface-variant focus:outline-none focus:border-[#d2f000]"
+                    className="bg-surface-base border border-surface-border rounded-xl px-4 py-2.5 text-xs text-text-secondary focus:outline-none focus:border-accent transition-all cursor-pointer"
                   >
                     <option value="All">All Statuses</option>
                     <option value="In Progress">In Progress</option>
@@ -673,7 +671,7 @@ export default function AdminDashboard() {
 
                   <button
                     onClick={() => setIsCreatingProject(true)}
-                    className="bg-[#d2f000] text-black font-bold px-4 py-2.5 rounded-xl text-xs flex items-center gap-1.5 hover:shadow-[0_0_15px_#d2f000] active:scale-95 transition-all"
+                    className="bg-accent text-accent-text font-bold px-4 py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 hover:bg-accent-dim transition-all w-full sm:w-auto"
                   >
                     <Plus className="w-4 h-4" /> Add Project
                   </button>
@@ -685,47 +683,47 @@ export default function AdminDashboard() {
                 {filteredProjects.map(p => (
                   <div 
                     key={p.id}
-                    className="backdrop-blur-xl bg-white/[0.01] border border-white/5 hover:border-white/10 rounded-2xl p-5 flex flex-col justify-between shadow-lg relative overflow-hidden transition-all duration-300 group"
+                    className="bg-surface-raised border border-surface-border hover:border-accent-border rounded-2xl p-5 flex flex-col justify-between shadow-lg relative overflow-hidden transition-all duration-300 group"
                   >
                     {/* Glowing Accent strip */}
                     <div 
-                      className="absolute top-0 left-0 right-0 h-1"
+                      className="absolute top-0 left-0 right-0 h-1.5"
                       style={{ backgroundColor: p.project_color || '#d2f000' }}
                     />
 
-                    <div className="space-y-4">
-                      <div className="flex justify-between items-start">
+                    <div className="space-y-4 pt-1">
+                      <div className="flex justify-between items-start gap-2">
                         <div>
-                          <div className="text-[8px] font-mono text-on-surface-variant">{p.id}</div>
-                          <h3 className="font-bold text-white group-hover:text-[#d2f000] transition-colors text-sm line-clamp-1">{p.topic}</h3>
+                          <div className="text-[10px] font-mono text-text-secondary">{p.id}</div>
+                          <h3 className="font-bold text-text-primary group-hover:text-accent transition-colors text-sm line-clamp-1 mt-0.5">{p.topic}</h3>
                         </div>
-                        <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${
+                        <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
                           p.priority === 'High' ? 'bg-red-500/10 text-red-400 border border-red-500/20' :
-                          p.priority === 'Low' ? 'bg-white/5 text-on-surface-variant border border-white/5' :
+                          p.priority === 'Low' ? 'bg-surface-overlay text-text-secondary border border-surface-border' :
                           'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20'
                         }`}>
                           {p.priority}
                         </span>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-3 text-xs border-y border-white/[0.03] py-3 text-on-surface-variant font-mono">
+                      <div className="grid grid-cols-2 gap-3 text-xs border-y border-surface-border py-3 text-text-secondary font-mono">
                         <div>
-                          <span className="text-[8px] text-on-surface-variant block uppercase">Client</span>
-                          <span className="font-semibold text-white">{p.name}</span>
+                          <span className="text-[10px] text-text-muted block uppercase">Client</span>
+                          <span className="font-semibold text-text-primary">{p.name}</span>
                         </div>
                         <div>
-                          <span className="text-[8px] text-on-surface-variant block uppercase">Service</span>
-                          <span className="font-semibold text-white">{p.service}</span>
+                          <span className="text-[10px] text-text-muted block uppercase">Service</span>
+                          <span className="font-semibold text-text-primary">{p.service}</span>
                         </div>
                       </div>
 
                       {/* Progress Bar */}
                       <div className="space-y-1">
-                        <div className="flex justify-between text-[9px] text-on-surface-variant">
+                        <div className="flex justify-between text-[10px] text-text-secondary">
                           <span>Build Progress</span>
-                          <span className="font-bold">{p.progress}%</span>
+                          <span className="font-bold text-text-primary">{p.progress}%</span>
                         </div>
-                        <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                        <div className="w-full h-1.5 bg-surface-overlay rounded-full overflow-hidden border border-surface-border/50">
                           <div 
                             className="h-full rounded-full transition-all duration-500" 
                             style={{ 
@@ -737,25 +735,25 @@ export default function AdminDashboard() {
                       </div>
                     </div>
 
-                    <div className="flex justify-between items-center pt-4 mt-4 border-t border-white/[0.03]">
-                      <span className={`text-[10px] font-bold ${
+                    <div className="flex justify-between items-center pt-4 mt-4 border-t border-surface-border">
+                      <span className={`text-[11px] font-bold ${
                         p.status === 'Completed' ? 'text-emerald-400' :
-                        p.status === 'Cancelled' ? 'text-red-400' : 'text-[#d2f000]'
+                        p.status === 'Cancelled' ? 'text-red-400' : 'text-accent'
                       }`}>
                         ● {p.status}
                       </span>
 
-                      <div className="flex gap-1.5 opacity-60 group-hover:opacity-100 transition-opacity">
+                      <div className="flex gap-1.5">
                         <button
                           onClick={() => selectProjectForEdit(p)}
-                          className="p-1.5 bg-white/5 border border-white/10 hover:border-[#d2f000]/20 rounded-lg hover:text-[#d2f000] transition-colors"
+                          className="p-2 bg-surface-overlay border border-surface-border hover:border-accent-border rounded-lg text-text-primary hover:text-accent transition-colors"
                           title="Edit database parameters"
                         >
                           <Sliders className="w-3.5 h-3.5" />
                         </button>
                         <button
                           onClick={() => removeProject(p.id)}
-                          className="p-1.5 bg-white/5 border border-white/10 hover:border-red-500/20 rounded-lg hover:text-red-400 transition-colors"
+                          className="p-2 bg-surface-overlay border border-surface-border hover:border-red-500/40 rounded-lg text-text-primary hover:text-red-400 transition-colors"
                           title="Purge project record"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -776,17 +774,17 @@ export default function AdminDashboard() {
               
               {/* Link Creator Form (5 Columns) */}
               <div className="lg:col-span-5">
-                <form onSubmit={handleGenerateFeedbackLink} className="backdrop-blur-xl bg-white/[0.01] border border-white/5 p-6 rounded-3xl space-y-4 shadow-xl">
-                  <h3 className="text-lg font-bold text-white tracking-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>Secure Link Builder</h3>
-                  <p className="text-[10px] text-on-surface-variant leading-relaxed">Assign a unique access key token to allow client evaluation logs without authentication sessions.</p>
+                <form onSubmit={handleGenerateFeedbackLink} className="bg-surface-raised border border-surface-border p-6 rounded-2xl space-y-4 shadow-xl">
+                  <h3 className="text-lg font-bold text-text-primary tracking-tight" style={{ fontFamily: "var(--font-display)" }}>Secure Link Builder</h3>
+                  <p className="text-xs text-text-secondary leading-relaxed">Assign a unique access key token to allow client evaluation logs without authentication sessions.</p>
 
-                  <div className="space-y-3.5 pt-2">
+                  <div className="space-y-4 pt-2">
                     <div className="space-y-1">
-                      <label className="text-[9px] font-bold text-on-surface-variant uppercase">Target Project</label>
+                      <label className="text-xs font-bold text-text-secondary uppercase">Target Project</label>
                       <select
                         value={linkProject}
                         onChange={(e) => setLinkProject(e.target.value)}
-                        className="w-full bg-background border border-white/5 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#d2f000]"
+                        className="w-full bg-surface-base border border-surface-border rounded-xl px-4 py-3 text-xs text-text-primary focus:outline-none focus:border-accent transition-colors"
                       >
                         <option value="">Select project...</option>
                         {projects.map(p => (
@@ -796,39 +794,39 @@ export default function AdminDashboard() {
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[9px] font-bold text-on-surface-variant uppercase">Expiry Date (Optional)</label>
+                      <label className="text-xs font-bold text-text-secondary uppercase">Expiry Date (Optional)</label>
                       <input 
                         type="date"
                         value={linkExpiry}
                         onChange={(e) => setLinkExpiry(e.target.value)}
-                        className="w-full bg-background border border-white/5 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#d2f000]"
+                        className="w-full bg-surface-base border border-surface-border rounded-xl px-4 py-3 text-xs text-text-primary focus:outline-none focus:border-accent transition-colors"
                       />
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[9px] font-bold text-on-surface-variant uppercase">Secure Passcode (Optional)</label>
+                      <label className="text-xs font-bold text-text-secondary uppercase">Secure Passcode (Optional)</label>
                       <input 
                         type="password"
                         placeholder="Define link passcode"
                         value={linkPassword}
                         onChange={(e) => setLinkPassword(e.target.value)}
-                        className="w-full bg-background border border-white/5 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#d2f000] font-mono"
+                        className="w-full bg-surface-base border border-surface-border rounded-xl px-4 py-3 text-xs text-text-primary focus:outline-none focus:border-accent transition-colors font-mono"
                       />
                     </div>
 
-                    <label className="flex items-center gap-2 cursor-pointer select-none py-1">
+                    <label className="flex items-center gap-2.5 cursor-pointer select-none py-1">
                       <input 
                         type="checkbox"
                         checked={linkOneTime}
                         onChange={(e) => setLinkOneTime(e.target.checked)}
-                        className="accent-[#d2f000] rounded"
+                        className="accent-accent w-4 h-4 rounded border-surface-border bg-surface-base focus:ring-0"
                       />
-                      <span className="text-[10px] text-on-surface-variant font-medium">Deactivate key after submission (one-time use)</span>
+                      <span className="text-xs text-text-secondary font-medium">Deactivate key after submission (one-time use)</span>
                     </label>
 
                     <button 
                       type="submit"
-                      className="w-full bg-[#d2f000] text-black font-bold py-3.5 rounded-xl hover:shadow-[0_0_15px_#d2f000] active:scale-95 transition-all text-xs uppercase tracking-wider"
+                      className="w-full bg-accent text-accent-text font-bold py-3.5 rounded-xl hover:bg-accent-dim active:scale-95 transition-all text-xs uppercase tracking-wider"
                     >
                       Authorize Access Key
                     </button>
@@ -838,10 +836,10 @@ export default function AdminDashboard() {
 
               {/* Links Deck (7 Columns) */}
               <div className="lg:col-span-7 space-y-4">
-                <h3 className="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Active Token Ledgers</h3>
+                <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider">Active Token Ledgers</h3>
 
                 {feedbackLinks.length === 0 ? (
-                  <div className="border border-dashed border-white/5 rounded-3xl p-8 text-center text-on-surface-variant text-xs">
+                  <div className="border border-dashed border-surface-border rounded-2xl p-8 text-center text-text-secondary text-xs">
                     No active tokens generated yet. Use the Link Builder on the left to start.
                   </div>
                 ) : (
@@ -852,23 +850,23 @@ export default function AdminDashboard() {
                       return (
                         <div 
                           key={l.id}
-                          className="backdrop-blur-xl bg-white/[0.01] border border-white/5 rounded-2xl p-4 flex items-center justify-between hover:border-white/10 transition-colors"
+                          className="bg-surface-raised border border-surface-border rounded-xl p-4 flex items-center justify-between hover:border-accent-border transition-colors"
                         >
                           <div className="space-y-1">
                             <div className="flex items-center gap-2">
-                              <span className="text-xs font-bold text-[#d2f000] font-mono">{l.token}</span>
-                              <span className={`text-[8px] font-bold px-2 py-0.5 rounded-full ${
+                              <span className="text-xs font-bold text-accent font-mono">{l.token}</span>
+                              <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${
                                 l.is_disabled || isExpired ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
                               }`}>
                                 {l.is_disabled ? 'Disabled' : isExpired ? 'Expired' : 'Active'}
                               </span>
                             </div>
-                            <p className="text-[10px] text-on-surface-variant font-medium">
-                              Project: <strong className="text-white">"{matchedProj?.topic || l.project_id}"</strong>
+                            <p className="text-xs text-text-secondary font-medium">
+                              Project: <strong className="text-text-primary">"{matchedProj?.topic || l.project_id}"</strong>
                             </p>
-                            <div className="text-[9px] text-on-surface-variant font-mono space-y-0.5">
+                            <div className="text-[10px] text-text-secondary font-mono space-y-0.5">
                               {l.expiry_date && <div>Expires: {new Date(l.expiry_date).toLocaleDateString()}</div>}
-                              {l.password && <div className="text-[#d2f000]/70 font-semibold">🔒 Protected</div>}
+                              {l.password && <div className="text-accent/80 font-semibold">🔒 Protected</div>}
                             </div>
                           </div>
 
@@ -879,14 +877,14 @@ export default function AdminDashboard() {
                                 navigator.clipboard.writeText(url);
                                 toast.success("Copied to clipboard!");
                               }}
-                              className="p-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-white transition-colors"
+                              className="p-2 bg-surface-overlay hover:bg-surface-high border border-surface-border rounded-xl text-text-primary transition-colors"
                               title="Copy secure URL link"
                             >
                               <Copy className="w-3.5 h-3.5" />
                             </button>
                             <button
                               onClick={() => toggleLinkState(l)}
-                              className="p-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-white transition-colors"
+                              className="p-2 bg-surface-overlay hover:bg-surface-high border border-surface-border rounded-xl text-text-primary transition-colors"
                               title={l.is_disabled ? "Enable link access" : "Disable link access"}
                             >
                               <RefreshCw className="w-3.5 h-3.5" />
@@ -908,19 +906,19 @@ export default function AdminDashboard() {
               
               {/* Search filter */}
               <div className="relative max-w-xs">
-                <Search className="absolute left-3.5 top-3 w-4 h-4 text-on-surface-variant" />
+                <Search className="absolute left-3.5 top-3 w-4 h-4 text-text-secondary" />
                 <input 
                   type="text"
                   placeholder="Filter reviews by client name..."
                   value={crmSearch}
                   onChange={(e) => setCrmSearch(e.target.value)}
-                  className="w-full bg-background border border-white/5 rounded-xl pl-10 pr-4 py-2 text-xs focus:outline-none focus:border-[#d2f000]"
+                  className="w-full bg-surface-raised border border-surface-border rounded-xl pl-10 pr-4 py-2.5 text-xs text-text-primary focus:outline-none focus:border-accent"
                 />
               </div>
 
               {/* Feed Grid */}
               {feedbackList.length === 0 ? (
-                <div className="border border-dashed border-white/5 rounded-3xl p-12 text-center text-on-surface-variant text-xs">
+                <div className="border border-dashed border-surface-border rounded-2xl p-12 text-center text-text-secondary text-xs">
                   No feedback submissions registered in CRM yet.
                 </div>
               ) : (
@@ -931,26 +929,26 @@ export default function AdminDashboard() {
                       <div 
                         key={f.id}
                         onClick={() => setSelectedFeedback(f)}
-                        className="backdrop-blur-xl bg-white/[0.01] border border-white/5 hover:border-white/10 rounded-2xl p-5 space-y-4 shadow-lg hover:shadow-[0_0_15px_rgba(223,255,0,0.02)] cursor-pointer transition-all duration-300"
+                        className="bg-surface-raised border border-surface-border hover:border-accent-border rounded-2xl p-5 space-y-4 shadow-lg hover:shadow-2xl cursor-pointer transition-all duration-300"
                       >
                         <div className="flex justify-between items-start">
                           <div>
-                            <h4 className="font-bold text-white">{f.client_name}</h4>
-                            <span className="text-[9px] text-on-surface-variant font-mono">{new Date(f.created_at).toLocaleDateString()}</span>
+                            <h4 className="font-bold text-text-primary text-sm">{f.client_name}</h4>
+                            <span className="text-[10px] text-text-secondary font-mono">{new Date(f.created_at).toLocaleDateString()}</span>
                           </div>
                           
-                          <div className="flex items-center gap-1 bg-[#d2f000]/10 border border-[#d2f000]/20 px-2.5 py-0.5 rounded-full text-xs font-bold text-[#d2f000]">
-                            <span>{f.overall_rating}</span> <Star className="w-3 h-3 fill-[#d2f000] stroke-[#d2f000]" />
+                          <div className="flex items-center gap-1 bg-accent/10 border border-accent/20 px-2.5 py-0.5 rounded-full text-xs font-bold text-accent">
+                            <span>{f.overall_rating}</span> <Star className="w-3 h-3 fill-accent stroke-accent" />
                           </div>
                         </div>
 
-                        <p className="text-xs text-on-surface-variant line-clamp-2 leading-relaxed">
-                          {f.testimonial || "No written testimonial provided."}
+                        <p className="text-xs text-text-secondary line-clamp-2 leading-relaxed italic">
+                          "{f.testimonial || "No written testimonial provided."}"
                         </p>
 
-                        <div className="flex justify-between items-center text-[10px] text-on-surface-variant font-mono pt-3 border-t border-white/[0.03]">
-                          <span>NPS Class: <strong className="text-white">{f.nps_class}</strong></span>
-                          {f.allow_public_use && <span className="text-[#d2f000] font-bold">✓ Featured</span>}
+                        <div className="flex justify-between items-center text-[10px] text-text-secondary font-mono pt-3 border-t border-surface-border">
+                          <span>NPS Class: <strong className="text-text-primary">{f.nps_class}</strong></span>
+                          {f.allow_public_use && <span className="text-accent font-bold">✓ Featured</span>}
                         </div>
                       </div>
                     ))}
@@ -966,50 +964,49 @@ export default function AdminDashboard() {
               
               {/* Analytics Metric Highlights */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-                <div className="backdrop-blur-xl bg-white/[0.01] border border-white/5 p-6 rounded-2xl text-center space-y-2">
-                  <span className="text-[9px] text-on-surface-variant font-bold uppercase tracking-widest block">Average Satisfaction</span>
-                  <div className="text-4xl font-extrabold text-white font-mono">{avgSatisfaction} <span className="text-xs text-on-surface-variant">/ 10</span></div>
-                  <p className="text-[8px] text-on-surface-variant">Across all submitted client evaluation sheets.</p>
+                <div className="bg-surface-raised border border-surface-border p-6 rounded-2xl text-center space-y-2">
+                  <span className="text-[10px] text-text-secondary font-bold uppercase tracking-widest block">Average Satisfaction</span>
+                  <div className="text-4xl font-extrabold text-text-primary font-mono">{avgSatisfaction} <span className="text-xs text-text-secondary">/ 10</span></div>
+                  <p className="text-[10px] text-text-muted">Across all submitted evaluation sheets.</p>
                 </div>
 
-                <div className="backdrop-blur-xl bg-white/[0.01] border border-white/5 p-6 rounded-2xl text-center space-y-2">
-                  <span className="text-[9px] text-[#d2f000] font-bold uppercase tracking-widest block">Net Promoter Score</span>
-                  <div className="text-4xl font-extrabold text-[#d2f000] font-mono">{npsScoreMetric}</div>
-                  <p className="text-[8px] text-on-surface-variant">Scale: -100 to +100. Over +50 is world-class.</p>
+                <div className="bg-surface-raised border border-surface-border p-6 rounded-2xl text-center space-y-2">
+                  <span className="text-[10px] text-accent font-bold uppercase tracking-widest block">Net Promoter Score</span>
+                  <div className="text-4xl font-extrabold text-accent font-mono">{npsScoreMetric}</div>
+                  <p className="text-[10px] text-text-muted">Scale: -100 to +100. Over +50 is world-class.</p>
                 </div>
 
-                <div className="backdrop-blur-xl bg-white/[0.01] border border-white/5 p-6 rounded-2xl text-center space-y-2">
-                  <span className="text-[9px] text-secondary font-bold uppercase tracking-widest block">Response Volume</span>
-                  <div className="text-4xl font-extrabold text-white font-mono">{feedbackList.length}</div>
-                  <p className="text-[8px] text-on-surface-variant">Completed feedback cycles registered.</p>
+                <div className="bg-surface-raised border border-surface-border p-6 rounded-2xl text-center space-y-2">
+                  <span className="text-[10px] text-text-secondary font-bold uppercase tracking-widest block">Response Volume</span>
+                  <div className="text-4xl font-extrabold text-text-primary font-mono">{feedbackList.length}</div>
+                  <p className="text-[10px] text-text-muted">Completed feedback cycles registered.</p>
                 </div>
               </div>
 
               {/* Chart panels */}
               {feedbackList.length === 0 ? (
-                <div className="border border-dashed border-white/5 rounded-3xl p-12 text-center text-on-surface-variant text-xs">
-                  Aggregate satisfaction charts require database logs. Run feedback submissions to visualize charts.
+                <div className="border border-dashed border-surface-border rounded-2xl p-12 text-center text-text-secondary text-xs">
+                  Aggregate satisfaction charts require database logs to visualize.
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   
                   {/* Satisfaction Over Time */}
-                  <div className="backdrop-blur-xl bg-white/[0.01] border border-white/5 p-5 rounded-2xl space-y-4">
-                    <h4 className="text-xs font-bold uppercase tracking-wider">Satisfaction Trend Line</h4>
+                  <div className="bg-surface-raised border border-surface-border p-5 rounded-2xl space-y-4">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-text-secondary">Satisfaction Trend Line</h4>
                     <div className="h-60">
                       <ResponsiveContainer width="100%" height="100%">
                         <LineChart data={feedbackList.map((f, i) => ({ index: i + 1, score: Number(f.overall_rating) }))}>
                           <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.03)" />
                           <XAxis dataKey="index" stroke="rgba(255,255,255,0.4)" fontSize={9} />
                           <YAxis domain={[0, 10]} stroke="rgba(255,255,255,0.4)" fontSize={9} />
-                          <Tooltip contentStyle={{ backgroundColor: '#1c1b1b', border: '1px solid rgba(255,255,255,0.1)', color: '#fff' }} />
+                          <Tooltip contentStyle={{ backgroundColor: '#131720', border: '1px solid var(--surface-border)', color: '#f0ede8' }} />
                           <Line 
                             type="monotone" 
                             dataKey="score" 
                             stroke="#d2f000" 
                             strokeWidth={3} 
                             activeDot={{ r: 8 }} 
-                            filter="drop-shadow(0 0 8px #d2f000)"
                           />
                         </LineChart>
                       </ResponsiveContainer>
@@ -1017,8 +1014,8 @@ export default function AdminDashboard() {
                   </div>
 
                   {/* NPS Breakdown */}
-                  <div className="backdrop-blur-xl bg-white/[0.01] border border-white/5 p-5 rounded-2xl space-y-4">
-                    <h4 className="text-xs font-bold uppercase tracking-wider">NPS Recommendation Categories</h4>
+                  <div className="bg-surface-raised border border-surface-border p-5 rounded-2xl space-y-4">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-text-secondary">NPS Recommendation Categories</h4>
                     <div className="h-60">
                       <ResponsiveContainer width="100%" height="100%">
                         <PieChart>
@@ -1036,10 +1033,10 @@ export default function AdminDashboard() {
                             dataKey="value"
                           >
                             <Cell fill="#d2f000" />
-                            <Cell fill="#64748b" />
+                            <Cell fill="#4f5f72" />
                             <Cell fill="#ef4444" />
                           </Pie>
-                          <Tooltip contentStyle={{ backgroundColor: '#1c1b1b', border: '1px solid rgba(255,255,255,0.1)' }} />
+                          <Tooltip contentStyle={{ backgroundColor: '#131720', border: '1px solid var(--surface-border)' }} />
                           <Legend verticalAlign="bottom" height={36} wrapperStyle={{ fontSize: '10px' }} />
                         </PieChart>
                       </ResponsiveContainer>
@@ -1056,7 +1053,7 @@ export default function AdminDashboard() {
           {activeTab === 'notifications' && (
             <div className="space-y-4 max-w-2xl mx-auto">
               <div className="flex justify-between items-center">
-                <h3 className="text-xs font-bold text-on-surface-variant uppercase tracking-wider">System Event Ledger</h3>
+                <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider">System Event Ledger</h3>
                 {notifications.length > 0 && (
                   <button
                     onClick={async () => {
@@ -1075,7 +1072,7 @@ export default function AdminDashboard() {
               </div>
 
               {notifications.length === 0 ? (
-                <div className="border border-dashed border-white/5 rounded-3xl p-12 text-center text-on-surface-variant text-xs">
+                <div className="border border-dashed border-surface-border rounded-2xl p-12 text-center text-text-secondary text-xs">
                   No new system alerts logged.
                 </div>
               ) : (
@@ -1083,13 +1080,13 @@ export default function AdminDashboard() {
                   {notifications.map(n => (
                     <div 
                       key={n.id}
-                      className="backdrop-blur-xl bg-white/[0.01] border border-white/5 rounded-xl p-4 flex gap-3.5 items-start"
+                      className="bg-surface-raised border border-surface-border rounded-xl p-4 flex gap-3.5 items-start"
                     >
-                      <div className="w-1.5 h-1.5 bg-[#d2f000] rounded-full mt-1.5 shrink-0" />
+                      <div className="w-1.5 h-1.5 bg-accent rounded-full mt-1.5 shrink-0" />
                       <div className="space-y-1">
-                        <h4 className="text-xs font-bold text-white">{n.title}</h4>
-                        <p className="text-[10px] text-on-surface-variant leading-relaxed">{n.message}</p>
-                        <span className="text-[8px] text-on-surface-variant font-mono block pt-1">{new Date(n.created_at).toLocaleString()}</span>
+                        <h4 className="text-xs font-bold text-text-primary">{n.title}</h4>
+                        <p className="text-[10px] text-text-secondary leading-relaxed">{n.message}</p>
+                        <span className="text-[9px] text-text-muted font-mono block pt-1">{new Date(n.created_at).toLocaleString()}</span>
                       </div>
                     </div>
                   ))}
@@ -1104,78 +1101,78 @@ export default function AdminDashboard() {
       {/* 3. NEW PROJECT DRAWER FORM MODAL */}
       <AnimatePresence>
         {isCreatingProject && (
-          <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-center justify-center p-4">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
-              className="bg-surface-container-low border border-white/10 rounded-3xl p-6 w-full max-w-md shadow-2xl relative"
+              className="bg-surface-raised border border-surface-border rounded-2xl p-6 w-full max-w-md shadow-2xl relative"
             >
               <button 
                 onClick={() => setIsCreatingProject(false)}
-                className="absolute top-4 right-4 text-on-surface-variant hover:text-white"
+                className="absolute top-4 right-4 text-text-secondary hover:text-text-primary transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
 
               <form onSubmit={handleCreateProject} className="space-y-4">
-                <h3 className="text-lg font-bold" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>Create Project Record</h3>
+                <h3 className="text-xl font-bold text-text-primary" style={{ fontFamily: "var(--font-display)" }}>Create Project Record</h3>
                 
                 <div className="space-y-3.5 pt-2">
                   <div className="space-y-1">
-                    <label className="text-xs font-bold text-slate-200 uppercase">Client Name</label>
+                    <label className="text-xs font-bold text-text-secondary uppercase">Client Name</label>
                     <input 
                       type="text"
                       required
                       placeholder="e.g. Alex Chen"
                       value={newProjectName}
                       onChange={(e) => setNewProjectName(e.target.value)}
-                      className="w-full bg-background border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#d2f000]"
+                      className="w-full bg-surface-base border border-surface-border rounded-xl px-4 py-3 text-xs text-text-primary focus:outline-none focus:border-accent transition-colors"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-xs font-bold text-slate-200 uppercase">Client WhatsApp Number</label>
+                    <label className="text-xs font-bold text-text-secondary uppercase">Client WhatsApp Number</label>
                     <input 
                       type="text"
                       required
                       placeholder="e.g. 919876543210"
                       value={newProjectWhatsapp}
                       onChange={(e) => setNewProjectWhatsapp(e.target.value)}
-                      className="w-full bg-background border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#d2f000]"
+                      className="w-full bg-surface-base border border-surface-border rounded-xl px-4 py-3 text-xs text-text-primary focus:outline-none focus:border-accent transition-colors"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-xs font-bold text-slate-200 uppercase">College / University</label>
+                    <label className="text-xs font-bold text-text-secondary uppercase">College / University</label>
                     <input 
                       type="text"
                       required
                       placeholder="e.g. Brojix Institute"
                       value={newProjectCollege}
                       onChange={(e) => setNewProjectCollege(e.target.value)}
-                      className="w-full bg-background border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#d2f000]"
+                      className="w-full bg-surface-base border border-surface-border rounded-xl px-4 py-3 text-xs text-text-primary focus:outline-none focus:border-accent transition-colors"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-xs font-bold text-slate-200 uppercase">Project Topic</label>
+                    <label className="text-xs font-bold text-text-secondary uppercase">Project Topic</label>
                     <input 
                       type="text"
                       required
                       placeholder="e.g. Portfolio Website"
                       value={newProjectTopic}
                       onChange={(e) => setNewProjectTopic(e.target.value)}
-                      className="w-full bg-background border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#d2f000]"
+                      className="w-full bg-surface-base border border-surface-border rounded-xl px-4 py-3 text-xs text-text-primary focus:outline-none focus:border-accent transition-colors"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-xs font-bold text-slate-200 uppercase">Service Type</label>
+                    <label className="text-xs font-bold text-text-secondary uppercase">Service Type</label>
                     <select
                       value={newProjectService}
                       onChange={(e) => setNewProjectService(e.target.value)}
-                      className="w-full bg-background border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#d2f000]"
+                      className="w-full bg-surface-base border border-surface-border rounded-xl px-4 py-3 text-xs text-text-primary focus:outline-none focus:border-accent transition-colors cursor-pointer"
                     >
                       <option value="Development">Custom Development</option>
                       <option value="Branding">Branding & Logo</option>
@@ -1186,29 +1183,29 @@ export default function AdminDashboard() {
 
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1">
-                      <label className="text-xs font-bold text-slate-200 uppercase">Budget (INR)</label>
+                      <label className="text-xs font-bold text-text-secondary uppercase">Budget (INR)</label>
                       <input 
                         type="number"
                         placeholder="10000"
                         value={newProjectBudget}
                         onChange={(e) => setNewProjectBudget(e.target.value)}
-                        className="w-full bg-background border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#d2f000]"
+                        className="w-full bg-surface-base border border-surface-border rounded-xl px-4 py-3 text-xs text-text-primary focus:outline-none focus:border-accent transition-colors"
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-xs font-bold text-slate-200 uppercase">Deadline Target</label>
+                      <label className="text-xs font-bold text-text-secondary uppercase">Deadline Target</label>
                       <input 
                         type="date"
                         value={newProjectDeadline}
                         onChange={(e) => setNewProjectDeadline(e.target.value)}
-                        className="w-full bg-background border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#d2f000]"
+                        className="w-full bg-surface-base border border-surface-border rounded-xl px-4 py-3 text-xs text-text-primary focus:outline-none focus:border-accent transition-colors"
                       />
                     </div>
                   </div>
 
                   <button 
                     type="submit"
-                    className="w-full bg-[#d2f000] text-black font-bold py-3.5 rounded-xl hover:shadow-[0_0_15px_#d2f000] active:scale-95 transition-all text-xs uppercase tracking-wider"
+                    className="w-full bg-accent text-accent-text font-bold py-3.5 rounded-xl hover:bg-accent-dim active:scale-95 transition-all text-xs uppercase tracking-wider mt-2"
                   >
                     Commit Project
                   </button>
@@ -1222,26 +1219,26 @@ export default function AdminDashboard() {
       {/* 4. DETAIL EDIT PROJECT DRAWER SIDE MODAL */}
       <AnimatePresence>
         {isEditingProject && selectedProject && (
-          <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex justify-end">
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex justify-end">
             <motion.div 
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="w-full max-w-lg bg-surface-container-low border-l border-white/10 p-6 md:p-8 flex flex-col justify-between overflow-y-auto"
+              className="w-full max-w-lg bg-surface-raised border-l border-surface-border p-6 md:p-8 flex flex-col justify-between overflow-y-auto"
             >
               <div className="space-y-6">
                 
                 {/* Header title */}
-                <div className="flex justify-between items-center pb-4 border-b border-white/5">
+                <div className="flex justify-between items-center pb-4 border-b border-surface-border">
                   <div>
-                    <span className="text-[8px] font-mono text-on-surface-variant">{selectedProject.id}</span>
-                    <h3 className="text-base font-bold text-white">{selectedProject.topic}</h3>
+                    <span className="text-[10px] font-mono text-text-secondary">{selectedProject.id}</span>
+                    <h3 className="text-lg font-bold text-text-primary" style={{ fontFamily: "var(--font-display)" }}>{selectedProject.topic}</h3>
                   </div>
                   
                   <button 
                     onClick={() => setIsEditingProject(false)}
-                    className="p-1.5 hover:bg-white/5 rounded-lg text-on-surface-variant hover:text-white transition-colors"
+                    className="p-1.5 hover:bg-surface-overlay rounded-lg text-text-secondary hover:text-text-primary transition-colors"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -1253,11 +1250,11 @@ export default function AdminDashboard() {
                   {/* Status, Priority & Member */}
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1">
-                      <label className="text-[9px] font-bold text-on-surface-variant uppercase">Build Status</label>
+                      <label className="text-xs font-bold text-text-secondary uppercase">Build Status</label>
                       <select
                         value={editStatus}
                         onChange={(e) => setEditStatus(e.target.value)}
-                        className="w-full bg-background border border-white/5 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#d2f000]"
+                        className="w-full bg-surface-base border border-surface-border rounded-xl px-3 py-2.5 text-xs text-text-primary focus:outline-none focus:border-accent"
                       >
                         <option value="In Progress">In Progress</option>
                         <option value="Completed">Completed</option>
@@ -1266,11 +1263,11 @@ export default function AdminDashboard() {
                     </div>
                     
                     <div className="space-y-1">
-                      <label className="text-[9px] font-bold text-on-surface-variant uppercase">Priority Grade</label>
+                      <label className="text-xs font-bold text-text-secondary uppercase">Priority Grade</label>
                       <select
                         value={editPriority}
                         onChange={(e) => setEditPriority(e.target.value)}
-                        className="w-full bg-background border border-white/5 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#d2f000]"
+                        className="w-full bg-surface-base border border-surface-border rounded-xl px-3 py-2.5 text-xs text-text-primary focus:outline-none focus:border-accent"
                       >
                         <option value="Low">Low</option>
                         <option value="Medium">Medium</option>
@@ -1281,23 +1278,23 @@ export default function AdminDashboard() {
 
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1">
-                      <label className="text-[9px] font-bold text-on-surface-variant uppercase">Build Progress (%)</label>
+                      <label className="text-xs font-bold text-text-secondary uppercase">Build Progress (%)</label>
                       <input 
                         type="number"
                         min="0"
                         max="100"
                         value={editProgress}
                         onChange={(e) => setEditProgress(e.target.value)}
-                        className="w-full bg-background border border-white/5 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#d2f000]"
+                        className="w-full bg-surface-base border border-surface-border rounded-xl px-3 py-2.5 text-xs text-text-primary focus:outline-none focus:border-accent"
                       />
                     </div>
                     
                     <div className="space-y-1">
-                      <label className="text-[9px] font-bold text-on-surface-variant uppercase">Assign Lead</label>
+                      <label className="text-xs font-bold text-text-secondary uppercase">Assign Lead</label>
                       <select
                         value={editAssignedMember}
                         onChange={(e) => setEditAssignedMember(e.target.value)}
-                        className="w-full bg-background border border-white/5 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#d2f000]"
+                        className="w-full bg-surface-base border border-surface-border rounded-xl px-3 py-2.5 text-xs text-text-primary focus:outline-none focus:border-accent"
                       >
                         <option value="">Unassigned</option>
                         {TEAM_MEMBERS.map(m => (
@@ -1308,68 +1305,68 @@ export default function AdminDashboard() {
                   </div>
 
                   {/* Financial Fields */}
-                  <div className="border-t border-white/5 pt-4 space-y-3">
-                    <span className="text-[9px] text-[#d2f000] font-bold uppercase tracking-wider block">Financial Calculations</span>
+                  <div className="border-t border-surface-border pt-4 space-y-3">
+                    <span className="text-[10px] text-accent font-bold uppercase tracking-wider block">Financial Calculations</span>
                     
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1">
-                        <label className="text-[9px] font-bold text-on-surface-variant uppercase">Total Budget (INR)</label>
+                        <label className="text-xs font-bold text-text-secondary uppercase">Total Budget (INR)</label>
                         <input 
                           type="number"
                           value={editBudget}
                           onChange={(e) => setEditBudget(Number(e.target.value))}
-                          className="w-full bg-background border border-white/5 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#d2f000]"
+                          className="w-full bg-surface-base border border-surface-border rounded-xl px-3 py-2.5 text-xs text-text-primary focus:outline-none focus:border-accent"
                         />
                       </div>
                       <div className="space-y-1">
-                        <label className="text-[9px] font-bold text-on-surface-variant uppercase">Advance Paid (INR)</label>
+                        <label className="text-xs font-bold text-text-secondary uppercase">Advance Paid (INR)</label>
                         <input 
                           type="number"
                           value={editAdvance}
                           onChange={(e) => setEditAdvance(Number(e.target.value))}
-                          className="w-full bg-background border border-white/5 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#d2f000]"
+                          className="w-full bg-surface-base border border-surface-border rounded-xl px-3 py-2.5 text-xs text-text-primary focus:outline-none focus:border-accent"
                         />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1">
-                        <label className="text-[9px] font-bold text-on-surface-variant uppercase">Discount Allowed (INR)</label>
+                        <label className="text-xs font-bold text-text-secondary uppercase">Discount Allowed (INR)</label>
                         <input 
                           type="number"
                           value={editDiscount}
                           onChange={(e) => setEditDiscount(Number(e.target.value))}
-                          className="w-full bg-background border border-white/5 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#d2f000]"
+                          className="w-full bg-surface-base border border-surface-border rounded-xl px-3 py-2.5 text-xs text-text-primary focus:outline-none focus:border-accent"
                         />
                       </div>
                       <div className="space-y-1">
-                        <label className="text-[9px] font-bold text-on-surface-variant uppercase">GST Surcharge (%)</label>
+                        <label className="text-xs font-bold text-text-secondary uppercase">GST Surcharge (%)</label>
                         <input 
                           type="number"
                           value={editGst}
                           onChange={(e) => setEditGst(Number(e.target.value))}
-                          className="w-full bg-background border border-white/5 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#d2f000]"
+                          className="w-full bg-surface-base border border-surface-border rounded-xl px-3 py-2.5 text-xs text-text-primary focus:outline-none focus:border-accent"
                         />
                       </div>
                     </div>
                   </div>
 
                   {/* Notes fields */}
-                  <div className="space-y-3 border-t border-white/5 pt-4">
+                  <div className="space-y-3 border-t border-surface-border pt-4">
                     <div className="space-y-1">
-                      <label className="text-[9px] font-bold text-on-surface-variant uppercase">Client Notes (Exposed)</label>
+                      <label className="text-xs font-bold text-text-secondary uppercase">Client Notes (Exposed)</label>
                       <textarea 
                         value={editNotes}
                         onChange={(e) => setEditNotes(e.target.value)}
-                        className="w-full bg-black border border-white/10 rounded-xl p-3 text-xs focus:outline-none focus:border-[#d2f000] min-h-[60px]"
+                        className="w-full bg-surface-base border border-surface-border rounded-xl p-3 text-xs text-text-primary focus:outline-none focus:border-accent min-h-[60px]"
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-[9px] font-bold text-on-surface-variant uppercase">Internal Team Notes (Protected)</label>
+                      <label className="text-xs font-bold text-text-secondary uppercase">Internal Team Notes (Protected)</label>
                       <textarea 
                         value={editInternalNotes}
                         onChange={(e) => setEditInternalNotes(e.target.value)}
-                        className="w-full bg-black border border-white/10 rounded-xl p-3 text-xs focus:outline-none focus:border-[#d2f000] min-h-[60px]"
+                        className="w-full bg-surface-base border border-surface-border rounded-xl p-3 text-xs text-text-primary focus:outline-none focus:border-accent min-h-[60px]"
                       />
                     </div>
                   </div>
@@ -1378,16 +1375,16 @@ export default function AdminDashboard() {
 
               </div>
 
-              <div className="flex gap-3 pt-6 border-t border-white/5 mt-6">
+              <div className="flex gap-3 pt-6 border-t border-surface-border mt-6">
                 <button
                   onClick={() => setIsEditingProject(false)}
-                  className="w-1/2 bg-white/5 border border-white/10 hover:bg-white/10 text-white font-bold py-3.5 rounded-xl text-xs uppercase"
+                  className="w-1/2 bg-surface-overlay border border-surface-border hover:bg-surface-high text-text-primary font-bold py-3.5 rounded-xl text-xs uppercase transition-all"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleSaveProject}
-                  className="w-1/2 bg-[#d2f000] text-black font-bold py-3.5 rounded-xl hover:shadow-[0_0_15px_#d2f000] text-xs uppercase"
+                  className="w-1/2 bg-accent text-accent-text font-bold py-3.5 rounded-xl hover:bg-accent-dim text-xs uppercase transition-all"
                 >
                   Commit Changes
                 </button>
@@ -1401,27 +1398,27 @@ export default function AdminDashboard() {
       {/* 5. FEEDBACK DETAILS MODAL DRAWER OVERLAY */}
       <AnimatePresence>
         {selectedFeedback && (
-          <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex justify-end" onClick={() => setSelectedFeedback(null)}>
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex justify-end" onClick={() => setSelectedFeedback(null)}>
             <motion.div 
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-lg bg-surface-container-low border-l border-white/10 p-6 md:p-8 flex flex-col justify-between overflow-y-auto"
+              className="w-full max-w-lg bg-surface-raised border-l border-surface-border p-6 md:p-8 flex flex-col justify-between overflow-y-auto"
             >
               <div className="space-y-6">
                 
                 {/* Header details */}
-                <div className="flex justify-between items-center pb-4 border-b border-white/5">
+                <div className="flex justify-between items-center pb-4 border-b border-surface-border">
                   <div>
-                    <span className="text-[8px] font-mono text-on-surface-variant">FEEDBACK LEDGER</span>
-                    <h3 className="text-base font-bold text-white">{selectedFeedback.client_name}</h3>
+                    <span className="text-[10px] font-mono text-text-secondary">FEEDBACK LEDGER</span>
+                    <h3 className="text-lg font-bold text-text-primary" style={{ fontFamily: "var(--font-display)" }}>{selectedFeedback.client_name}</h3>
                   </div>
 
                   <button 
                     onClick={() => setSelectedFeedback(null)}
-                    className="p-1.5 hover:bg-white/5 rounded-lg text-on-surface-variant hover:text-white transition-colors"
+                    className="p-1.5 hover:bg-surface-overlay rounded-lg text-text-secondary hover:text-text-primary transition-colors"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -1429,30 +1426,30 @@ export default function AdminDashboard() {
 
                 <div className="space-y-5 text-xs">
                   {/* Rating Overview */}
-                  <div className="flex justify-between items-center bg-[#d2f000]/5 border border-[#d2f000]/10 rounded-2xl p-4">
+                  <div className="flex justify-between items-center bg-accent-surface border border-accent-border rounded-xl p-4">
                     <div>
-                      <span className="text-[8px] text-on-surface-variant uppercase font-bold">Overall Rating</span>
-                      <div className="text-2xl font-extrabold text-[#d2f000] font-mono mt-1">
-                        {selectedFeedback.overall_rating} <span className="text-xs text-on-surface-variant font-medium">/ 10</span>
+                      <span className="text-[10px] text-text-secondary uppercase font-bold">Overall Rating</span>
+                      <div className="text-2xl font-extrabold text-accent font-mono mt-1">
+                        {selectedFeedback.overall_rating} <span className="text-xs text-text-secondary font-medium">/ 10</span>
                       </div>
                     </div>
 
                     <div className="text-right">
-                      <span className="text-[8px] text-on-surface-variant uppercase font-bold">NPS Class</span>
-                      <div className="text-sm font-extrabold text-white mt-1 uppercase tracking-wide">
+                      <span className="text-[10px] text-text-secondary uppercase font-bold">NPS Class</span>
+                      <div className="text-xs font-extrabold text-text-primary mt-1.5 uppercase tracking-wider bg-surface-base px-3 py-1 rounded-full border border-surface-border">
                         {selectedFeedback.nps_class}
                       </div>
                     </div>
                   </div>
 
                   {/* Public Testimonial block */}
-                  <div className="bg-white/[0.02] border border-white/5 p-4 rounded-xl space-y-2">
-                    <span className="text-[8px] text-on-surface-variant font-bold uppercase tracking-wider block">Verified Testimonial</span>
-                    <p className="text-xs text-white leading-relaxed italic">
+                  <div className="bg-surface-base border border-surface-border p-4 rounded-xl space-y-2">
+                    <span className="text-[10px] text-text-secondary font-bold uppercase tracking-wider block">Verified Testimonial</span>
+                    <p className="text-xs text-text-primary leading-relaxed italic">
                       "{selectedFeedback.testimonial || 'No text review written.'}"
                     </p>
                     {selectedFeedback.allow_public_use && (
-                      <span className="text-[9px] text-[#d2f000] font-bold block pt-1">
+                      <span className="text-[10px] text-accent font-bold block pt-1">
                         ✓ Consent granted for public advertising portfolio.
                       </span>
                     )}
@@ -1461,12 +1458,12 @@ export default function AdminDashboard() {
                   {/* Detailed star ratings */}
                   {selectedFeedback.detailed_ratings && (
                     <div className="space-y-2">
-                      <span className="text-[8px] text-on-surface-variant font-bold uppercase tracking-wider block">Pillar Evaluation Grades</span>
-                      <div className="grid grid-cols-2 gap-3 bg-black/40 border border-white/5 p-3 rounded-xl">
+                      <span className="text-[10px] text-text-secondary font-bold uppercase tracking-wider block">Pillar Evaluation Grades</span>
+                      <div className="grid grid-cols-2 gap-3 bg-surface-base border border-surface-border p-3 rounded-xl">
                         {Object.entries(selectedFeedback.detailed_ratings).map(([key, val]) => (
-                          <div key={key} className="flex justify-between items-center text-[10px] text-on-surface-variant">
+                          <div key={key} className="flex justify-between items-center text-[11px] text-text-secondary">
                             <span className="capitalize">{key.replace(/([A-Z])/g, ' $1')}</span>
-                            <span className="text-white font-mono">{val} ★</span>
+                            <span className="text-text-primary font-mono">{val} ★</span>
                           </div>
                         ))}
                       </div>
@@ -1476,19 +1473,19 @@ export default function AdminDashboard() {
                   {/* Text feedbacks */}
                   {selectedFeedback.text_feedback && (
                     <div className="space-y-3.5">
-                      <span className="text-[8px] text-on-surface-variant font-bold uppercase tracking-wider block">Written Responses</span>
+                      <span className="text-[10px] text-text-secondary font-bold uppercase tracking-wider block">Written Responses</span>
                       
                       {selectedFeedback.text_feedback.likedMost && (
-                        <div className="space-y-1 bg-white/[0.01] p-3 rounded-xl border border-white/[0.03]">
-                          <div className="text-[8px] text-on-surface-variant uppercase font-bold">Liked Most</div>
-                          <p className="text-white">{selectedFeedback.text_feedback.likedMost}</p>
+                        <div className="space-y-1 bg-surface-base p-3 rounded-xl border border-surface-border">
+                          <div className="text-[10px] text-text-secondary uppercase font-bold">Liked Most</div>
+                          <p className="text-text-primary mt-1">{selectedFeedback.text_feedback.likedMost}</p>
                         </div>
                       )}
                       
                       {selectedFeedback.text_feedback.couldImprove && (
-                        <div className="space-y-1 bg-white/[0.01] p-3 rounded-xl border border-white/[0.03]">
-                          <div className="text-[8px] text-on-surface-variant uppercase font-bold">Could Improve</div>
-                          <p className="text-white">{selectedFeedback.text_feedback.couldImprove}</p>
+                        <div className="space-y-1 bg-surface-base p-3 rounded-xl border border-surface-border">
+                          <div className="text-[10px] text-text-secondary uppercase font-bold">Could Improve</div>
+                          <p className="text-text-primary mt-1">{selectedFeedback.text_feedback.couldImprove}</p>
                         </div>
                       )}
                     </div>
@@ -1497,22 +1494,22 @@ export default function AdminDashboard() {
                   {/* Media recordings links */}
                   {(selectedFeedback.audio_url || selectedFeedback.video_url) && (
                     <div className="space-y-3">
-                      <span className="text-[8px] text-on-surface-variant font-bold uppercase tracking-wider block">Media Testimonials</span>
+                      <span className="text-[10px] text-text-secondary font-bold uppercase tracking-wider block">Media Testimonials</span>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {selectedFeedback.audio_url && (
-                          <div className="bg-black/30 border border-white/5 p-3 rounded-xl flex flex-col justify-between gap-2 text-center">
-                            <span className="text-[8px] text-on-surface-variant uppercase font-bold">Voice testimonial</span>
-                            <audio src={selectedFeedback.audio_url} controls className="w-full h-8" />
+                          <div className="bg-surface-base border border-surface-border p-3 rounded-xl flex flex-col justify-between gap-2 text-center">
+                            <span className="text-[10px] text-text-secondary uppercase font-bold">Voice testimonial</span>
+                            <audio src={selectedFeedback.audio_url} controls className="w-full h-8 mt-1" />
                           </div>
                         )}
                         {selectedFeedback.video_url && (
-                          <div className="bg-black/30 border border-white/5 p-3 rounded-xl flex flex-col justify-between gap-2 text-center">
-                            <span className="text-[8px] text-on-surface-variant uppercase font-bold">Video Clip</span>
+                          <div className="bg-surface-base border border-surface-border p-3 rounded-xl flex flex-col justify-between gap-2 text-center">
+                            <span className="text-[10px] text-text-secondary uppercase font-bold">Video Clip</span>
                             <a 
                               href={selectedFeedback.video_url} 
                               target="_blank" 
                               rel="noreferrer"
-                              className="text-[10px] text-[#d2f000] font-bold py-2 bg-white/5 rounded-lg border border-[#d2f000]/10 hover:bg-white/10 transition-colors inline-block"
+                              className="text-xs text-accent font-bold py-2 bg-accent-surface rounded-lg border border-accent-border hover:bg-accent/10 transition-colors inline-block mt-1"
                             >
                               Play Video External
                             </a>
@@ -1525,24 +1522,24 @@ export default function AdminDashboard() {
                   {/* Referrals & Cross-sells */}
                   {((selectedFeedback.referral?.referrerName) || (selectedFeedback.future_project?.title)) && (
                     <div className="space-y-3.5">
-                      <span className="text-[8px] text-on-surface-variant font-bold uppercase tracking-wider block">System Leads Generated</span>
+                      <span className="text-[10px] text-text-secondary font-bold uppercase tracking-wider block">System Leads Generated</span>
 
                       {selectedFeedback.referral?.referrerName && (
-                        <div className="bg-[#d2f000]/5 border border-[#d2f000]/10 p-3 rounded-xl space-y-1">
-                          <span className="text-[8px] text-[#d2f000] uppercase font-bold">Client Referral Lead</span>
-                          <div className="font-semibold text-white">{selectedFeedback.referral.referrerName}</div>
+                        <div className="bg-accent-surface border border-accent-border p-3 rounded-xl space-y-1">
+                          <span className="text-[10px] text-accent uppercase font-bold">Client Referral Lead</span>
+                          <div className="font-semibold text-text-primary mt-1">{selectedFeedback.referral.referrerName}</div>
                           {selectedFeedback.referral.referralContact && (
-                            <div className="text-[10px] text-on-surface-variant font-mono">{selectedFeedback.referral.referralContact}</div>
+                            <div className="text-[11px] text-text-secondary font-mono mt-0.5">{selectedFeedback.referral.referralContact}</div>
                           )}
                         </div>
                       )}
 
                       {selectedFeedback.future_project?.title && (
-                        <div className="bg-white/[0.01] border border-white/5 p-3 rounded-xl space-y-1">
-                          <span className="text-[8px] text-on-surface-variant uppercase font-bold">Client Future Project Request</span>
-                          <div className="font-semibold text-white">{selectedFeedback.future_project.title}</div>
+                        <div className="bg-surface-base border border-surface-border p-3 rounded-xl space-y-1">
+                          <span className="text-[10px] text-text-secondary uppercase font-bold">Client Future Project Request</span>
+                          <div className="font-semibold text-text-primary mt-1">{selectedFeedback.future_project.title}</div>
                           {selectedFeedback.future_project.description && (
-                            <p className="text-[10px] text-on-surface-variant pt-1">{selectedFeedback.future_project.description}</p>
+                            <p className="text-[11px] text-text-secondary mt-0.5">{selectedFeedback.future_project.description}</p>
                           )}
                         </div>
                       )}
@@ -1553,7 +1550,7 @@ export default function AdminDashboard() {
 
               </div>
 
-              <div className="pt-6 border-t border-white/5 mt-6">
+              <div className="pt-6 border-t border-surface-border mt-6">
                 <button
                   onClick={() => removeFeedback(selectedFeedback.id)}
                   className="w-full bg-red-500/10 border border-red-500/20 hover:bg-red-500 hover:text-white text-red-400 font-bold py-3.5 rounded-xl text-xs uppercase transition-all"
