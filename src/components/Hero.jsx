@@ -1,103 +1,193 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import profileImg from '../assets/profile.png';
 
 export default function Hero() {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setIsLoaded(true);
+    // Small delay so CSS transition fires after paint
+    const t = setTimeout(() => setMounted(true), 60);
+    return () => clearTimeout(t);
   }, []);
+
+  const stats = [
+    { value: '48h', label: 'Average delivery' },
+    { value: '100%', label: 'Plagiarism-free' },
+    { value: '₹300', label: 'Starting price' },
+  ];
 
   return (
     <section
       id="home"
-      className="min-h-screen flex flex-col items-center justify-center px-container-padding-mobile md:px-container-padding-desktop relative overflow-hidden pt-36 md:pt-20"
+      className="relative min-h-screen flex flex-col justify-center overflow-hidden px-container-padding-mobile md:px-container-padding-desktop pt-28 pb-16"
+      aria-label="Hero section"
     >
-      <div className="max-w-5xl text-center z-10 relative">
-        <span className={`font-label-caps text-xs md:text-sm text-primary-fixed mb-6 block tracking-[0.2em] md:tracking-[0.3em] uppercase transition-all duration-700 delay-100 ${
-          isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-        }`}>
-          Freelance Development
-        </span>
+      {/* Ambient background — one restrained gradient, not multiple neons */}
+      <div className="ambient-bg" aria-hidden="true" />
 
-        <h1 className={`font-display-lg text-5xl sm:text-7xl md:text-[120px] text-white mb-8 tracking-tighter flex flex-wrap justify-center gap-x-2 md:gap-x-3 gap-y-2 leading-none transition-all duration-700 delay-200 ${
-          isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-        }`}>BRO<span className="text-primary-fixed">JIX</span></h1>
+      <div className="max-w-7xl mx-auto w-full z-10 relative">
 
-        <p className={`font-body-lg text-lg md:text-xl text-on-surface-variant max-w-2xl mx-auto mb-10 transition-all duration-700 delay-300 ${
-          isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-        }`}>
-          Made for co-bros to help on their projects.
-        </p>
+        {/* Top label — functional, not decorative */}
+        <div
+          className="mb-8 transition-all duration-500"
+          style={{
+            opacity: mounted ? 1 : 0,
+            transform: mounted ? 'translateY(0)' : 'translateY(10px)',
+            transitionDelay: '80ms'
+          }}
+        >
+          <span className="label-pill">
+            <span
+              className="w-1.5 h-1.5 rounded-full animate-pulse"
+              style={{ background: 'var(--accent)' }}
+              aria-hidden="true"
+            />
+            Available for new projects
+          </span>
+        </div>
 
-        <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center transition-all duration-700 delay-400 ${
-          isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-        }`}>
-          <a
-            href="#services"
-            className="bg-primary-fixed text-on-primary-fixed px-10 py-4 rounded-lg font-bold text-lg hover:shadow-[0_0_20px_rgba(210,240,0,0.4)] transition-all duration-300 active:scale-95 w-full sm:w-auto text-center"
+        {/* The stamp — headline rule headline structure */}
+        <div
+          className="transition-all duration-700"
+          style={{
+            opacity: mounted ? 1 : 0,
+            transform: mounted ? 'translateY(0)' : 'translateY(16px)',
+            transitionDelay: '160ms'
+          }}
+        >
+          {/* Ruled top line */}
+          <div className="studio-rule mb-5" aria-hidden="true" />
+
+          <h1 className="hero-wordmark mb-3">
+            BRO<span className="accent-char">JIX</span>
+          </h1>
+
+          {/* Ruled bottom line */}
+          <div className="studio-rule mt-5" aria-hidden="true" />
+        </div>
+
+        {/* Subheading — honest, direct, no buzzwords */}
+        <div
+          className="mt-8 max-w-xl transition-all duration-700"
+          style={{
+            opacity: mounted ? 1 : 0,
+            transform: mounted ? 'translateY(0)' : 'translateY(12px)',
+            transitionDelay: '280ms'
+          }}
+        >
+          <p
+            className="text-lg md:text-xl leading-relaxed"
+            style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-body)' }}
           >
-            Initialize Project
+            Final-year software projects, internship reports, and full-stack delivery — 
+            on time, zero plagiarism, and built by someone who actually codes it.
+          </p>
+        </div>
+
+        {/* CTAs */}
+        <div
+          className="mt-10 flex flex-col sm:flex-row gap-3 transition-all duration-700"
+          style={{
+            opacity: mounted ? 1 : 0,
+            transform: mounted ? 'scale(1)' : 'scale(0.97)',
+            transitionDelay: '360ms'
+          }}
+        >
+          <a href="#services" className="btn-primary">
+            See Pricing
+            <ArrowRight className="w-4 h-4" aria-hidden="true" />
           </a>
-          <a
-            href="#portfolio"
-            className="border-2 border-secondary text-secondary px-10 py-4 rounded-lg font-bold text-lg hover:bg-secondary/10 transition-all duration-300 flex items-center justify-center gap-2 active:scale-95 w-full sm:w-auto text-center"
-          >
-            View Products
-            <ArrowUpRight className="w-5 h-5" />
+          <a href="#portfolio" className="btn-ghost">
+            View Past Work
+            <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
           </a>
         </div>
 
-        {/* Info Cards */}
-        <div className={`mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 text-left z-10 transition-all duration-700 delay-500 ${
-          isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-        }`}>
-          <div className="glass-panel p-6 rounded-2xl border border-white/10 shadow-[0_0_30px_rgba(210,240,0,0.04)]">
-            <p className="text-xs font-label-caps text-secondary mb-3 uppercase tracking-[0.35em]">Speed</p>
-            <h3 className="text-lg font-semibold text-white mb-2">Rapid delivery</h3>
-            <p className="text-on-surface-variant text-sm">Small teams, fast execution, and clear progress updates from day one.</p>
-          </div>
-          <div className="glass-panel p-6 rounded-2xl border border-white/10 shadow-[0_0_30px_rgba(210,240,0,0.04)]">
-            <p className="text-xs font-label-caps text-secondary mb-3 uppercase tracking-[0.35em]">Quality</p>
-            <h3 className="text-lg font-semibold text-white mb-2">Performance-first</h3>
-            <p className="text-on-surface-variant text-sm">Clean architecture, responsive design, and code that scales with your goals.</p>
-          </div>
-          <div className="glass-panel p-6 rounded-2xl border border-white/10 shadow-[0_0_30px_rgba(210,240,0,0.04)]">
-            <p className="text-xs font-label-caps text-secondary mb-3 uppercase tracking-[0.35em]">Trust</p>
-            <h3 className="text-lg font-semibold text-white mb-2">Clear scope</h3>
-            <p className="text-on-surface-variant text-sm">Transparent pricing, defined milestones, and a smooth handoff every time.</p>
-          </div>
+        {/* Stats row — real numbers, mono type */}
+        <div
+          className="mt-16 flex flex-wrap gap-8 md:gap-12"
+          style={{
+            opacity: mounted ? 1 : 0,
+            transform: mounted ? 'translateY(0)' : 'translateY(8px)',
+            transition: 'opacity 600ms ease, transform 600ms ease',
+            transitionDelay: '460ms'
+          }}
+          aria-label="Key statistics"
+        >
+          {stats.map((stat, i) => (
+            <div key={i} className="flex flex-col gap-1">
+              <span
+                className="text-3xl font-semibold tracking-tight"
+                style={{ fontFamily: 'var(--font-mono)', color: 'var(--accent)' }}
+              >
+                {stat.value}
+              </span>
+              <span className="mono-label">{stat.label}</span>
+            </div>
+          ))}
         </div>
 
-        {/* Founder Teaser Card */}
-        <div className={`mt-12 flex justify-center transition-all duration-700 delay-700 ${
-          isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-        }`}>
+        {/* Founder card — compact, trust signal */}
+        <div
+          className="mt-14 transition-all duration-700"
+          style={{
+            opacity: mounted ? 1 : 0,
+            transform: mounted ? 'translateY(0)' : 'translateY(8px)',
+            transitionDelay: '540ms'
+          }}
+        >
           <Link
             to="/about"
-            className="group inline-flex items-center gap-5 glass-panel border border-white/10 hover:border-primary-fixed/40 rounded-2xl px-6 py-4 transition-all duration-300 hover:shadow-[0_0_20px_rgba(210,240,0,0.08)] max-w-sm w-full"
+            className="group inline-flex items-center gap-4 studio-card px-5 py-3.5 max-w-xs"
+            style={{ textDecoration: 'none' }}
+            aria-label="Meet the founder, Likith Kumar Chippe"
           >
-            {/* Avatar with online dot */}
             <div className="relative flex-shrink-0">
-              <div className="w-12 h-12 rounded-full overflow-hidden ring-2 ring-primary-fixed/30 group-hover:ring-primary-fixed/70 transition-all duration-300">
-                <img src={profileImg} alt="Chippe Likith Kumar, developer and founder of BROJIX" loading="eager" className="w-full h-full object-cover" />
+              <div
+                className="w-10 h-10 rounded-full overflow-hidden ring-2"
+                style={{ ringColor: 'var(--accent-border)' }}
+              >
+                <img
+                  src={profileImg}
+                  alt="Chippe Likith Kumar, founder of Brojix"
+                  loading="eager"
+                  className="w-full h-full object-cover"
+                />
               </div>
-              <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-[#08080a] animate-pulse"></span>
+              <span
+                className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2"
+                style={{
+                  background: '#22c55e',
+                  borderColor: 'var(--surface-base)',
+                }}
+                aria-label="Online"
+              />
             </div>
-
-            {/* Text */}
-            <div className="text-left flex-1 min-w-0">
-              <p className="text-[9px] font-label-caps uppercase tracking-[0.2em] text-primary-fixed mb-0.5">MEET THE FOUNDER</p>
-              <p className="font-bold text-white text-sm group-hover:text-primary-fixed transition-colors duration-300 truncate">Likith Kumar Chippe</p>
-              <p className="text-on-surface-variant text-[11px] truncate">Software Engineer • AI Builder • Full Stack Dev</p>
+            <div className="flex-1 min-w-0 text-left">
+              <p className="eyebrow mb-0.5">Meet the founder</p>
+              <p
+                className="text-sm font-semibold truncate transition-colors duration-200"
+                style={{
+                  color: 'var(--text-primary)',
+                  fontFamily: 'var(--font-body)',
+                }}
+              >
+                Likith Kumar Chippe
+              </p>
+              <p className="text-xs truncate" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+                Full-stack · AI · builder
+              </p>
             </div>
-
-            {/* Arrow icon */}
-            <ArrowUpRight className="w-4 h-4 text-white/25 group-hover:text-primary-fixed group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300 flex-shrink-0" />
+            <ArrowUpRight
+              className="w-4 h-4 flex-shrink-0 transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              style={{ color: 'var(--text-muted)' }}
+              aria-hidden="true"
+            />
           </Link>
         </div>
+
       </div>
     </section>
   );

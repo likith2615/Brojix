@@ -2,177 +2,346 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ================================================
+   PRECISION STUDIO — BROJIX TOKEN SYSTEM
+   Surface: deep warm-slate (not generic #000 or #131313)
+   Accent: warm amber-gold (not neon, not purple)
+   Display: DM Serif Display | Body: DM Sans | Mono: JetBrains Mono
+   ================================================ */
+
+:root {
+  /* Surfaces */
+  --surface-base:     oklch(13% 0.012 240);   /* deep blue-slate, not pure black */
+  --surface-raised:   oklch(17% 0.012 240);
+  --surface-overlay:  oklch(20% 0.013 240);
+  --surface-border:   oklch(26% 0.014 240);
+
+  /* Text */
+  --text-primary:     oklch(95% 0.006 80);    /* warm off-white, not harsh #fff */
+  --text-secondary:   oklch(70% 0.012 230);   /* muted slate-blue */
+  --text-muted:       oklch(52% 0.010 230);
+
+  /* Accent — amber-gold */
+  --accent:           oklch(78% 0.155 72);    /* warm amber, no neon */
+  --accent-dim:       oklch(68% 0.135 72);
+  --accent-surface:   oklch(78% 0.155 72 / 0.08);
+  --accent-border:    oklch(78% 0.155 72 / 0.25);
+  --accent-text:      oklch(18% 0.04 72);     /* text on accent bg */
+
+  /* Radius */
+  --radius-sm:  0.5rem;
+  --radius-md:  0.875rem;
+  --radius-lg:  1.25rem;
+  --radius-xl:  1.75rem;
+
+  /* Fonts */
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-body:    'DM Sans', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+}
+
+/* ================================================
+   BASE RESET
+   ================================================ */
 @layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: oklch(13% 0.012 240);
+  }
+
   body {
-    @apply bg-background text-on-surface;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    background-color: var(--surface-base);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.6;
+    font-feature-settings: "rlig" 1, "calt" 1, "kern" 1;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  ::selection {
+    background-color: var(--accent);
+    color: var(--accent-text);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 3px;
   }
 }
 
-html {
-  scroll-behavior: smooth;
+/* ================================================
+   COMPONENT UTILITIES
+   ================================================ */
+
+/* Navbar */
+.navbar-scrolled {
+  background: oklch(13% 0.012 240 / 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--surface-border);
+  box-shadow: 0 1px 0 oklch(78% 0.155 72 / 0.06);
 }
 
-/* Navbar Scrolled State */
-.navbar.scrolled {
-  @apply bg-surface/70 backdrop-blur-xl border-b border-primary-fixed/20 shadow-[0_0_15px_rgba(210,240,0,0.1)];
+/* Card — the main surface panel */
+.studio-card {
+  background: var(--surface-raised);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-lg);
+  transition: border-color 240ms ease, box-shadow 240ms ease, transform 240ms ease;
 }
 
-/* Glassmorphism Card Utilities */
-.glass-panel {
-  background: rgba(19, 19, 19, 0.7);
-  backdrop-filter: blur(32px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+.studio-card:hover {
+  border-color: oklch(78% 0.155 72 / 0.3);
+  box-shadow: 0 0 0 1px oklch(78% 0.155 72 / 0.08), 0 8px 32px oklch(0% 0 0 / 0.3);
 }
 
-.liquid-glass {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(32px);
-  -webkit-backdrop-filter: blur(32px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+/* Accent pill label */
+.label-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-surface);
+  border: 1px solid var(--accent-border);
+  border-radius: 999px;
+  padding: 0.25rem 0.875rem;
 }
 
-.neon-border {
-  position: relative;
-}
-.neon-border::after {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  background: linear-gradient(135deg, rgba(210, 240, 0, 0.3), rgba(220, 184, 255, 0.3));
-  z-index: -1;
-  border-radius: inherit;
-}
-
-.neon-border-shimmer {
-  position: relative;
-}
-.neon-border-shimmer::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  background: linear-gradient(135deg, rgba(210, 240, 0, 0.3), rgba(220, 184, 255, 0.3));
-  z-index: -1;
-  border-radius: inherit;
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
+/* Ruled divider line — the signature element */
+.studio-rule {
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    var(--surface-border) 20%, 
+    var(--accent-border) 50%, 
+    var(--surface-border) 80%, 
+    transparent 100%
+  );
 }
 
-.input-glow:focus {
-  box-shadow: 0 0 15px rgba(210, 240, 0, 0.2);
-  border-bottom-color: #d2f000 !important;
+/* Primary CTA button */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--accent);
+  color: var(--accent-text);
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  padding: 0.875rem 2rem;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  transition: background 200ms ease, box-shadow 200ms ease, transform 120ms ease;
+  text-decoration: none;
 }
 
-.btn-neon-glow:hover {
-  box-shadow: 0 0 20px rgba(210, 240, 0, 0.6);
+.btn-primary:hover {
+  background: var(--accent-dim);
+  box-shadow: 0 0 28px oklch(78% 0.155 72 / 0.35);
 }
 
-.material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+.btn-primary:active {
+  transform: scale(0.98);
 }
 
-.liquid-progress {
-  background: linear-gradient(90deg, #d2f000 0%, #ffffff 50%, #d2f000 100%);
-  background-size: 200% 100%;
-  animation: liquidFlow 3s infinite linear;
+/* Ghost button */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  padding: 0.875rem 2rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--surface-border);
+  cursor: pointer;
+  transition: border-color 200ms ease, color 200ms ease, background 200ms ease;
+  text-decoration: none;
 }
 
-@keyframes liquidFlow {
-  0% { background-position: 100% 0%; }
-  100% { background-position: -100% 0%; }
+.btn-ghost:hover {
+  border-color: oklch(78% 0.155 72 / 0.4);
+  color: var(--accent);
+  background: var(--accent-surface);
 }
 
-/* Hero Glow Animation */
-.hero-glow {
-  position: absolute;
-  width: 600px;
-  height: 600px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 70%);
-  animation: pulse-glow 4s ease-in-out infinite;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+/* Input field */
+.studio-input {
+  width: 100%;
+  background: var(--surface-overlay);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-md);
+  padding: 0.875rem 1.125rem;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  color: var(--text-primary);
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+  outline: none;
 }
 
-@keyframes pulse-glow {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
-  50% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+.studio-input::placeholder {
+  color: var(--text-muted);
 }
 
-/* Global Ambient Background */
-.ambient-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -50;
-  background: radial-gradient(circle at 15% 50%, rgba(210, 240, 0, 0.04), transparent 50%),
-              radial-gradient(circle at 85% 30%, rgba(220, 184, 255, 0.03), transparent 50%),
-              radial-gradient(circle at 50% 100%, rgba(139, 92, 246, 0.04), transparent 50%);
-  animation: ambient-drift 12s ease-in-out infinite alternate;
-  pointer-events: none;
+.studio-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px oklch(78% 0.155 72 / 0.12);
 }
 
-@keyframes ambient-drift {
-  0% { transform: translateY(0) scale(1); }
-  100% { transform: translateY(-30px) scale(1.05); }
+/* Mono label — for prices, stats, technical details */
+.mono-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
 
-/* Z-Index & Mobile Drawer Stacking Fixes */
+/* Section eyebrow */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* Progress bar */
+.studio-progress {
+  background: linear-gradient(90deg, var(--accent) 0%, var(--accent-dim) 100%);
+  border-radius: 999px;
+  height: 3px;
+  transition: width 600ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ================================================
+   SCROLL REVEAL SYSTEM
+   ================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 600ms cubic-bezier(0.4, 0, 0.2, 1),
+              transform 600ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 600ms cubic-bezier(0.4, 0, 0.2, 1),
+              transform 600ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ================================================
+   NAVBAR STACKING
+   ================================================ */
 .nav-fixed-main {
   z-index: 9999 !important;
 }
 
 .backdrop-fixed-overlay {
   z-index: 9998 !important;
-  background-color: rgba(0, 0, 0, 0.8) !important;
+  background-color: oklch(13% 0.012 240 / 0.85) !important;
   backdrop-filter: blur(8px) !important;
 }
 
 .drawer-fixed-menu {
   z-index: 9999 !important;
-  background-color: #131313 !important;
+  background-color: oklch(16% 0.012 240) !important;
   backdrop-filter: blur(32px) !important;
 }
 
-/* Snappy, fast transitions for better responsiveness */
-@media (prefers-reduced-motion: no-preference) {
-  .duration-700 {
-    transition-duration: 220ms !important;
+/* ================================================
+   REDUCED MOTION
+   ================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
-  .duration-500 {
-    transition-duration: 180ms !important;
-  }
-  .duration-750 {
-    transition-duration: 250ms !important;
-  }
-  .delay-100 {
-    transition-delay: 20ms !important;
-  }
-  .delay-200 {
-    transition-delay: 40ms !important;
-  }
-  .delay-300 {
-    transition-delay: 60ms !important;
-  }
-  .delay-400 {
-    transition-delay: 80ms !important;
-  }
-  .delay-500 {
-    transition-delay: 100ms !important;
-  }
-  .delay-600 {
-    transition-delay: 120ms !important;
-  }
-  .delay-700 {
-    transition-delay: 140ms !important;
-  }
-  .delay-750 {
-    transition-delay: 150ms !important;
+
+  .reveal, .reveal-left {
+    opacity: 1;
+    transform: none;
   }
 }
 
+/* ================================================
+   HERO TYPOGRAPHIC STAMP — signature element
+   ================================================ */
+.hero-wordmark {
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 18vw, 14rem);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  color: var(--text-primary);
+}
+
+.hero-wordmark .accent-char {
+  color: var(--accent);
+}
+
+/* ================================================
+   AMBIENT BACKGROUND — restrained, not neon
+   ================================================ */
+.ambient-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -50;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 60%, oklch(78% 0.155 72 / 0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 50% at 80% 20%, oklch(62% 0.08 230 / 0.03) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* ================================================
+   LEGACY COMPAT — keep glasspanel name working
+   for pages that haven't been updated yet
+   ================================================ */
+.glass-panel {
+  background: var(--surface-raised);
+  border: 1px solid var(--surface-border);
+}
+
+.liquid-glass {
+  background: oklch(17% 0.012 240 / 0.7);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--surface-border);
+}

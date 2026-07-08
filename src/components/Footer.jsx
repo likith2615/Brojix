@@ -1,86 +1,215 @@
 import React from 'react';
+import { ArrowUpRight } from 'lucide-react';
+
+const connectLinks = [
+  {
+    label: 'WhatsApp',
+    value: '+91 8179072511',
+    href: 'https://wa.me/918179072511',
+    external: true,
+  },
+  {
+    label: 'Email',
+    value: 'chippelikith@gmail.com',
+    href: 'mailto:chippelikith@gmail.com',
+    external: false,
+  },
+  {
+    label: 'LinkedIn',
+    value: 'Likith Kumar Chippe',
+    href: 'https://in.linkedin.com/in/likith-kumar-chippe',
+    external: true,
+  },
+];
+
+const navLinks = [
+  { name: 'Home',         href: '/' },
+  { name: 'About',        href: '/about' },
+  { name: 'Services',     href: '/#services' },
+  { name: 'Work',         href: '/#portfolio' },
+  { name: 'Start Project', href: '/#contact' },
+];
 
 export default function Footer() {
   return (
-    <footer className="w-full mt-auto border-t border-white/10 relative z-10 pt-32 pb-16">
+    <footer
+      className="w-full relative z-10 pt-24 pb-12"
+      style={{ borderTop: '1px solid var(--surface-border)' }}
+      aria-label="Site footer"
+    >
       <div className="px-container-padding-mobile md:px-container-padding-desktop max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-start gap-16 mb-24">
-          <div className="flex flex-col items-start max-w-sm">
-            <div className="font-headline-lg text-4xl sm:text-6xl md:text-8xl font-black text-white tracking-tighter mb-6 flex items-center">BRO<span className="text-primary-fixed drop-shadow-[0_0_10px_rgba(217,255,0,0.3)]">JIX</span></div>
-            <p className="text-on-surface-variant text-lg leading-relaxed">
-              Premium software solutions, dynamic web experiences, and industry-ready internship reports delivered with precision.
+
+        {/* Top: wordmark + columns */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 mb-16">
+
+          {/* Brand */}
+          <div className="md:col-span-1">
+            <a
+              href="/"
+              className="font-display text-5xl tracking-tight leading-none block mb-4"
+              style={{ letterSpacing: '-0.04em', fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}
+              aria-label="Brojix home"
+            >
+              BRO<span style={{ color: 'var(--accent)' }}>JIX</span>
+            </a>
+            <p
+              className="text-sm leading-relaxed max-w-xs"
+              style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-body)' }}
+            >
+              Software projects, internship reports, and full-stack delivery for college students — built by someone who actually cares.
             </p>
           </div>
-          
-          <div className="flex flex-col sm:flex-row gap-16 md:gap-32">
-            <div className="flex flex-col gap-6">
-              <span className="font-label-caps text-label-caps text-secondary text-sm tracking-[0.2em] mb-2 uppercase">Connect</span>
-              
-              <a href="https://wa.me/918179072511" target="_blank" rel="noopener noreferrer" className="group flex items-center gap-3 hover:translate-x-2 transition-transform duration-300">
-                <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 transition-colors">
-                  <span className="material-symbols-outlined text-white group-hover:text-primary-fixed text-lg">chat</span>
-                </div>
-                <div>
-                  <div className="text-[10px] text-on-surface-variant font-label-caps uppercase tracking-wider">WhatsApp</div>
-                  <div className="text-white font-medium group-hover:text-primary-fixed transition-colors">+91 8179072511</div>
-                </div>
-              </a>
 
-              <a href="mailto:chippelikith@gmail.com" className="group flex items-center gap-3 hover:translate-x-2 transition-transform duration-300">
-                <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 transition-colors">
-                  <span className="material-symbols-outlined text-white group-hover:text-primary-fixed text-lg">mail</span>
-                </div>
-                <div>
-                  <div className="text-[10px] text-on-surface-variant font-label-caps uppercase tracking-wider">Email</div>
-                  <div className="text-white font-medium group-hover:text-primary-fixed transition-colors">chippelikith@gmail.com</div>
-                </div>
-              </a>
+          {/* Connect */}
+          <div>
+            <p
+              className="mb-5"
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.65rem',
+                letterSpacing: '0.14em',
+                color: 'var(--text-muted)',
+                textTransform: 'uppercase',
+              }}
+            >
+              Connect
+            </p>
+            <ul className="space-y-4" role="list">
+              {connectLinks.map((link) => (
+                <li key={link.label}>
+                  <a
+                    href={link.href}
+                    target={link.external ? '_blank' : undefined}
+                    rel={link.external ? 'noopener noreferrer' : undefined}
+                    className="group flex items-start gap-2"
+                    style={{ textDecoration: 'none' }}
+                    aria-label={`${link.label}: ${link.value}`}
+                  >
+                    <div>
+                      <p
+                        className="text-xs mb-0.5"
+                        style={{
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: '0.625rem',
+                          letterSpacing: '0.1em',
+                          color: 'var(--text-muted)',
+                          textTransform: 'uppercase',
+                        }}
+                      >
+                        {link.label}
+                      </p>
+                      <p
+                        className="text-sm font-medium transition-colors duration-200"
+                        style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-body)' }}
+                        onMouseEnter={e => e.currentTarget.style.color = 'var(--accent)'}
+                        onMouseLeave={e => e.currentTarget.style.color = 'var(--text-secondary)'}
+                      >
+                        {link.value}
+                      </p>
+                    </div>
+                    {link.external && (
+                      <ArrowUpRight
+                        className="w-3 h-3 mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                        style={{ color: 'var(--accent)' }}
+                        aria-hidden="true"
+                      />
+                    )}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-              <a href="https://in.linkedin.com/in/likith-kumar-chippe" rel="me" target="_blank" className="group flex items-center gap-3 hover:translate-x-2 transition-transform duration-300">
-                <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 transition-colors">
-                  <span className="material-symbols-outlined text-white group-hover:text-primary-fixed text-lg">public</span>
-                </div>
-                <div>
-                  <div className="text-[10px] text-on-surface-variant font-label-caps uppercase tracking-wider">Network</div>
-                  <div className="text-white font-medium group-hover:text-primary-fixed transition-colors">LinkedIn Profile</div>
-                </div>
-              </a>
-            </div>
-
-            <div className="flex flex-col gap-6">
-              <span className="font-label-caps text-label-caps text-secondary text-sm tracking-[0.2em] mb-2 uppercase">Navigation</span>
-              <a href="#home" className="text-on-surface-variant hover:text-white text-lg transition-colors flex items-center gap-2 group">
-                <span className="w-0 h-px bg-primary-fixed group-hover:w-4 transition-all duration-300"></span>
-                Home
-              </a>
-              <a href="#services" className="text-on-surface-variant hover:text-white text-lg transition-colors flex items-center gap-2 group">
-                <span className="w-0 h-px bg-primary-fixed group-hover:w-4 transition-all duration-300"></span>
-                Services
-              </a>
-              <a href="#portfolio" className="text-on-surface-variant hover:text-white text-lg transition-colors flex items-center gap-2 group">
-                <span className="w-0 h-px bg-primary-fixed group-hover:w-4 transition-all duration-300"></span>
-                Products
-              </a>
-              <a href="#contact" className="text-on-surface-variant hover:text-white text-lg transition-colors flex items-center gap-2 group">
-                <span className="w-0 h-px bg-primary-fixed group-hover:w-4 transition-all duration-300"></span>
-                Start Project
-              </a>
-            </div>
+          {/* Navigation */}
+          <div>
+            <p
+              className="mb-5"
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.65rem',
+                letterSpacing: '0.14em',
+                color: 'var(--text-muted)',
+                textTransform: 'uppercase',
+              }}
+            >
+              Navigation
+            </p>
+            <ul className="space-y-3" role="list">
+              {navLinks.map((link) => (
+                <li key={link.name}>
+                  <a
+                    href={link.href}
+                    className="text-sm transition-colors duration-200"
+                    style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-body)', textDecoration: 'none' }}
+                    onMouseEnter={e => e.currentTarget.style.color = 'var(--text-primary)'}
+                    onMouseLeave={e => e.currentTarget.style.color = 'var(--text-secondary)'}
+                  >
+                    {link.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10 gap-4">
-          <div className="font-label-caps text-label-caps text-outline text-xs text-center md:text-left tracking-widest flex items-center gap-2">
-            <span>&copy; {new Date().getFullYear()} BROJIX. ALL RIGHTS RESERVED.</span>
-            <a href="/admin" className="text-white/10 hover:text-primary-fixed hover:drop-shadow-[0_0_8px_rgba(210,240,0,0.5)] transition-all duration-300" title="Admin Gateway">
-              <span className="material-symbols-outlined text-xs">lock</span>
+        {/* Bottom bar */}
+        <div
+          className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8"
+          style={{ borderTop: '1px solid var(--surface-border)' }}
+        >
+          <p
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.625rem',
+              letterSpacing: '0.12em',
+              color: 'var(--text-muted)',
+              textTransform: 'uppercase',
+            }}
+          >
+            © {new Date().getFullYear()} Brojix · Chippe Likith Kumar · All rights reserved
+          </p>
+
+          <div className="flex items-center gap-4">
+            {/* Admin hidden link */}
+            <a
+              href="/admin"
+              title="Admin Gateway"
+              style={{ color: 'transparent', fontSize: '0' }}
+              aria-label="Admin"
+            >
+              ·
             </a>
-          </div>
-          <div className="flex items-center gap-2 text-[10px] text-primary-fixed font-label-caps tracking-widest bg-primary-fixed/10 px-4 py-2 rounded-full border border-primary-fixed/20">
-            <span className="w-2 h-2 rounded-full bg-primary-fixed animate-pulse"></span>
-            SYSTEMS ONLINE
+
+            {/* Status pill */}
+            <div
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full"
+              style={{
+                background: 'var(--accent-surface)',
+                border: '1px solid var(--accent-border)',
+              }}
+              role="status"
+              aria-label="System status: online"
+            >
+              <span
+                className="w-1.5 h-1.5 rounded-full animate-pulse"
+                style={{ background: 'var(--accent)' }}
+                aria-hidden="true"
+              />
+              <span
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.6rem',
+                  letterSpacing: '0.1em',
+                  color: 'var(--accent)',
+                  textTransform: 'uppercase',
+                }}
+              >
+                Systems online
+              </span>
+            </div>
           </div>
         </div>
+
       </div>
     </footer>
   );

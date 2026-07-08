@@ -7,69 +7,67 @@ export default {
   ],
   theme: {
     extend: {
-      spacing: {
-        "container-padding-mobile": "1.5rem",
-        "container-padding-desktop": "4rem",
-      },
       colors: {
-        "error": "#ffb4ab",
-        "on-primary-container": "#5d6b00",
-        "surface": "#131313",
-        "on-error-container": "#ffdad6",
-        "primary-fixed": "#d2f000",
-        "on-secondary": "#480081",
-        "surface-tint": "#b8d300",
-        "background": "#131313",
-        "on-primary": "#2c3400",
-        "inverse-surface": "#e5e2e1",
-        "on-tertiary-container": "#006f77",
-        "on-surface-variant": "#c6c9ab",
-        "surface-container-high": "#2a2a2a",
-        "on-primary-fixed-variant": "#414c00",
-        "tertiary-container": "#7df4ff",
-        "on-tertiary": "#00363a",
-        "secondary-fixed": "#efdbff",
-        "surface-container-lowest": "#0e0e0e",
-        "outline": "#909378",
-        "inverse-primary": "#576500",
-        "secondary-container": "#7701d0",
-        "on-tertiary-fixed-variant": "#004f54",
-        "on-primary-fixed": "#191e00",
-        "on-secondary-container": "#dcb7ff",
-        "surface-variant": "#353534",
-        "on-secondary-fixed": "#2c0051",
-        "on-error": "#690005",
-        "secondary-fixed-dim": "#dcb8ff",
-        "primary": "#ffffff",
-        "secondary": "#dcb8ff",
-        "surface-dim": "#131313",
-        "tertiary": "#ffffff",
-        "tertiary-fixed-dim": "#00dbe9",
-        "on-surface": "#e5e2e1",
-        "error-container": "#93000a",
-        "surface-container": "#201f1f",
-        "surface-container-low": "#1c1b1b",
-        "on-tertiary-fixed": "#002022",
-        "primary-fixed-dim": "#b8d300",
-        "surface-bright": "#3a3939",
-        "primary-container": "#d2f000",
-        "inverse-on-surface": "#313030",
-        "outline-variant": "#454932",
-        "tertiary-fixed": "#7df4ff",
-        "surface-container-highest": "#353534",
-        "on-secondary-fixed-variant": "#6700b5",
-        "on-background": "#e5e2e1"
+        /* Core surfaces — OKLCH-mapped to hex approx for Tailwind */
+        "surface-base":    "#0e1018",   /* oklch(13% 0.012 240) */
+        "surface-raised":  "#141820",   /* oklch(17% 0.012 240) */
+        "surface-overlay": "#1a2028",   /* oklch(20% 0.013 240) */
+        "surface-border":  "#252d38",   /* oklch(26% 0.014 240) */
+
+        /* Text */
+        "text-primary":   "#f2efeb",    /* oklch(95% 0.006 80) — warm off-white */
+        "text-secondary": "#8ba3bf",    /* oklch(70% 0.012 230) */
+        "text-muted":     "#566677",    /* oklch(52% 0.010 230) */
+
+        /* Accent — amber gold */
+        "accent":         "#dba83a",    /* oklch(78% 0.155 72) */
+        "accent-dim":     "#c09030",    /* oklch(68% 0.135 72) */
+        "accent-text":    "#1e1408",    /* oklch(18% 0.04 72) */
+
+        /* Legacy aliases — keep AdminDashboard + ClientDashboard from breaking */
+        "background":               "#0e1018",
+        "surface":                  "#141820",
+        "on-surface":               "#f2efeb",
+        "on-surface-variant":       "#8ba3bf",
+        "primary-fixed":            "#dba83a",
+        "on-primary-fixed":         "#1e1408",
+        "primary-fixed-dim":        "#c09030",
+        "primary":                  "#f2efeb",
+        "secondary":                "#8ba3bf",
+        "on-primary":               "#1e1408",
+        "surface-container":        "#1a2028",
+        "surface-container-high":   "#1e2630",
+        "surface-container-highest":"#252d38",
+        "surface-container-low":    "#141820",
+        "surface-container-lowest": "#0e1018",
+        "surface-variant":          "#252d38",
+        "surface-bright":           "#2e3848",
+        "on-secondary":             "#0e1018",
+        "outline":                  "#566677",
+        "outline-variant":          "#252d38",
+        "error":                    "#f28b82",
+        "on-error":                 "#690005",
+        "error-container":          "#93000a",
       },
       fontFamily: {
-        "body-md": ["Inter"],
-        "body-lg": ["Inter"],
-        "display-lg-mobile": ["Outfit"],
-        "headline-md": ["Outfit"],
-        "display-lg": ["Outfit"],
-        "label-caps": ["JetBrains Mono"],
-        "headline-lg": ["Outfit"],
-        "display-md": ["'Space Grotesk'", "sans-serif"]
-      }
+        /* New design system */
+        "display":   ["'DM Serif Display'", "Georgia", "serif"],
+        "body":      ["'DM Sans'", "system-ui", "sans-serif"],
+        "mono":      ["'JetBrains Mono'", "'Courier New'", "monospace"],
+        /* Legacy aliases keep old classnames working */
+        "body-md":              ["'DM Sans'", "system-ui", "sans-serif"],
+        "body-lg":              ["'DM Sans'", "system-ui", "sans-serif"],
+        "display-lg":           ["'DM Serif Display'", "Georgia", "serif"],
+        "display-lg-mobile":    ["'DM Serif Display'", "Georgia", "serif"],
+        "display-md":           ["'DM Serif Display'", "Georgia", "serif"],
+        "headline-md":          ["'DM Sans'", "system-ui", "sans-serif"],
+        "headline-lg":          ["'DM Sans'", "system-ui", "sans-serif"],
+        "label-caps":           ["'JetBrains Mono'", "monospace"],
+      },
+      spacing: {
+        "container-padding-mobile":  "1.5rem",
+        "container-padding-desktop": "4rem",
+      },
     },
   },
   plugins: [],

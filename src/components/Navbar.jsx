@@ -3,104 +3,140 @@ import { Menu, X } from 'lucide-react';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const navRef = useRef(null);
-
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
+    const handleScroll = () => setIsScrolled(window.scrollY > 24);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Handle body scroll lock
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
   }, [isOpen]);
 
   const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
-    { name: 'Services', href: '/#services' },
-    { name: 'Products', href: '/#portfolio' },
+    { name: 'Home',          href: '/' },
+    { name: 'About',         href: '/about' },
+    { name: 'Services',      href: '/#services' },
+    { name: 'Work',          href: '/#portfolio' },
     { name: 'Client Portal', href: '/dashboard' },
-    { name: 'Policies', href: '/#policies' },
+    { name: 'Policies',      href: '/#policies' },
   ];
 
   return (
     <>
-      <nav ref={navRef} className={`fixed top-0 w-full transition-all duration-300 nav-fixed-main ${isScrolled ? 'bg-surface/80 backdrop-blur-md border-b border-white/10 shadow-lg py-2' : 'bg-transparent py-4'}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
-            <div className="flex-shrink-0">
-              <a href="/" className="font-display-md text-3xl md:text-4xl font-bold text-white tracking-tighter flex items-center">BRO<span className="text-primary-fixed">JIX</span></a>
-            </div>
-            
-            <div className="hidden md:flex items-center gap-8">
+      <nav
+        className={`fixed top-0 w-full transition-all duration-300 nav-fixed-main ${
+          isScrolled ? 'navbar-scrolled py-3' : 'bg-transparent py-5'
+        }`}
+        aria-label="Main navigation"
+      >
+        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+          <div className="flex items-center justify-between h-14">
+            {/* Wordmark */}
+            <a
+              href="/"
+              className="font-display text-2xl tracking-tight flex items-end leading-none"
+              style={{ letterSpacing: '-0.03em' }}
+              aria-label="Brojix home"
+            >
+              BRO<span style={{ color: 'var(--accent)' }}>JIX</span>
+            </a>
+
+            {/* Desktop links */}
+            <div className="hidden md:flex items-center gap-7">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
-                  className="font-body-md text-body-md text-on-surface-variant hover:text-primary-fixed hover:drop-shadow-[0_0_8px_rgba(210,240,0,0.8)] transition-all duration-300 active:scale-95"
+                  className="text-sm font-medium transition-colors duration-200"
+                  style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-body)' }}
+                  onMouseEnter={e => e.currentTarget.style.color = 'var(--text-primary)'}
+                  onMouseLeave={e => e.currentTarget.style.color = 'var(--text-secondary)'}
                 >
                   {link.name}
                 </a>
               ))}
             </div>
-            
-            <div className="hidden md:flex items-center gap-4">
-              <a href="/#contact" className="bg-primary-fixed text-on-primary-fixed px-6 py-2 rounded-full font-bold hover:shadow-[0_0_20px_#d2f000] transition-all duration-300 active:scale-95">
-                Hire Me
+
+            {/* CTA */}
+            <div className="hidden md:flex items-center gap-3">
+              <a href="/#contact" className="btn-primary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.875rem' }}>
+                Start a Project
               </a>
             </div>
 
-            <div className="md:hidden flex items-center">
-              <button
-                onClick={() => setIsOpen(!isOpen)}
-                className="text-primary-fixed hover:text-white focus:outline-none relative z-50"
-                aria-label="Toggle menu"
-              >
-                {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-              </button>
-            </div>
+            {/* Mobile toggle */}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="md:hidden focus:outline-none p-2"
+              aria-label={isOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={isOpen}
+              style={{ color: 'var(--text-primary)' }}
+            >
+              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
           </div>
         </div>
       </nav>
 
-      {/* Backdrop overlay - Rendered outside nav to prevent nested blur rendering bugs */}
+      {/* Mobile backdrop */}
       <div
         onClick={() => setIsOpen(false)}
         className={`md:hidden fixed inset-0 transition-opacity duration-300 backdrop-fixed-overlay ${
           isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
+        aria-hidden="true"
       />
 
-      {/* Mobile Drawer Menu - Rendered outside nav to prevent nested blur rendering bugs */}
+      {/* Mobile drawer */}
       <div
-        className={`md:hidden fixed inset-y-0 right-0 w-64 border-l border-primary-fixed/20 shadow-[0_0_15px_rgba(210,240,0,0.1)] transition-transform duration-300 ease-in-out pt-24 drawer-fixed-menu ${
+        className={`md:hidden fixed inset-y-0 right-0 w-72 border-l transition-transform duration-300 ease-in-out pt-24 drawer-fixed-menu ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
+        style={{ borderColor: 'var(--surface-border)' }}
+        aria-label="Mobile navigation menu"
       >
-        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        {/* Drawer wordmark */}
+        <div className="px-6 pb-6 border-b" style={{ borderColor: 'var(--surface-border)' }}>
+          <span className="font-display text-xl" style={{ letterSpacing: '-0.03em' }}>
+            BRO<span style={{ color: 'var(--accent)' }}>JIX</span>
+          </span>
+        </div>
+
+        <nav className="px-4 pt-4 space-y-1">
           {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
               onClick={() => setIsOpen(false)}
-              className="text-on-surface-variant hover:text-primary-fixed block px-3 py-4 rounded-md font-body-md text-base border-b border-white/5"
+              className="block px-3 py-3.5 rounded-lg text-base font-medium transition-colors duration-150"
+              style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-body)' }}
+              onMouseEnter={e => {
+                e.currentTarget.style.color = 'var(--accent)';
+                e.currentTarget.style.background = 'var(--accent-surface)';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.color = 'var(--text-secondary)';
+                e.currentTarget.style.background = 'transparent';
+              }}
             >
               {link.name}
             </a>
           ))}
+        </nav>
+
+        <div className="px-4 pt-6">
+          <a
+            href="/#contact"
+            onClick={() => setIsOpen(false)}
+            className="btn-primary w-full"
+            style={{ fontSize: '0.9rem' }}
+          >
+            Start a Project
+          </a>
         </div>
       </div>
     </>

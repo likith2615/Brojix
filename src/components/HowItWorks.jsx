@@ -1,87 +1,191 @@
 import React from 'react';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
+import { MessageSquare, Code2, PackageCheck } from 'lucide-react';
+
+const steps = [
+  {
+    icon: MessageSquare,
+    phase: 'Discovery',
+    title: 'Brief & Scope',
+    desc: 'Send your requirements via WhatsApp. We agree on features, deliverables, and a fixed price before any work begins.',
+    detail: 'No hidden costs.',
+  },
+  {
+    icon: Code2,
+    phase: 'Build',
+    title: 'Clean Execution',
+    desc: 'Code and reports are built with progress updates every step. You can see exactly what\'s being built.',
+    detail: 'Real-time updates.',
+  },
+  {
+    icon: PackageCheck,
+    phase: 'Handover',
+    title: 'Full Delivery',
+    desc: 'Source code, database, deployment, and report — everything documented and handed over on the agreed date.',
+    detail: 'On-time, always.',
+  },
+];
 
 export default function HowItWorks() {
   const [sectionRef, isVisible] = useIntersectionObserver({ threshold: 0.05 });
 
-  const steps = [
-    {
-      num: "01",
-      title: "Discuss & Plan",
-      desc: "Send your requirements via WhatsApp. We will finalize the scope, features, and pricing."
-    },
-    {
-      num: "02",
-      title: "Development",
-      desc: "Clean code and structured reports are built securely with regular progress updates."
-    },
-    {
-      num: "03",
-      title: "Delivery Sync",
-      desc: "You get the final source code, database, and a fully formatted project report on time."
-    }
-  ];
-
-  const handleMouseMove = (e) => {
-    const card = e.currentTarget;
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    
-    const rotateX = ((y - centerY) / centerY) * -10;
-    const rotateY = ((x - centerX) / centerX) * 10;
-
-    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-    card.style.transition = 'none';
-  };
-
-  const handleMouseLeave = (e) => {
-    const card = e.currentTarget;
-    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-    card.style.transition = 'transform 0.5s ease-out';
-  };
-
   return (
-    <section ref={sectionRef} id="how-it-works" className="py-24 px-container-padding-mobile md:px-container-padding-desktop scroll-mt-24">
-      <div className="text-center mb-16">
-        <span className={`inline-block text-[11px] tracking-[0.18em] text-primary-fixed mb-4 font-medium uppercase transition-all duration-700 delay-100 transform ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-        }`}>
-          THE PROCESS
-        </span>
-        <h2 className={`text-[clamp(32px,5vw,52px)] font-bold text-white mb-4 tracking-tight transition-all duration-700 delay-200 transform ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-        }`} style={{ fontFamily: "'Space Grotesk', sans-serif" }}>How It Works</h2>
-        <p className={`text-base text-on-surface-variant max-w-[480px] mx-auto leading-relaxed transition-all duration-700 delay-300 transform ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-        }`}>
-          A seamless process designed for speed and clarity.
-        </p>
-      </div>
+    <section
+      ref={sectionRef}
+      id="how-it-works"
+      className="py-28 px-container-padding-mobile md:px-container-padding-desktop scroll-mt-24"
+      aria-labelledby="process-heading"
+    >
+      <div className="max-w-7xl mx-auto">
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 overflow-hidden px-4 sm:px-6 lg:px-8">
-        {steps.map((step, index) => (
-          <div 
-            key={index} 
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-            style={{ transitionDelay: `${40 + index * 50}ms` }}
-            className={`glass-panel rounded-3xl p-6 md:p-10 border border-white/5 relative overflow-hidden group transition-all duration-700 transform ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}
+        {/* Header */}
+        <div className="mb-16">
+          <div
+            className="mb-4"
+            style={{
+              opacity: isVisible ? 1 : 0,
+              transform: isVisible ? 'translateY(0)' : 'translateY(10px)',
+              transition: 'opacity 500ms ease, transform 500ms ease',
+              transitionDelay: '60ms',
+            }}
           >
-            <div className="text-primary-fixed/20 font-display-lg text-8xl absolute top-4 right-4 z-0 transition-transform duration-500 group-hover:scale-110">
-              {step.num}
-            </div>
-            <div className="relative z-10 mt-16">
-              <h4 className="font-headline-md text-headline-md text-white mb-4">{step.title}</h4>
-              <p className="text-on-surface-variant">{step.desc}</p>
-            </div>
+            <span className="eyebrow">Process</span>
           </div>
-        ))}
+          <h2
+            id="process-heading"
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(2.25rem, 5vw, 3.5rem)',
+              lineHeight: 1.05,
+              letterSpacing: '-0.025em',
+              color: 'var(--text-primary)',
+              opacity: isVisible ? 1 : 0,
+              transform: isVisible ? 'translateY(0)' : 'translateY(12px)',
+              transition: 'opacity 600ms ease, transform 600ms ease',
+              transitionDelay: '120ms',
+            }}
+          >
+            From brief to<br />
+            <span style={{ color: 'var(--accent)' }}>handover.</span>
+          </h2>
+        </div>
+
+        {/* Timeline — horizontal connector on desktop */}
+        <div className="relative">
+          {/* Connector line (desktop only) */}
+          <div
+            className="hidden md:block absolute top-9 left-0 right-0 h-px"
+            style={{ background: 'var(--surface-border)' }}
+            aria-hidden="true"
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
+            {steps.map((step, i) => {
+              const Icon = step.icon;
+              return (
+                <div
+                  key={i}
+                  style={{
+                    opacity: isVisible ? 1 : 0,
+                    transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+                    transition: 'opacity 600ms ease, transform 600ms ease',
+                    transitionDelay: `${200 + i * 100}ms`,
+                  }}
+                >
+                  {/* Phase marker */}
+                  <div className="flex items-center gap-3 mb-6 relative">
+                    <div
+                      className="w-[18px] h-[18px] rounded-full border-2 flex-shrink-0"
+                      style={{
+                        background: i === 0 ? 'var(--accent)' : 'var(--surface-raised)',
+                        borderColor: i === 0 ? 'var(--accent)' : 'var(--surface-border)',
+                      }}
+                      aria-hidden="true"
+                    />
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '0.65rem',
+                        letterSpacing: '0.12em',
+                        color: i === 0 ? 'var(--accent)' : 'var(--text-muted)',
+                        textTransform: 'uppercase',
+                      }}
+                    >
+                      {step.phase}
+                    </span>
+                  </div>
+
+                  {/* Content */}
+                  <div className="pl-1">
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center mb-5"
+                      style={{ background: 'var(--surface-overlay)', border: '1px solid var(--surface-border)' }}
+                      aria-hidden="true"
+                    >
+                      <Icon className="w-5 h-5" style={{ color: 'var(--accent)' }} />
+                    </div>
+
+                    <h3
+                      className="mb-3"
+                      style={{
+                        fontFamily: 'var(--font-display)',
+                        fontSize: '1.375rem',
+                        color: 'var(--text-primary)',
+                        lineHeight: 1.2,
+                      }}
+                    >
+                      {step.title}
+                    </h3>
+
+                    <p
+                      className="text-sm leading-relaxed mb-4"
+                      style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-body)' }}
+                    >
+                      {step.desc}
+                    </p>
+
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '0.65rem',
+                        letterSpacing: '0.1em',
+                        color: 'var(--accent)',
+                        textTransform: 'uppercase',
+                      }}
+                    >
+                      {step.detail}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* CTA below */}
+        <div
+          className="mt-16 pt-10 flex items-center justify-between flex-wrap gap-4"
+          style={{
+            borderTop: '1px solid var(--surface-border)',
+            opacity: isVisible ? 1 : 0,
+            transition: 'opacity 500ms ease',
+            transitionDelay: '560ms',
+          }}
+        >
+          <p
+            style={{
+              fontFamily: 'var(--font-body)',
+              fontSize: '1.0625rem',
+              color: 'var(--text-secondary)',
+            }}
+          >
+            Ready to start? It takes 2 minutes to brief us.
+          </p>
+          <a href="#contact" className="btn-primary" style={{ fontSize: '0.9rem', padding: '0.6rem 1.5rem' }}>
+            WhatsApp Us
+          </a>
+        </div>
+
       </div>
     </section>
   );
