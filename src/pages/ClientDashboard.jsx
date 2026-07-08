@@ -423,9 +423,9 @@ export default function ClientDashboard() {
                         <div className="space-y-1 pb-2">
                           <div className="flex items-center gap-2">
                             <h4 className="text-xs font-bold text-white">{m.label || m.title}</h4>
-                            <span className="text-[9px] text-on-surface-variant font-mono">{m.date}</span>
+                            <span className="text-[10px] text-[#d2f000]/80 font-mono">{m.date}</span>
                           </div>
-                          <p className="text-[10px] text-on-surface-variant leading-relaxed">{m.description}</p>
+                          <p className="text-xs text-slate-200 leading-relaxed">{m.description}</p>
                         </div>
                       </div>
                     ))}
@@ -435,7 +435,7 @@ export default function ClientDashboard() {
                 {/* Scope & PRD specs */}
                 <div className="backdrop-blur-xl bg-white/[0.015] border border-white/[0.06] rounded-3xl p-6 space-y-4 shadow-xl">
                   <h3 className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5"><FileText className="w-4 h-4 text-secondary" /> Scope of Work Specifications</h3>
-                  <div className="bg-black/20 border border-white/5 p-4 rounded-2xl text-xs font-mono text-on-surface-variant leading-relaxed max-h-48 overflow-y-auto whitespace-pre-line">
+                  <div className="bg-black/20 border border-white/10 p-4 rounded-2xl text-xs font-mono text-slate-200 leading-relaxed max-h-48 overflow-y-auto whitespace-pre-line">
                     {project.requirements || project.prdText || "No project specs defined yet."}
                   </div>
                   {project.prdLink && (
@@ -468,17 +468,17 @@ export default function ClientDashboard() {
                     </span>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-2 border-y border-white/5 py-4 text-center font-mono">
+                  <div className="grid grid-cols-3 gap-2 border-y border-white/10 py-4 text-center font-mono">
                     <div>
-                      <span className="text-[8px] text-on-surface-variant block uppercase">Estimate</span>
+                      <span className="text-[10px] text-slate-300 block font-bold uppercase tracking-wider">Estimate</span>
                       <span className="text-xs font-bold text-white">₹{totalVal.toLocaleString()}</span>
                     </div>
                     <div>
-                      <span className="text-[8px] text-on-surface-variant block uppercase">Paid</span>
+                      <span className="text-[10px] text-slate-300 block font-bold uppercase tracking-wider">Paid</span>
                       <span className="text-xs font-bold text-emerald-400">₹{advPaid.toLocaleString()}</span>
                     </div>
                     <div>
-                      <span className="text-[8px] text-on-surface-variant block uppercase">Balance</span>
+                      <span className="text-[10px] text-slate-300 block font-bold uppercase tracking-wider">Balance</span>
                       <span className="text-xs font-bold text-red-400">₹{balance.toLocaleString()}</span>
                     </div>
                   </div>
@@ -512,7 +512,7 @@ export default function ClientDashboard() {
                         <h4 className="text-xs font-bold uppercase tracking-wider text-white">Project Handover Gate</h4>
                       </div>
                       
-                      <p className="text-[10px] text-on-surface-variant leading-relaxed">
+                      <p className="text-xs text-slate-200 leading-relaxed">
                         Your project has been successfully deployed and verified. Complete the secure feedback evaluation ledger to release final assets and download your handover certificate.
                       </p>
 
@@ -532,8 +532,8 @@ export default function ClientDashboard() {
                   ) : (
                     /* In Progress: Waiting Gate */
                     <div className="space-y-2.5 opacity-70">
-                      <h4 className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 text-on-surface-variant"><Clock className="w-4 h-4" /> handovers pending</h4>
-                      <p className="text-[10px] text-on-surface-variant leading-relaxed">
+                      <h4 className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 text-slate-300"><Clock className="w-4 h-4" /> handovers pending</h4>
+                      <p className="text-xs text-slate-200 leading-relaxed">
                         Handover and evaluation locks will release automatically once the engineering team completes active target sprints and marks the system as completed.
                       </p>
                     </div>
@@ -543,8 +543,8 @@ export default function ClientDashboard() {
 
                 {/* Guidelines */}
                 <div className="backdrop-blur-xl bg-white/[0.015] border border-white/[0.06] rounded-3xl p-6 shadow-xl">
-                  <span className="text-[9px] text-on-surface-variant font-bold uppercase block mb-2 tracking-widest"><ShieldCheck className="w-3.5 h-3.5 inline mr-1 text-[#d2f000]" /> Contract Rules</span>
-                  <div className="text-[10px] text-on-surface-variant font-mono space-y-2 whitespace-pre-line leading-relaxed">
+                  <span className="text-xs text-slate-300 font-bold uppercase block mb-2 tracking-widest"><ShieldCheck className="w-3.5 h-3.5 inline mr-1 text-[#d2f000]" /> Contract Rules</span>
+                  <div className="text-xs text-slate-200 font-mono space-y-2 whitespace-pre-line leading-relaxed">
                     {termsText}
                   </div>
                 </div>

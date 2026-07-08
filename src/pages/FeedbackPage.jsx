@@ -667,7 +667,7 @@ export default function FeedbackPage() {
               {/* Progress Panel */}
               <div className="backdrop-blur-xl bg-white/[0.015] border border-white/[0.06] rounded-3xl p-6 space-y-3 shadow-xl">
                 <div className="flex justify-between items-center text-xs font-bold uppercase tracking-wider">
-                  <span className="text-on-surface-variant">Evaluation Progress</span>
+                  <span className="text-slate-300 font-bold text-xs uppercase tracking-wider">Evaluation Progress</span>
                   <span className="text-[#d2f000] font-mono">{formProgress}%</span>
                 </div>
                 <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
@@ -676,7 +676,7 @@ export default function FeedbackPage() {
                     style={{ width: `${formProgress}%` }}
                   />
                 </div>
-                <p className="text-[9px] text-on-surface-variant leading-relaxed">
+                <p className="text-xs text-slate-300 leading-relaxed">
                   Grades logged here are securely pushed to our administrative servers. Thank you for building with Brojix.
                 </p>
               </div>
@@ -689,19 +689,19 @@ export default function FeedbackPage() {
               {/* Header Title */}
               <div>
                 <h1 className="text-3xl font-bold tracking-tight text-white mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>Project Feedback</h1>
-                <p className="text-xs text-on-surface-variant">Fill out this quick assessment to release final assets and download handover receipts.</p>
+                <p className="text-xs text-slate-200">Fill out this quick assessment to release final assets and download handover receipts.</p>
               </div>
 
               {/* Step 1: Overall experience */}
               <div className="backdrop-blur-xl bg-white/[0.015] border border-white/[0.06] p-6 md:p-8 rounded-3xl space-y-6 shadow-xl relative">
                 <div>
-                  <span className="text-[9px] text-[#d2f000] font-bold uppercase tracking-wider">SECTION 1</span>
+                  <span className="text-xs text-[#d2f000] font-bold uppercase tracking-wider">SECTION 1</span>
                   <h3 className="text-lg font-bold text-white mt-1">Overall Satisfaction</h3>
                 </div>
 
                 <div className="flex flex-col items-center gap-4 py-4 border-y border-white/5">
                   <div className="text-5xl">{EMOJI_MAP[overallRating]}</div>
-                  <div className="text-2xl font-bold text-white font-mono">{overallRating} <span className="text-xs text-on-surface-variant">/ 10</span></div>
+                  <div className="text-2xl font-bold text-white font-mono">{overallRating} <span className="text-xs text-[#d2f000]/70">/ 10</span></div>
                   <input 
                     type="range"
                     min="0"
@@ -716,7 +716,7 @@ export default function FeedbackPage() {
               {/* Step 2: Detailed Pillars */}
               <div className="backdrop-blur-xl bg-white/[0.015] border border-white/[0.06] p-6 md:p-8 rounded-3xl space-y-6 shadow-xl">
                 <div>
-                  <span className="text-[9px] text-secondary font-bold uppercase tracking-wider">SECTION 2</span>
+                  <span className="text-xs text-secondary font-bold uppercase tracking-wider">SECTION 2</span>
                   <h3 className="text-lg font-bold text-white mt-1">Detailed Evaluation</h3>
                 </div>
 
@@ -725,7 +725,7 @@ export default function FeedbackPage() {
                     const name = k.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
                     return (
                       <div key={k} className="flex justify-between items-center py-2 border-b border-white/[0.02] last:border-0">
-                        <span className="text-xs font-semibold text-on-surface-variant">{name}</span>
+                        <span className="text-xs font-bold text-slate-200">{name}</span>
                         <div className="flex gap-1.5">
                           {[1, 2, 3, 4, 5].map((star) => (
                             <button
@@ -751,9 +751,9 @@ export default function FeedbackPage() {
               {/* Step 3: NPS recommendation */}
               <div className="backdrop-blur-xl bg-white/[0.015] border border-white/[0.06] p-6 md:p-8 rounded-3xl space-y-6 shadow-xl">
                 <div>
-                  <span className="text-[9px] text-[#d2f000] font-bold uppercase tracking-wider">SECTION 3</span>
+                  <span className="text-xs text-[#d2f000] font-bold uppercase tracking-wider">SECTION 3</span>
                   <h3 className="text-lg font-bold text-white mt-1">NPS Net Promoter Score</h3>
-                  <p className="text-xs text-on-surface-variant mt-1">How likely are you to recommend Brojix to other developers or teams?</p>
+                  <p className="text-xs text-slate-200 mt-1">How likely are you to recommend Brojix to other developers or teams?</p>
                 </div>
 
                 <div className="space-y-4">
@@ -767,7 +767,7 @@ export default function FeedbackPage() {
                         className={`aspect-square rounded-xl border font-mono text-xs font-bold transition-all flex items-center justify-center ${
                           npsScore === score 
                             ? 'bg-[#d2f000]/10 border-[#d2f000] text-[#d2f000] shadow-[0_0_10px_rgba(223,255,0,0.15)]' 
-                            : 'bg-white/5 border-white/5 hover:border-white/10 text-on-surface-variant'
+                            : 'bg-white/5 border-white/5 hover:border-white/10 text-slate-300 hover:text-white'
                         }`}
                       >
                         {score}
@@ -775,7 +775,7 @@ export default function FeedbackPage() {
                     ))}
                   </div>
 
-                  <div className="flex justify-between text-[10px] text-on-surface-variant font-mono">
+                  <div className="flex justify-between text-xs text-slate-300 font-mono">
                     <span>Not likely</span>
                     <span className="text-[#d2f000] font-bold uppercase">{getNpsClass(npsScore)}</span>
                     <span>Extremely likely</span>
@@ -786,25 +786,25 @@ export default function FeedbackPage() {
               {/* Step 4: Text review */}
               <div className="backdrop-blur-xl bg-white/[0.015] border border-white/[0.06] p-6 md:p-8 rounded-3xl space-y-6 shadow-xl">
                 <div>
-                  <span className="text-[9px] text-secondary font-bold uppercase tracking-wider">SECTION 4</span>
+                  <span className="text-xs text-secondary font-bold uppercase tracking-wider">SECTION 4</span>
                   <h3 className="text-lg font-bold text-white mt-1">Written Feedback</h3>
                 </div>
 
                 <div className="space-y-4">
                   <div className="space-y-1">
-                    <label className="text-[9px] text-on-surface-variant uppercase font-bold">What did you like most about working with us?</label>
+                    <label className="text-xs text-slate-200 uppercase font-bold">What did you like most about working with us?</label>
                     <textarea 
                       value={textFeedback.likedMost}
                       onChange={(e) => setTextFeedback(prev => ({ ...prev, likedMost: e.target.value }))}
-                      className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-xs focus:outline-none focus:border-[#d2f000] min-h-[70px] resize-y"
+                      className="w-full bg-black/40 border border-white/20 rounded-xl p-3 text-xs focus:outline-none focus:border-[#d2f000] min-h-[70px] resize-y text-white"
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[9px] text-on-surface-variant uppercase font-bold">Was there any feature/criteria that could be improved?</label>
+                    <label className="text-xs text-slate-200 uppercase font-bold">Was there any feature/criteria that could be improved?</label>
                     <textarea 
                       value={textFeedback.couldImprove}
                       onChange={(e) => setTextFeedback(prev => ({ ...prev, couldImprove: e.target.value }))}
-                      className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-xs focus:outline-none focus:border-[#d2f000] min-h-[70px] resize-y"
+                      className="w-full bg-black/40 border border-white/20 rounded-xl p-3 text-xs focus:outline-none focus:border-[#d2f000] min-h-[70px] resize-y text-white"
                     />
                   </div>
                 </div>
@@ -813,18 +813,18 @@ export default function FeedbackPage() {
               {/* Step 5: Testimonial & Voice/Video */}
               <div className="backdrop-blur-xl bg-white/[0.015] border border-white/[0.06] p-6 md:p-8 rounded-3xl space-y-6 shadow-xl">
                 <div>
-                  <span className="text-[9px] text-[#d2f000] font-bold uppercase tracking-wider">SECTION 5</span>
+                  <span className="text-xs text-[#d2f000] font-bold uppercase tracking-wider">SECTION 5</span>
                   <h3 className="text-lg font-bold text-white mt-1">Testimonials & Attachments</h3>
                 </div>
 
                 <div className="space-y-6">
                   <div className="space-y-2">
-                    <label className="text-[9px] text-on-surface-variant uppercase font-bold">Public Testimonial</label>
+                    <label className="text-xs text-slate-200 uppercase font-bold">Public Testimonial</label>
                     <textarea 
                       value={testimonial}
                       onChange={(e) => setTestimonial(e.target.value)}
                       placeholder="Share a testimonial that we can feature publicly in our portfolio..."
-                      className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-xs focus:outline-none focus:border-[#d2f000] min-h-[75px] resize-y"
+                      className="w-full bg-black/40 border border-white/20 rounded-xl p-3 text-xs focus:outline-none focus:border-[#d2f000] min-h-[75px] resize-y text-white"
                     />
                     <label className="flex items-center gap-2 cursor-pointer select-none">
                       <input 
@@ -833,15 +833,15 @@ export default function FeedbackPage() {
                         onChange={(e) => setAllowPublicUse(e.target.checked)}
                         className="accent-[#d2f000] rounded"
                       />
-                      <span className="text-[9px] text-on-surface-variant font-medium">I consent to Brojix sharing this testimonial publicly.</span>
+                      <span className="text-xs text-slate-200 font-medium">I consent to Brojix sharing this testimonial publicly.</span>
                     </label>
                   </div>
 
                   {/* Audio/Video Recorders */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {/* Audio recorder card */}
-                    <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-4 flex flex-col justify-between items-center text-center gap-3">
-                      <span className="text-[9px] text-on-surface-variant font-bold uppercase flex items-center gap-1.5"><Mic className="w-3.5 h-3.5 text-[#d2f000]" /> Voice Testimonial</span>
+                    <div className="bg-white/[0.02] border border-white/10 rounded-2xl p-4 flex flex-col justify-between items-center text-center gap-3">
+                      <span className="text-xs text-slate-200 font-bold uppercase flex items-center gap-1.5"><Mic className="w-3.5 h-3.5 text-[#d2f000]" /> Voice Testimonial</span>
                       
                       {audioUrl ? (
                         <div className="w-full space-y-2">
@@ -861,7 +861,7 @@ export default function FeedbackPage() {
                           className={`w-full py-2.5 rounded-xl text-[11px] font-bold border transition-all flex items-center justify-center gap-2 ${
                             isRecordingAudio 
                               ? 'bg-red-500/10 border-red-500 text-red-500 animate-pulse'
-                              : 'bg-background border-white/10 hover:border-[#d2f000]/20 text-white'
+                              : 'bg-background border-white/20 hover:border-[#d2f000]/40 text-white'
                           }`}
                         >
                           {isRecordingAudio ? "Stop Recording" : "Record Voice Testimonial"}
@@ -870,8 +870,8 @@ export default function FeedbackPage() {
                     </div>
 
                     {/* Video recorder card */}
-                    <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-4 flex flex-col justify-between items-center text-center gap-3">
-                      <span className="text-[9px] text-on-surface-variant font-bold uppercase flex items-center gap-1.5"><VideoIcon className="w-3.5 h-3.5 text-[#d2f000]" /> Video Testimonial</span>
+                    <div className="bg-white/[0.02] border border-white/10 rounded-2xl p-4 flex flex-col justify-between items-center text-center gap-3">
+                      <span className="text-xs text-slate-200 font-bold uppercase flex items-center gap-1.5"><VideoIcon className="w-3.5 h-3.5 text-[#d2f000]" /> Video Testimonial</span>
                       
                       {isRecordingVideo && (
                         <video ref={liveVideoPreviewRef} autoPlay muted playsInline className="w-full max-h-[80px] bg-black rounded-lg" />
@@ -895,7 +895,7 @@ export default function FeedbackPage() {
                           className={`w-full py-2.5 rounded-xl text-[11px] font-bold border transition-all flex items-center justify-center gap-2 ${
                             isRecordingVideo 
                               ? 'bg-red-500/10 border-red-500 text-red-500 animate-pulse'
-                              : 'bg-background border-white/10 hover:border-[#d2f000]/20 text-white'
+                              : 'bg-background border-white/20 hover:border-[#d2f000]/40 text-white'
                           }`}
                         >
                           {isRecordingVideo ? "Stop Capture" : "Record Video Testimonial"}
@@ -906,14 +906,14 @@ export default function FeedbackPage() {
 
                   {/* Screenshots Zone */}
                   <div className="space-y-2">
-                    <span className="text-[9px] text-on-surface-variant font-bold uppercase block">Attach Support Files (Screenshots / PDFs / Docs)</span>
+                    <span className="text-xs text-slate-200 font-bold uppercase block">Attach Support Files (Screenshots / PDFs / Docs)</span>
                     <div 
                       onClick={() => fileInputRef.current.click()}
-                      className="border border-dashed border-white/10 hover:border-[#d2f000]/20 rounded-2xl p-6 text-center cursor-pointer hover:bg-white/[0.01] transition-all flex flex-col items-center gap-2"
+                      className="border border-dashed border-white/20 hover:border-[#d2f000]/40 rounded-2xl p-6 text-center cursor-pointer hover:bg-white/[0.01] transition-all flex flex-col items-center gap-2"
                     >
-                      <Upload className="w-5 h-5 text-on-surface-variant" />
-                      <span className="text-xs text-on-surface-variant font-semibold">Click to attach files</span>
-                      <span className="text-[8px] text-on-surface-variant">Drag and drop also supported</span>
+                      <Upload className="w-5 h-5 text-slate-300" />
+                      <span className="text-xs text-slate-200 font-semibold">Click to attach files</span>
+                      <span className="text-[10px] text-slate-300">Drag and drop also supported</span>
                     </div>
                     <input 
                       type="file" 
@@ -945,20 +945,20 @@ export default function FeedbackPage() {
               {/* Step 6: Referral & Cross-sells */}
               <div className="backdrop-blur-xl bg-white/[0.015] border border-white/[0.06] p-6 md:p-8 rounded-3xl space-y-6 shadow-xl">
                 <div>
-                  <span className="text-[9px] text-secondary font-bold uppercase tracking-wider">SECTION 6</span>
+                  <span className="text-xs text-secondary font-bold uppercase tracking-wider">SECTION 6</span>
                   <h3 className="text-lg font-bold text-white mt-1">Cross-Sell & Client Referral</h3>
                 </div>
 
                 <div className="space-y-5">
                   {/* Interested Services */}
                   <div className="space-y-2">
-                    <span className="text-[9px] text-on-surface-variant font-bold uppercase block">Interested in other services?</span>
+                    <span className="text-xs text-slate-200 font-bold uppercase block">Interested in other services?</span>
                     <div className="grid grid-cols-2 gap-2">
                       {SERVICES_OPTIONS.map((serv) => (
                         <label 
                           key={serv} 
-                          className={`flex items-center gap-2 bg-white/[0.02] border border-white/5 rounded-xl px-4 py-2.5 text-xs text-on-surface-variant cursor-pointer select-none hover:border-white/10 transition-all ${
-                            interestedServices.includes(serv) ? 'border-[#d2f000]/20 text-white' : ''
+                          className={`flex items-center gap-2 bg-white/[0.02] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-slate-200 cursor-pointer select-none hover:border-white/20 transition-all ${
+                            interestedServices.includes(serv) ? 'border-[#d2f000]/30 text-white' : ''
                           }`}
                         >
                           <input 
@@ -975,7 +975,7 @@ export default function FeedbackPage() {
 
                   {/* Referral fields */}
                   <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-4 space-y-3">
-                    <span className="text-[9px] text-[#d2f000] font-bold uppercase block">Refer a Colleague</span>
+                    <span className="text-xs text-[#d2f000] font-bold uppercase block">Refer a Colleague</span>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <input 
                         type="text"
@@ -996,7 +996,7 @@ export default function FeedbackPage() {
 
                   {/* Future Project */}
                   <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-4 space-y-3">
-                    <span className="text-[9px] text-secondary font-bold uppercase block">Propose Next Project Concept</span>
+                    <span className="text-xs text-secondary font-bold uppercase block">Propose Next Project Concept</span>
                     <input 
                       type="text"
                       placeholder="Project Concept Name"
@@ -1020,7 +1020,7 @@ export default function FeedbackPage() {
                       onChange={(e) => setContactPermission(e.target.checked)}
                       className="accent-[#d2f000] rounded"
                     />
-                    <span className="text-[9px] text-on-surface-variant font-medium">I agree to be contacted by Brojix about these concepts.</span>
+                    <span className="text-xs text-slate-200 font-medium">I agree to be contacted by Brojix about these concepts.</span>
                   </label>
                 </div>
               </div>

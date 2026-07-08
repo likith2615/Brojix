@@ -103,6 +103,7 @@ export default function AdminDashboard() {
   const [newProjectService, setNewProjectService] = useState('Development');
   const [newProjectBudget, setNewProjectBudget] = useState('');
   const [newProjectDeadline, setNewProjectDeadline] = useState('');
+  const [newProjectWhatsapp, setNewProjectWhatsapp] = useState('');
   const [isCreatingProject, setIsCreatingProject] = useState(false);
 
   // Edit Project Form States
@@ -226,6 +227,7 @@ export default function AdminDashboard() {
       id: newProjectId,
       created_at: new Date().toISOString(),
       name: newProjectName,
+      whatsapp: newProjectWhatsapp.trim(),
       service: newProjectService,
       topic: newProjectTopic,
       deadline: newProjectDeadline || new Date().toISOString().split('T')[0],
@@ -257,6 +259,7 @@ export default function AdminDashboard() {
       setNewProjectTopic('');
       setNewProjectBudget('');
       setNewProjectDeadline('');
+      setNewProjectWhatsapp('');
       setIsCreatingProject(false);
       toast.success(`Project ${newProjectId} created!`);
     } catch (err) {
@@ -1117,35 +1120,47 @@ export default function AdminDashboard() {
                 
                 <div className="space-y-3.5 pt-2">
                   <div className="space-y-1">
-                    <label className="text-[9px] font-bold text-on-surface-variant uppercase">Client Name</label>
+                    <label className="text-xs font-bold text-slate-200 uppercase">Client Name</label>
                     <input 
                       type="text"
                       required
                       placeholder="e.g. Alex Chen"
                       value={newProjectName}
                       onChange={(e) => setNewProjectName(e.target.value)}
-                      className="w-full bg-background border border-white/5 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#d2f000]"
+                      className="w-full bg-background border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#d2f000]"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-[9px] font-bold text-on-surface-variant uppercase">Project Topic</label>
+                    <label className="text-xs font-bold text-slate-200 uppercase">Client WhatsApp Number</label>
+                    <input 
+                      type="text"
+                      required
+                      placeholder="e.g. 919876543210"
+                      value={newProjectWhatsapp}
+                      onChange={(e) => setNewProjectWhatsapp(e.target.value)}
+                      className="w-full bg-background border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#d2f000]"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-xs font-bold text-slate-200 uppercase">Project Topic</label>
                     <input 
                       type="text"
                       required
                       placeholder="e.g. Portfolio Website"
                       value={newProjectTopic}
                       onChange={(e) => setNewProjectTopic(e.target.value)}
-                      className="w-full bg-background border border-white/5 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#d2f000]"
+                      className="w-full bg-background border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#d2f000]"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-[9px] font-bold text-on-surface-variant uppercase">Service Type</label>
+                    <label className="text-xs font-bold text-slate-200 uppercase">Service Type</label>
                     <select
                       value={newProjectService}
                       onChange={(e) => setNewProjectService(e.target.value)}
-                      className="w-full bg-background border border-white/5 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#d2f000]"
+                      className="w-full bg-background border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#d2f000]"
                     >
                       <option value="Development">Custom Development</option>
                       <option value="Branding">Branding & Logo</option>
@@ -1156,22 +1171,22 @@ export default function AdminDashboard() {
 
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1">
-                      <label className="text-[9px] font-bold text-on-surface-variant uppercase">Budget (INR)</label>
+                      <label className="text-xs font-bold text-slate-200 uppercase">Budget (INR)</label>
                       <input 
                         type="number"
                         placeholder="10000"
                         value={newProjectBudget}
                         onChange={(e) => setNewProjectBudget(e.target.value)}
-                        className="w-full bg-background border border-white/5 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#d2f000]"
+                        className="w-full bg-background border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#d2f000]"
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-[9px] font-bold text-on-surface-variant uppercase">Deadline Target</label>
+                      <label className="text-xs font-bold text-slate-200 uppercase">Deadline Target</label>
                       <input 
                         type="date"
                         value={newProjectDeadline}
                         onChange={(e) => setNewProjectDeadline(e.target.value)}
-                        className="w-full bg-background border border-white/5 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#d2f000]"
+                        className="w-full bg-background border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#d2f000]"
                       />
                     </div>
                   </div>
