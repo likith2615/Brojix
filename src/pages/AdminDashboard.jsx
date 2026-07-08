@@ -104,6 +104,7 @@ export default function AdminDashboard() {
   const [newProjectBudget, setNewProjectBudget] = useState('');
   const [newProjectDeadline, setNewProjectDeadline] = useState('');
   const [newProjectWhatsapp, setNewProjectWhatsapp] = useState('');
+  const [newProjectCollege, setNewProjectCollege] = useState('');
   const [isCreatingProject, setIsCreatingProject] = useState(false);
 
   // Edit Project Form States
@@ -228,6 +229,7 @@ export default function AdminDashboard() {
       created_at: new Date().toISOString(),
       name: newProjectName,
       whatsapp: (newProjectWhatsapp && newProjectWhatsapp.trim()) ? newProjectWhatsapp.trim() : '0000000000',
+      college: (newProjectCollege && newProjectCollege.trim()) ? newProjectCollege.trim() : 'Brojix Client College',
       service: newProjectService,
       topic: newProjectTopic,
       deadline: newProjectDeadline || new Date().toISOString().split('T')[0],
@@ -260,6 +262,7 @@ export default function AdminDashboard() {
       setNewProjectBudget('');
       setNewProjectDeadline('');
       setNewProjectWhatsapp('');
+      setNewProjectCollege('');
       setIsCreatingProject(false);
       toast.success(`Project ${newProjectId} created!`);
     } catch (err) {
@@ -1139,6 +1142,18 @@ export default function AdminDashboard() {
                       placeholder="e.g. 919876543210"
                       value={newProjectWhatsapp}
                       onChange={(e) => setNewProjectWhatsapp(e.target.value)}
+                      className="w-full bg-background border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#d2f000]"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-xs font-bold text-slate-200 uppercase">College / University</label>
+                    <input 
+                      type="text"
+                      required
+                      placeholder="e.g. Brojix Institute"
+                      value={newProjectCollege}
+                      onChange={(e) => setNewProjectCollege(e.target.value)}
                       className="w-full bg-background border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#d2f000]"
                     />
                   </div>
